@@ -96,7 +96,6 @@ class UnitreeGo2Battery(FuserInput[str]):
             self.battery_amperes = 0.0
             self.battery_t = 0
 
-
     async def report_status(self):
         """
         Report the battery status to the status provider.
