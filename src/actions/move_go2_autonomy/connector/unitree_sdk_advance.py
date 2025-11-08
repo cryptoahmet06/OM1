@@ -24,7 +24,6 @@ from zenoh_msgs import (
 
 
 class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
-
     def __init__(self, config: ActionConfig):
         super().__init__(config)
 
@@ -246,7 +245,6 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
         target: List[MoveCommand] = list(self.pending_movements.queue)
 
         if len(target) > 0:
-
             current_target = target[0]
 
             logging.info(

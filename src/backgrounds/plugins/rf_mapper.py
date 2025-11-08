@@ -95,9 +95,7 @@ class RFmapper(Background):
         self.start()
 
     async def scan(self):
-
         def detection_callback(device, advdata: AdvertisementData):
-
             addr = device.address
 
             local_name = None
@@ -144,7 +142,6 @@ class RFmapper(Background):
                         f"Updated BLE mfgval: {self.seen_devices[addr].mfgval}"
                     )
             else:
-
                 # this is a new device
                 self.seen_devices[addr] = RFData(
                     unix_ts=time.time(),
@@ -208,7 +205,6 @@ class RFmapper(Background):
         """
         try:
             while self.running:
-
                 logging.info(f"Sending to fabric: payload {self.payload_idx}")
 
                 # add scan results if they are new

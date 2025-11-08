@@ -9,7 +9,6 @@ from actions.base import ActionConfig, ActionConnector
 
 
 class ARMUnitreeSDKConnector(ActionConnector[ArmInput]):
-
     def __init__(self, config: ActionConfig):
         super().__init__(config)
 

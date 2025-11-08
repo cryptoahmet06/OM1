@@ -536,7 +536,6 @@ class WebSim(Simulator):
             return
 
         try:
-
             # Broadcast to all clients
             disconnected = []
             for connection in self.active_connections:

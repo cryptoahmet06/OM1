@@ -27,7 +27,6 @@ class EmergencyAlertElevenLabsTTSConnector(
 ):
 
     def __init__(self, config: ActionConfig):
-
         super().__init__(config)
 
         # OM API key

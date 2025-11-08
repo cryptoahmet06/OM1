@@ -105,7 +105,6 @@ class Motion:
 
 
 class MoveRos2Connector(ActionConnector[MoveInput]):
-
     def __init__(self, config: ActionConfig):
         super().__init__(config)
 
@@ -185,7 +184,6 @@ class MoveRos2Connector(ActionConnector[MoveInput]):
             self.thread_lock.release()
 
     def _execute_sport_command_sync(self, motion: Motion) -> None:
-
         if not self.thread_lock.acquire(blocking=False):
             logging.info("Action already in progress, skipping")
             return
@@ -202,7 +200,6 @@ class MoveRos2Connector(ActionConnector[MoveInput]):
             self.thread_lock.release()
 
     async def _execute_sport_command(self, motion: Motion) -> None:
-
         if not self.thread_lock.acquire(blocking=False):
             logging.info("Action already in progress, skipping")
             return
@@ -219,7 +216,6 @@ class MoveRos2Connector(ActionConnector[MoveInput]):
             self.thread_lock.release()
 
     async def connect(self, output_interface: MoveInput) -> None:
-
         if output_interface.action == "wave":
             logging.info("UB command: wave")
             await self._execute_sport_command(Motion("wave"))
@@ -290,5 +286,4 @@ class MoveRos2Connector(ActionConnector[MoveInput]):
         logging.info(f"SendThisToUB: {output_interface.action}")
 
     def tick(self) -> None:
-
         time.sleep(0.1)
