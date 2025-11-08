@@ -33,7 +33,6 @@ def generate_function_schema_from_action(action) -> dict:
         logging.warning(f"No 'input' type hint found for {interface.__name__}")
         return {}
 
-
     doc = interface.__doc__ or ""
     doc = doc.replace("\n", " ").strip()
 
