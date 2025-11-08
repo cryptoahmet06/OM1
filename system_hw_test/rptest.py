@@ -167,11 +167,9 @@ for b in angles_blanked:
 
 
 def continuous_serial(lidar):
-
     for i, scan in enumerate(
         lidar.iter_scans(scan_type="express", max_buf_meas=3000, min_len=5)
     ):
-
         array = np.array(scan)
 
         # the driver sends angles in degrees between from 0 to 360
@@ -190,7 +188,6 @@ def continuous_serial(lidar):
 
 
 def zenoh_scan(sample):
-
     scan = sensor_msgs.LaserScan.deserialize(sample.payload.to_bytes())
     # print(f"Scan {scan}")
 
@@ -243,11 +240,9 @@ def calculate_angle_and_distance(world_x, world_y):
 
 
 def process(data):
-
     complexes = []
 
     for angle, distance in data:
-
         d_m = distance
 
         # don't worry about distant objects
@@ -432,7 +427,6 @@ def process(data):
 
 
 if __name__ == "__main__":
-
     if args.serial:
         PORT_NAME = args.serial
         print(f"Using {PORT_NAME} as the serial port")

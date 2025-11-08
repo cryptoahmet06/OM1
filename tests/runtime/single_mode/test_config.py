@@ -259,7 +259,6 @@ def test_load_config_missing_file():
 
 def test_load_config_invalid_json():
     with patch("builtins.open", mock_open(read_data="invalid json5")):
-
         # try:
         #     load_config("invalid_config")
         # except Exception as error:

@@ -15,7 +15,6 @@ from providers.unitree_go2_state_provider import UnitreeGo2StateProvider
 
 
 class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
-
     def __init__(self, config: ActionConfig):
         super().__init__(config)
 
@@ -50,7 +49,6 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
         logging.info(f"Autonomy Odom Provider: {self.odom}")
 
     async def connect(self, output_interface: MoveInput) -> None:
-
         # this is used only by the LLM
         logging.info(f"AI command.connect: {output_interface.action}")
 
@@ -186,7 +184,6 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
         target: List[MoveCommand] = list(self.pending_movements.queue)
 
         if len(target) > 0:
-
             current_target = target[0]
 
             logging.info(

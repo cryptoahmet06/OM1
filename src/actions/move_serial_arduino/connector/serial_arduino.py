@@ -12,7 +12,6 @@ This only works if you actually have a serial port connected to your computer, s
 
 
 class MoveSerialConnector(ActionConnector[MoveInput]):
-
     def __init__(self, config: ActionConfig):
         super().__init__(config)
 
@@ -25,7 +24,6 @@ class MoveSerialConnector(ActionConnector[MoveInput]):
             self.ser = serial.Serial(self.port, 9600)
 
     async def connect(self, output_interface: MoveInput) -> None:
-
         new_msg = {"move": ""}
 
         if output_interface.action == "be still":
