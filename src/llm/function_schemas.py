@@ -27,7 +27,12 @@ def generate_function_schema_from_action(action) -> dict:
         OpenAI function schema dictionary.
     """
     interface = action.interface
-    input_interface = get_type_hints(interface)["input"]
+    hints = get_type_hints(interface)
+    input_interface = hints.get("input")
+    if not input_interface:
+        logging.warning(f"No 'input' type hint found for {interface.__name__}")
+        return {}
+
 
     doc = interface.__doc__ or ""
     doc = doc.replace("\n", " ").strip()
