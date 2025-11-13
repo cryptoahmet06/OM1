@@ -36,8 +36,6 @@ class EmotionUnitreeConnector(ActionConnector[EmotionInput]):
             except Exception:
                 logging.exception("Failed to initialize AudioClient")
 
-
-
     async def connect(self, output_interface: EmotionInput) -> None:
 
         if not self.ao_client:
