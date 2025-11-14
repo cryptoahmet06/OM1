@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
+# import typedef
 import os
 import platform
 import sys
-
-# import typedef
 from ctypes import *
 
 system = platform.system()

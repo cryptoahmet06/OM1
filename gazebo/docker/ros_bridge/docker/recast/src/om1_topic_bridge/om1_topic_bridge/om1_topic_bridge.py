@@ -1,7 +1,6 @@
-import rclpy
-
 # Import messages from both packages
 # from om1_interfaces.msg import AI as AIFromInterfaces
+import rclpy
 from om1_msgs.msg import AI as AIFromMsgs
 from rclpy.node import Node
 from std_msgs.msg import String
