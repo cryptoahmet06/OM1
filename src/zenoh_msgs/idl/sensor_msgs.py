@@ -3,7 +3,16 @@ from enum import Enum
 from typing import List
 
 from pycdr2 import IdlStruct
-from pycdr2.types import array, float32, float64, int8, sequence, uint8, uint16, uint32
+from pycdr2.types import (
+    array,
+    float32,
+    float64,
+    int8,
+    sequence,
+    uint8,
+    uint16,
+    uint32,
+)
 
 from .geometry_msgs import Point32, Quaternion, Vector3
 from .std_msgs import Header, String
@@ -76,7 +85,9 @@ class HazardDetection(IdlStruct, typename="HazardDetection"):
         CLIFF = 2  # The robot detected a cliff
         STALL = 3  # The wheels of the robot are stalled against an obstacle
         WHEEL_DROP = 4  # The wheels of the robot are fully dropped
-        OBJECT_PROXIMITY = 5  # The robot detects an obstacle in close proximity
+        OBJECT_PROXIMITY = (
+            5  # The robot detects an obstacle in close proximity
+        )
 
     type: uint8
 
@@ -171,12 +182,24 @@ class BatteryState(IdlStruct, typename="BatteryState"):
     temperature: float32
     current: float32  # Negative when discharging (A)  (If unmeasured NaN)
     charge: float32  # Current charge in Ah  (If unmeasured NaN)
-    capacity: float32  # Capacity in Ah (last full capacity)  (If unmeasured NaN)
-    design_capacity: float32  # Capacity in Ah (design capacity)  (If unmeasured NaN)
-    percentage: float32  # Charge percentage on 0 to 1 range  (If unmeasured NaN)
-    power_supply_status: uint8  # The charging status as reported. Values defined above
-    power_supply_health: uint8  # The battery health metric. Values defined above
-    power_supply_technology: uint8  # The battery chemistry. Values defined above
+    capacity: (
+        float32  # Capacity in Ah (last full capacity)  (If unmeasured NaN)
+    )
+    design_capacity: (
+        float32  # Capacity in Ah (design capacity)  (If unmeasured NaN)
+    )
+    percentage: (
+        float32  # Charge percentage on 0 to 1 range  (If unmeasured NaN)
+    )
+    power_supply_status: (
+        uint8  # The charging status as reported. Values defined above
+    )
+    power_supply_health: (
+        uint8  # The battery health metric. Values defined above
+    )
+    power_supply_technology: (
+        uint8  # The battery chemistry. Values defined above
+    )
     present: bool  # True if the battery is present
     cell_voltage: List[
         float32
@@ -186,10 +209,10 @@ class BatteryState(IdlStruct, typename="BatteryState"):
         float32
     ]  # An array of individual cell voltages for each cell in the pack
     # If individual voltages unknown but number of cells known set each to NaN
-    location: (
-        String  # The location into which the battery is inserted. (slot number or plug)
+    location: String  # The location into which the battery is inserted. (slot number or plug)
+    serial_number: (
+        String  # The best approximation of the battery serial number
     )
-    serial_number: String  # The best approximation of the battery serial number
 
 
 @dataclass

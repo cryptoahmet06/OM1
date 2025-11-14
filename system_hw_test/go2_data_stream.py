@@ -23,7 +23,9 @@ class Custom:
         self.low_state = msg
         print("FR_0 motor state: ", msg.motor_state[go2.LegID["FR_0"]])
         print("IMU state: ", msg.imu_state)
-        print("Battery state: voltage: ", msg.power_v, "current: ", msg.power_a)
+        print(
+            "Battery state: voltage: ", msg.power_v, "current: ", msg.power_a
+        )
 
 
 if __name__ == "__main__":

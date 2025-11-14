@@ -44,7 +44,9 @@ class SimulatorOrchestrator:
                     f"Simulator {simulator.name} already submitted, skipping."
                 )
                 continue
-            self._simulator_executor.submit(self._run_simulator_loop, simulator)
+            self._simulator_executor.submit(
+                self._run_simulator_loop, simulator
+            )
             self._submitted_simulators.add(simulator.name)
 
         return asyncio.Future()
@@ -64,7 +66,9 @@ class SimulatorOrchestrator:
             except Exception as e:
                 logging.error(f"Error in simulator {simulator.name}: {e}")
 
-    async def flush_promises(self) -> tuple[list[T.Any], list[asyncio.Task[T.Any]]]:
+    async def flush_promises(
+        self,
+    ) -> tuple[list[T.Any], list[asyncio.Task[T.Any]]]:
         """
         Flushes the promise queue and returns the completed promises
         and the pending promises.
@@ -79,7 +83,9 @@ class SimulatorOrchestrator:
             if promise.done():
                 await promise
                 done_promises.append(promise)
-        self.promise_queue = [p for p in self.promise_queue if p not in done_promises]
+        self.promise_queue = [
+            p for p in self.promise_queue if p not in done_promises
+        ]
         return done_promises, self.promise_queue
 
     async def promise(self, actions: T.List[Action]) -> None:
@@ -115,7 +121,9 @@ class SimulatorOrchestrator:
         Any
             The result of the simulator's response
         """
-        logging.debug(f"Calling simulator {simulator.name} with actions {actions}")
+        logging.debug(
+            f"Calling simulator {simulator.name} with actions {actions}"
+        )
         simulator.sim(actions)
         return None
 

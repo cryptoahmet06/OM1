@@ -79,7 +79,8 @@ class RtkProvider:
     def get_latest_gngga_message(self, nmea_data):
 
         pattern = re.compile(
-            r"(\$GNGGA,(?P<time>\d{6}(?:\.\d+)?),[^*]*\*[0-9A-Fa-f]{2})", re.MULTILINE
+            r"(\$GNGGA,(?P<time>\d{6}(?:\.\d+)?),[^*]*\*[0-9A-Fa-f]{2})",
+            re.MULTILINE,
         )
 
         gngga_entries = []
@@ -136,7 +137,9 @@ class RtkProvider:
                         )
                     )
                 except Exception as e:
-                    logging.warning(f"Failed to parse GGA message: {msg} ({e})")
+                    logging.warning(
+                        f"Failed to parse GGA message: {msg} ({e})"
+                    )
         except Exception as e:
             logging.warning(f"Error processing serial RTK input: {msg} ({e})")
 

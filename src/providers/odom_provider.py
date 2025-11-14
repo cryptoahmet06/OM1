@@ -100,7 +100,9 @@ def odom_processor(
     if use_zenoh:
         # typically, TurtleBot4
         if URID is None:
-            logging.warning("Aborting TurtleBot4 Navigation system, no URID provided")
+            logging.warning(
+                "Aborting TurtleBot4 Navigation system, no URID provided"
+            )
             return None
         else:
             logging.info(f"TurtleBot4 Navigation system is using URID: {URID}")
@@ -108,7 +110,9 @@ def odom_processor(
         try:
             session = open_zenoh_session()
             logging.info(f"Zenoh navigation provider opened {session}")
-            logging.info(f"TurtleBot4 navigation listeners starting with URID: {URID}")
+            logging.info(
+                f"TurtleBot4 navigation listeners starting with URID: {URID}"
+            )
             session.declare_subscriber(f"{URID}/c3/odom", zenoh_odom_handler)
         except Exception as e:
             logging.error(f"Error opening Zenoh client: {e}")
@@ -123,7 +127,9 @@ def odom_processor(
             return
 
         try:
-            pose_subscriber = ChannelSubscriber("rt/utlidar/robot_pose", PoseStamped_)
+            pose_subscriber = ChannelSubscriber(
+                "rt/utlidar/robot_pose", PoseStamped_
+            )
             pose_subscriber.Init(pose_message_handler, 10)
             logging.info("CycloneDDS pose subscriber initialized successfully")
         except Exception as e:
@@ -155,7 +161,10 @@ class OdomProvider:
     """
 
     def __init__(
-        self, URID: str = "", use_zenoh: bool = False, channel: Optional[str] = ""
+        self,
+        URID: str = "",
+        use_zenoh: bool = False,
+        channel: Optional[str] = "",
     ):
         """
         Robot and sensor configuration
@@ -202,7 +211,9 @@ class OdomProvider:
             return
         else:
             if not self.channel and not self.use_zenoh:
-                logging.error("Channel must be specified to start the Odom Provider.")
+                logging.error(
+                    "Channel must be specified to start the Odom Provider."
+                )
                 return
 
             logging.info(
@@ -222,7 +233,10 @@ class OdomProvider:
             )
             self._odom_reader_thread.start()
 
-        if self._odom_processor_thread and self._odom_processor_thread.is_alive():
+        if (
+            self._odom_processor_thread
+            and self._odom_processor_thread.is_alive()
+        ):
             logging.warning("Odom processor thread is already running.")
             return
         else:
@@ -232,7 +246,9 @@ class OdomProvider:
             )
             self._odom_processor_thread.start()
 
-    def euler_from_quaternion(self, x: float, y: float, z: float, w: float) -> tuple:
+    def euler_from_quaternion(
+        self, x: float, y: float, z: float, w: float
+    ) -> tuple:
         """
         https://automaticaddison.com/how-to-convert-a-quaternion-into-euler-angles-in-python/
         Convert a quaternion into euler angles (roll, pitch, yaw)
@@ -293,7 +309,9 @@ class OdomProvider:
 
             # this is the time according to the RockChip. It may be off by several seconds from
             # UTC
-            self.odom_rockchip_ts = header.stamp.sec + header.stamp.nanosec * 1e-9
+            self.odom_rockchip_ts = (
+                header.stamp.sec + header.stamp.nanosec * 1e-9
+            )
 
             # The local timestamp
             self.odom_subscriber_ts = time.time()

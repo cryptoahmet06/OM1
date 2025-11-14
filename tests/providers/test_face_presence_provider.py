@@ -1,4 +1,7 @@
-from providers.face_presence_provider import FacePresenceProvider, PresenceSnapshot
+from providers.face_presence_provider import (
+    FacePresenceProvider,
+    PresenceSnapshot,
+)
 
 
 class _FakeResp:
@@ -182,8 +185,12 @@ def test_emit_invokes_callbacks(monkeypatch):
         got.append(line)
 
     provider.register_message_callback(cb)
-    snap = PresenceSnapshot(ts=1.0, names=["alice", "bob"], unknown_faces=1, raw={})
+    snap = PresenceSnapshot(
+        ts=1.0, names=["alice", "bob"], unknown_faces=1, raw={}
+    )
     provider._emit(snap.to_text())
 
     assert got, "callback should be invoked"
-    assert "In Camera View: 2 known (alice and bob) and 1 unknown face." in got[0]
+    assert (
+        "In Camera View: 2 known (alice and bob) and 1 unknown face." in got[0]
+    )

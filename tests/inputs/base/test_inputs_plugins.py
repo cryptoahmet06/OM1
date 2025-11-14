@@ -12,7 +12,9 @@ def get_all_inputs_classes():
     import os
 
     plugins_dir = os.path.join("src", "inputs", "plugins")
-    plugin_files = [f[:-3] for f in os.listdir(plugins_dir) if f.endswith(".py")]
+    plugin_files = [
+        f[:-3] for f in os.listdir(plugins_dir) if f.endswith(".py")
+    ]
 
     inputs_classes = []
     for plugin in plugin_files:
@@ -27,7 +29,9 @@ def get_all_inputs_classes():
                     inputs_classes.append(obj)
         except (ImportError, ModuleNotFoundError) as e:
             # Skip plugins that fail to import due to missing optional dependencies
-            logging.warning(f"Skipping plugin {plugin} due to import error: {e}")
+            logging.warning(
+                f"Skipping plugin {plugin} due to import error: {e}"
+            )
             continue
     return inputs_classes
 
@@ -85,8 +89,12 @@ def test_raw_to_text_signature(input_class: Type[FuserInput]):
 @pytest.mark.parametrize("input_class", get_all_inputs_classes())
 def test_formatted_latest_buffer_signature(input_class: Type[FuserInput]):
     # Verify formatted_latest_buffer method signature matches base class
-    base_params = set(FuserInput.formatted_latest_buffer.__annotations__.keys())
-    impl_params = set(input_class.formatted_latest_buffer.__annotations__.keys())
+    base_params = set(
+        FuserInput.formatted_latest_buffer.__annotations__.keys()
+    )
+    impl_params = set(
+        input_class.formatted_latest_buffer.__annotations__.keys()
+    )
     assert (
         base_params == impl_params
     ), f"{input_class.__name__} formatted_latest_buffer signature mismatch"

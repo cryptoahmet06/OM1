@@ -6,7 +6,12 @@ from typing import List, Optional
 
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
-from providers import BatteryStatus, IOProvider, TeleopsStatus, TeleopsStatusProvider
+from providers import (
+    BatteryStatus,
+    IOProvider,
+    TeleopsStatus,
+    TeleopsStatusProvider,
+)
 
 try:
     from unitree.unitree_sdk2py.core.channel import ChannelSubscriber  # type: ignore
@@ -143,7 +148,11 @@ class UnitreeGo2Battery(FuserInput[str]):
             )
         )
 
-        return [self.battery_percentage, self.battery_voltage, self.battery_amperes]
+        return [
+            self.battery_percentage,
+            self.battery_voltage,
+            self.battery_amperes,
+        ]
 
     async def _raw_to_text(self, raw_input: List[float]) -> Optional[Message]:
         """
@@ -207,7 +216,9 @@ class UnitreeGo2Battery(FuserInput[str]):
         )
 
         self.io_provider.add_input(
-            self.__class__.__name__, latest_message.message, latest_message.timestamp
+            self.__class__.__name__,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

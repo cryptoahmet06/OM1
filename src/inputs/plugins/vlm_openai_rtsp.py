@@ -69,7 +69,9 @@ class VLMOpenAIRTSP(FuserInput[str]):
         base_url = getattr(
             self.config, "base_url", "https://api.openmind.org/api/core/openai"
         )
-        rtsp_url = getattr(self.config, "rtsp_url", "rtsp://localhost:8554/top_camera")
+        rtsp_url = getattr(
+            self.config, "rtsp_url", "rtsp://localhost:8554/top_camera"
+        )
         prompt = getattr(
             self.config,
             "prompt",
@@ -195,7 +197,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.__class__.__name__, latest_message.message, latest_message.timestamp
+            self.__class__.__name__,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

@@ -54,9 +54,7 @@ class LocalizationInput(FuserInput[str]):
         self.messages: List[Message] = []
 
         # Descriptive text for LLM context
-        self.descriptor_for_LLM = (
-            "Robot localization status - indicates if navigation is safe to proceed."
-        )
+        self.descriptor_for_LLM = "Robot localization status - indicates if navigation is safe to proceed."
 
         logging.info("LocalizationInput plugin initialized")
 
@@ -153,7 +151,9 @@ class LocalizationInput(FuserInput[str]):
         )
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

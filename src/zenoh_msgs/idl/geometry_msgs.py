@@ -47,7 +47,9 @@ class PoseWithCovariance(IdlStruct, typename="PoseWithCovariance"):
 
 
 @dataclass
-class PoseWithCovarianceStamped(IdlStruct, typename="PoseWithCovarianceStamped"):
+class PoseWithCovarianceStamped(
+    IdlStruct, typename="PoseWithCovarianceStamped"
+):
     header: Header
     pose: PoseWithCovariance
 
@@ -72,7 +74,9 @@ class TwistWithCovariance(IdlStruct, typename="TwistWithCovariance"):
 
 
 @dataclass
-class TwistWithCovarianceStamped(IdlStruct, typename="TwistWithCovarianceStamped"):
+class TwistWithCovarianceStamped(
+    IdlStruct, typename="TwistWithCovarianceStamped"
+):
     header: Header
     twist: TwistWithCovariance
 
@@ -90,6 +94,8 @@ class AccelWithCovariance(IdlStruct, typename="AccelWithCovariance"):
 
 
 @dataclass
-class AccelWithCovarianceStamped(IdlStruct, typename="AccelWithCovarianceStamped"):
+class AccelWithCovarianceStamped(
+    IdlStruct, typename="AccelWithCovarianceStamped"
+):
     header: Header
     accel: AccelWithCovariance

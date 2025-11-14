@@ -45,7 +45,9 @@ class MockInput(FuserInput[str]):
         self.messages: List[Message] = []
 
         # Set IO Provider
-        self.descriptor_for_LLM = getattr(self.config, "input_name", "Mock Input")
+        self.descriptor_for_LLM = getattr(
+            self.config, "input_name", "Mock Input"
+        )
         self.io_provider = IOProvider()
 
         # Buffer for storing messages
@@ -105,7 +107,9 @@ class MockInput(FuserInput[str]):
             The connection path
         """
         self.connected_clients.add(websocket)
-        logging.info(f"Client connected. Total clients: {len(self.connected_clients)}")
+        logging.info(
+            f"Client connected. Total clients: {len(self.connected_clients)}"
+        )
 
         try:
             async for message in websocket:

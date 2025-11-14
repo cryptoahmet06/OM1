@@ -66,9 +66,13 @@ class GovernanceEthereum(FuserInput[float]):
 
         try:
             response = requests.post(
-                self.rpc_url, json=payload, headers={"Content-Type": "application/json"}
+                self.rpc_url,
+                json=payload,
+                headers={"Content-Type": "application/json"},
             )
-            logging.debug(f"Blockchain response status: {response.status_code}")
+            logging.debug(
+                f"Blockchain response status: {response.status_code}"
+            )
 
             if response.status_code == 200:
                 result = response.json()
@@ -81,7 +85,9 @@ class GovernanceEthereum(FuserInput[float]):
                     logging.debug(f"Decoded blockchain data: {decoded_data}")
                     return decoded_data
                 else:
-                    logging.error("Error: No valid result in blockchain response")
+                    logging.error(
+                        "Error: No valid result in blockchain response"
+                    )
             else:
                 logging.error(
                     f"Error: Blockchain request failed with status {response.status_code}"
@@ -113,7 +119,9 @@ class GovernanceEthereum(FuserInput[float]):
             decoded_string = string_bytes.decode("utf-8")
 
             # Remove unexpected control characters (like \x19)
-            cleaned_string = "".join(ch for ch in decoded_string if ch.isprintable())
+            cleaned_string = "".join(
+                ch for ch in decoded_string if ch.isprintable()
+            )
 
             return cleaned_string
 
@@ -131,7 +139,9 @@ class GovernanceEthereum(FuserInput[float]):
 
         self.io_provider = IOProvider()
         self.POLL_INTERVAL = 5  # seconds
-        self.rpc_url = "https://holesky.gateway.tenderly.co"  # Ethereum RPC URL
+        self.rpc_url = (
+            "https://holesky.gateway.tenderly.co"  # Ethereum RPC URL
+        )
 
         # The smart contract address of ther ERC-7777 Governance Smart Contract
         self.contract_address = "0xe706b7e30e378b89c7b2ee7bfd8ce2b91959d695"
@@ -209,7 +219,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         # no need to blank because we are only saving rare law changes
         # self.messages = []

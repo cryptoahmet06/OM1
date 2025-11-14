@@ -6,7 +6,12 @@ from typing import List, Optional
 
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
-from providers import BatteryStatus, IOProvider, TeleopsStatus, TeleopsStatusProvider
+from providers import (
+    BatteryStatus,
+    IOProvider,
+    TeleopsStatus,
+    TeleopsStatusProvider,
+)
 
 try:
     from unitree.unitree_sdk2py.core.channel import ChannelSubscriber
@@ -102,11 +107,15 @@ class UnitreeG1Basic(FuserInput[str]):
         # Joint angles e.g.
         if unitree_ethernet and unitree_ethernet != "":
             # only set up if we are connected to a robot
-            self.lowstate_subscriber = ChannelSubscriber("rt/lowstate", LowState_)
+            self.lowstate_subscriber = ChannelSubscriber(
+                "rt/lowstate", LowState_
+            )
             self.lowstate_subscriber.Init(self.LowStateHandler, 10)
 
             # Battery specific data
-            self.bmsstate_subscriber = ChannelSubscriber("rt/lf/bmsstate", BmsState_)
+            self.bmsstate_subscriber = ChannelSubscriber(
+                "rt/lf/bmsstate", BmsState_
+            )
             self.bmsstate_subscriber.Init(self.BMSStateHandler, 10)
 
         # battery state
@@ -165,7 +174,11 @@ class UnitreeG1Basic(FuserInput[str]):
 
         # logging.info(f"Battery voltage: {self.latest_v} current: {self.latest_a}")
 
-        return [self.battery_percentage, self.battery_voltage, self.battery_amperes]
+        return [
+            self.battery_percentage,
+            self.battery_voltage,
+            self.battery_amperes,
+        ]
 
     async def _raw_to_text(self, raw_input: List[float]) -> Optional[Message]:
         """
@@ -231,7 +244,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

@@ -107,7 +107,9 @@ class ModeConfig:
     _raw_actions: List[Dict] = field(default_factory=list)
     _raw_backgrounds: List[Dict] = field(default_factory=list)
 
-    def to_runtime_config(self, global_config: "ModeSystemConfig") -> RuntimeConfig:
+    def to_runtime_config(
+        self, global_config: "ModeSystemConfig"
+    ) -> RuntimeConfig:
         """
         Convert this mode config to a RuntimeConfig for the cortex.
 
@@ -174,7 +176,9 @@ class ModeConfig:
         )
 
     async def execute_lifecycle_hooks(
-        self, hook_type: LifecycleHookType, context: Optional[Dict[str, Any]] = None
+        self,
+        hook_type: LifecycleHookType,
+        context: Optional[Dict[str, Any]] = None,
     ) -> bool:
         """
         Execute all lifecycle hooks of the specified type for this mode.
@@ -202,7 +206,9 @@ class ModeConfig:
             }
         )
 
-        return await execute_lifecycle_hooks(self.lifecycle_hooks, hook_type, context)
+        return await execute_lifecycle_hooks(
+            self.lifecycle_hooks, hook_type, context
+        )
 
 
 @dataclass
@@ -238,7 +244,9 @@ class ModeSystemConfig:
     transition_rules: List[TransitionRule] = field(default_factory=list)
 
     async def execute_global_lifecycle_hooks(
-        self, hook_type: LifecycleHookType, context: Optional[Dict[str, Any]] = None
+        self,
+        hook_type: LifecycleHookType,
+        context: Optional[Dict[str, Any]] = None,
     ) -> bool:
         """
         Execute all global lifecycle hooks of the specified type.
@@ -286,7 +294,9 @@ def load_mode_config(
     """
     config_path = (
         os.path.join(
-            os.path.dirname(__file__), "../../../config", config_name + ".json5"
+            os.path.dirname(__file__),
+            "../../../config",
+            config_name + ".json5",
         )
         if mode_soure_path is None
         else mode_soure_path
@@ -297,7 +307,9 @@ def load_mode_config(
 
     g_robot_ip = raw_config.get("robot_ip", None)
     if g_robot_ip is None or g_robot_ip == "" or g_robot_ip == "192.168.0.241":
-        logging.warning("No robot ip found in mode config. Checking .env file.")
+        logging.warning(
+            "No robot ip found in mode config. Checking .env file."
+        )
         backup_key = os.environ.get("ROBOT_IP")
         if backup_key:
             g_robot_ip = backup_key
@@ -339,7 +351,9 @@ def load_mode_config(
         global_lifecycle_hooks=parse_lifecycle_hooks(
             raw_config.get("global_lifecycle_hooks", [])
         ),
-        _raw_global_lifecycle_hooks=raw_config.get("global_lifecycle_hooks", []),
+        _raw_global_lifecycle_hooks=raw_config.get(
+            "global_lifecycle_hooks", []
+        ),
     )
 
     for mode_name, mode_data in raw_config.get("modes", {}).items():
@@ -349,7 +363,9 @@ def load_mode_config(
             description=mode_data.get("description", ""),
             system_prompt_base=mode_data["system_prompt_base"],
             hertz=mode_data.get("hertz", 1.0),
-            lifecycle_hooks=parse_lifecycle_hooks(mode_data.get("lifecycle_hooks", [])),
+            lifecycle_hooks=parse_lifecycle_hooks(
+                mode_data.get("lifecycle_hooks", [])
+            ),
             timeout_seconds=mode_data.get("timeout_seconds"),
             remember_locations=mode_data.get("remember_locations", False),
             save_interactions=mode_data.get("save_interactions", False),
@@ -379,7 +395,9 @@ def load_mode_config(
     return mode_system_config
 
 
-def _load_mode_components(mode_config: ModeConfig, system_config: ModeSystemConfig):
+def _load_mode_components(
+    mode_config: ModeConfig, system_config: ModeSystemConfig
+):
     """
     Load the actual component instances for a mode.
 
@@ -484,7 +502,9 @@ def _load_mode_components(mode_config: ModeConfig, system_config: ModeSystemConf
             available_actions=mode_config.agent_actions,
         )
     else:
-        raise ValueError(f"No LLM configuration found for mode {mode_config.name}")
+        raise ValueError(
+            f"No LLM configuration found for mode {mode_config.name}"
+        )
 
 
 def mode_config_to_dict(config: ModeSystemConfig) -> Dict[str, Any]:

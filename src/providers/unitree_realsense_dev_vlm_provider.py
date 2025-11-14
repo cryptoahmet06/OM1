@@ -92,7 +92,9 @@ class UnitreeRealSenseDevVideoStream(VideoStream):
                             "Too many frame read errors. Trying another camera device."
                         )
                         self._cap.release()
-                        new_cam = self._find_rgb_device(skip_devices=tried_devices)
+                        new_cam = self._find_rgb_device(
+                            skip_devices=tried_devices
+                        )
                         if new_cam is None:
                             logger.error(
                                 "No viable camera devices found. Exiting video capture loop."
@@ -103,7 +105,9 @@ class UnitreeRealSenseDevVideoStream(VideoStream):
 
                         # If the new device also fails to open, continue trying.
                         while self._cap is None:
-                            new_cam = self._find_rgb_device(skip_devices=tried_devices)
+                            new_cam = self._find_rgb_device(
+                                skip_devices=tried_devices
+                            )
                             if new_cam is None:
                                 logger.error(
                                     "No viable camera devices found. Exiting video capture loop."
@@ -120,8 +124,12 @@ class UnitreeRealSenseDevVideoStream(VideoStream):
 
                 # Convert frame to base64, and catch any encoding errors.
                 try:
-                    _, buffer = cv2.imencode(".jpg", frame, self.encode_quality)
-                    frame_data = base64.b64encode(buffer.tobytes()).decode("utf-8")
+                    _, buffer = cv2.imencode(
+                        ".jpg", frame, self.encode_quality
+                    )
+                    frame_data = base64.b64encode(buffer.tobytes()).decode(
+                        "utf-8"
+                    )
                 except Exception as e:
                     logger.exception("Error encoding frame: %s", e)
                     continue
@@ -213,7 +221,9 @@ class UnitreeRealSenseDevVideoStream(VideoStream):
             try:
                 if "MJPG" in formats or "YUYV" in formats:
                     logger.info(
-                        "Found RGB device at %s with formats: %s", device, formats
+                        "Found RGB device at %s with formats: %s",
+                        device,
+                        formats,
                     )
                     return device
             except Exception as e:
@@ -291,7 +301,9 @@ class UnitreeRealSenseDevVLMProvider:
         if not already running.
         """
         if self.running:
-            logging.warning("Unitree RealSenseDev VLM provider is already running")
+            logging.warning(
+                "Unitree RealSenseDev VLM provider is already running"
+            )
             return
 
         self.running = True

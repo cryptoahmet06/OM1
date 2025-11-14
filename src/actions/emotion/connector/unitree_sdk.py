@@ -18,7 +18,9 @@ class EmotionUnitreeConnector(ActionConnector[EmotionInput]):
         self.ao_client = None
 
         self.unitree_ethernet = getattr(self.config, "unitree_ethernet", None)
-        logging.info(f"EmotionUnitreeConnector using ethernet: {self.unitree_ethernet}")
+        logging.info(
+            f"EmotionUnitreeConnector using ethernet: {self.unitree_ethernet}"
+        )
 
         if self.unitree_ethernet and self.unitree_ethernet != "":
             # ChannelFactoryInitialize(0, self.UNITREE_WIRED_ETHERNET)
@@ -31,7 +33,9 @@ class EmotionUnitreeConnector(ActionConnector[EmotionInput]):
             try:
                 init_status = self.ao_client.Init()
                 if init_status != 0:
-                    logging.error(f"AudioClient init failed with status {init_status}")
+                    logging.error(
+                        f"AudioClient init failed with status {init_status}"
+                    )
                 else:
                     self.ao_client.LedControl(0, 255, 0)
             except Exception:

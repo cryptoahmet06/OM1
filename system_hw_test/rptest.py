@@ -22,7 +22,9 @@ except ImportError:
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--serial", help="serial port to use, when using the low level driver", type=str
+    "--serial",
+    help="serial port to use, when using the low level driver",
+    type=str,
 )
 parser.add_argument(
     "--zenoh", help="use zenoh to connect to the robot", action="store_true"
@@ -34,7 +36,10 @@ parser.add_argument(
     "--URID", help="your robot's URID, when using Zenoh", type=str, default=""
 )
 parser.add_argument(
-    "--type", help="the type of the robot (go2 or tb4)", type=str, default="go2"
+    "--type",
+    help="the type of the robot (go2 or tb4)",
+    type=str,
+    default="go2",
 )
 print(parser.format_help())
 
@@ -44,11 +49,17 @@ args = parser.parse_args()
 intel435ObstacleDector = Intel435ObstacleDector()
 
 
-def create_straight_line_path_from_angle(angle_degrees, length=1.0, num_points=10):
+def create_straight_line_path_from_angle(
+    angle_degrees, length=1.0, num_points=10
+):
     """Create a straight line path from origin at specified angle and length"""
     angle_rad = math.radians(angle_degrees)
-    end_x = length * math.sin(angle_rad)  # sin for x because 0° is forward (positive y)
-    end_y = length * math.cos(angle_rad)  # cos for y because 0° is forward (positive y)
+    end_x = length * math.sin(
+        angle_rad
+    )  # sin for x because 0° is forward (positive y)
+    end_y = length * math.cos(
+        angle_rad
+    )  # cos for y because 0° is forward (positive y)
 
     x_vals = np.linspace(0.0, end_x, num_points)
     y_vals = np.linspace(0.0, end_y, num_points)
@@ -61,7 +72,8 @@ path_angles = [-60, -45, -30, -15, 0, 15, 30, 45, 60, 180]  # degrees
 path_length = 1.05  # meters
 
 paths = [
-    create_straight_line_path_from_angle(angle, path_length) for angle in path_angles
+    create_straight_line_path_from_angle(angle, path_length)
+    for angle in path_angles
 ]
 
 print(f"Created {len(paths)} paths with angles: {path_angles}")
@@ -84,7 +96,9 @@ center = ax1.plot([0], [0], "o", color="blue")[0]  # the robot
 circle = ax1.add_patch(Circle((0, 0), 0.20, color="red"))  # the robot
 points = ax1.plot([], [], "-", color="black")[0]
 front = ax1.annotate("Front", xytext=(0.1, 0.3), xy=(0, 0.5))
-arrow = ax1.annotate("", xytext=(0, 0), xy=(0, 1.5), arrowprops=dict(arrowstyle="->"))
+arrow = ax1.annotate(
+    "", xytext=(0, 0), xy=(0, 1.5), arrowprops=dict(arrowstyle="->")
+)
 ax1.set_xlim(-5, 5)
 ax1.set_ylim(-5, 5)
 ax1.set_aspect("equal")
@@ -291,7 +305,9 @@ def process(data):
 
     if len(intel435ObstacleDector.obstacle) > 100:
         for obstacle in intel435ObstacleDector.obstacle:
-            angle, distance = calculate_angle_and_distance(obstacle["x"], obstacle["y"])
+            angle, distance = calculate_angle_and_distance(
+                obstacle["x"], obstacle["y"]
+            )
             complexes.append(
                 [
                     obstacle["x"],
@@ -445,7 +461,9 @@ if __name__ == "__main__":
             # reset to clear buffers
             lidar.reset()
 
-            subscribe_thread = threading.Thread(target=continuous_serial, args=(lidar,))
+            subscribe_thread = threading.Thread(
+                target=continuous_serial, args=(lidar,)
+            )
             subscribe_thread.daemon = True
             subscribe_thread.start()
 
@@ -470,7 +488,8 @@ if __name__ == "__main__":
         conf = zenoh.Config()
         if args.multicast:
             conf.insert_json5(
-                "scouting", f'{{"multicast": {{"address": "{args.multicast}"}}}}'
+                "scouting",
+                f'{{"multicast": {{"address": "{args.multicast}"}}}}',
             )
 
         z = open_zenoh_session()
@@ -492,4 +511,6 @@ if __name__ == "__main__":
 
         sys.exit(0)
 
-    raise ValueError("You must specify either --serial or --zenoh to run this script.")
+    raise ValueError(
+        "You must specify either --serial or --zenoh to run this script."
+    )

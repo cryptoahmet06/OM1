@@ -31,10 +31,12 @@ class Intel435ObstacleDector:
         self.session = open_zenoh_session()
 
         self.session.declare_subscriber(
-            "camera/realsense2_camera_node/depth/image_rect_raw", self.depth_callback
+            "camera/realsense2_camera_node/depth/image_rect_raw",
+            self.depth_callback,
         )
         self.session.declare_subscriber(
-            "camera/realsense2_camera_node/depth/camera_info", self.depth_info_callback
+            "camera/realsense2_camera_node/depth/camera_info",
+            self.depth_info_callback,
         )
 
         logging.info("Zenoh is open for Intel435ObstacleDector")
@@ -51,11 +53,18 @@ class Intel435ObstacleDector:
         except Exception as e:
             logging.error(f"Error processing depth info: {e}")
 
-    def image_to_world(self, u, v, depth_value, camera_height=0.45, tilt_angle=55):
+    def image_to_world(
+        self, u, v, depth_value, camera_height=0.45, tilt_angle=55
+    ):
         """
         Convert image coordinates to world coordinates
         """
-        if self.fx is None or self.fy is None or self.cx is None or self.cy is None:
+        if (
+            self.fx is None
+            or self.fy is None
+            or self.cx is None
+            or self.cy is None
+        ):
             logging.warning("Camera intrinsics not available yet")
             return None, None, None
 
@@ -132,7 +141,9 @@ class Intel435ObstacleDector:
 
     def depth_callback(self, msg):
         try:
-            self.camera_image = sensor_msgs.Image.deserialize(msg.payload.to_bytes())
+            self.camera_image = sensor_msgs.Image.deserialize(
+                msg.payload.to_bytes()
+            )
 
             depth_image = self.imgmsg_to_numpy(self.camera_image)
             if depth_image is None:
@@ -146,12 +157,21 @@ class Intel435ObstacleDector:
                     depth_value = depth_image[row, col]
                     if depth_value > 0:
                         world_x, world_y, world_z = self.image_to_world(
-                            col, row, depth_value, camera_height=0.45, tilt_angle=55
+                            col,
+                            row,
+                            depth_value,
+                            camera_height=0.45,
+                            tilt_angle=55,
                         )
 
-                        if world_x is not None and world_z > self.obstacle_threshold:
-                            angle_degrees, distance = self.calculate_angle_and_distance(
-                                world_x, world_y
+                        if (
+                            world_x is not None
+                            and world_z > self.obstacle_threshold
+                        ):
+                            angle_degrees, distance = (
+                                self.calculate_angle_and_distance(
+                                    world_x, world_y
+                                )
                             )
                             # Change to the robot coordinate system
                             obstacle.append(

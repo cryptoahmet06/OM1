@@ -68,7 +68,11 @@ class DummyVLMLocal(FuserInput[Image.Image]):
         img = Image.new(
             "RGB",
             (100, 100),
-            (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            (
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255),
+            ),
         )
         return img
 
@@ -132,7 +136,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

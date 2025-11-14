@@ -43,7 +43,9 @@ class RememberLocationConnector(ActionConnector[RememberLocationInput]):
             The input protocol containing the action details.
         """
         if not self.base_url:
-            logging.error("RememberLocation connector missing 'base_url' in config")
+            logging.error(
+                "RememberLocation connector missing 'base_url' in config"
+            )
             return
 
         payload: dict[str, Any] = {
@@ -57,7 +59,10 @@ class RememberLocationConnector(ActionConnector[RememberLocationInput]):
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(
-                    self.base_url, json=payload, headers=headers, timeout=self.timeout
+                    self.base_url,
+                    json=payload,
+                    headers=headers,
+                    timeout=self.timeout,
                 ) as resp:
                     text = await resp.text()
                     if resp.status >= 200 and resp.status < 300:

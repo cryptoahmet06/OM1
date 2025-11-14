@@ -18,7 +18,9 @@ mock_pyaudio.PyAudio.return_value = mock_instance
 sys.modules["pyaudio"] = mock_pyaudio
 
 # Import after mocking
-from providers.elevenlabs_tts_provider import ElevenLabsTTSProvider  # noqa: E402
+from providers.elevenlabs_tts_provider import (
+    ElevenLabsTTSProvider,
+)  # noqa: E402
 from providers.singleton import singleton  # noqa: E402
 
 

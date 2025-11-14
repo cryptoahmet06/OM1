@@ -19,7 +19,9 @@ class MockLLM(LLM[BaseModel]):
 
 @pytest.fixture
 def config():
-    return LLMConfig(base_url="test_url", api_key="test_key", model="test_model")
+    return LLMConfig(
+        base_url="test_url", api_key="test_key", model="test_model"
+    )
 
 
 @pytest.fixture
@@ -52,7 +54,8 @@ def test_llm_config():
     )
     assert llm_config.config_key == "config_value"  # type: ignore
     with pytest.raises(
-        AttributeError, match="'LLMConfig' object has no attribute 'invalid_key'"
+        AttributeError,
+        match="'LLMConfig' object has no attribute 'invalid_key'",
     ):
         llm_config.invalid_key  # type: ignore
 
@@ -110,7 +113,10 @@ def test_find_module_with_class_success():
         patch("os.path.join") as mock_join,
         patch("os.path.exists") as mock_exists,
         patch("os.listdir") as mock_listdir,
-        patch("builtins.open", mock_open(read_data="class TestLLM(LLM):\n    pass\n")),
+        patch(
+            "builtins.open",
+            mock_open(read_data="class TestLLM(LLM):\n    pass\n"),
+        ),
     ):
         mock_join.side_effect = lambda *args: "/".join(args)
         mock_exists.return_value = True
@@ -126,7 +132,10 @@ def test_find_module_with_class_not_found():
         patch("os.path.join") as mock_join,
         patch("os.path.exists") as mock_exists,
         patch("os.listdir") as mock_listdir,
-        patch("builtins.open", mock_open(read_data="class OtherClass:\n    pass\n")),
+        patch(
+            "builtins.open",
+            mock_open(read_data="class OtherClass:\n    pass\n"),
+        ),
     ):
         mock_join.side_effect = lambda *args: "/".join(args)
         mock_exists.return_value = True

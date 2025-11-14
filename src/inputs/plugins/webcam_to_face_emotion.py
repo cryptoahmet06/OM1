@@ -190,7 +190,9 @@ class FaceEmotionCapture(FuserInput[cv2.typing.MatLike]):
 """
 
         self.io_provider.add_input(
-            self.__class__.__name__, latest_message.message, latest_message.timestamp
+            self.__class__.__name__,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

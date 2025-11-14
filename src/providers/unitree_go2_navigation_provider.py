@@ -93,7 +93,9 @@ class UnitreeGo2NavigationProvider:
 
         self.running: bool = False
         self._nav_in_progress: bool = False
-        self._current_destination: Optional[str] = None  # Track destination name
+        self._current_destination: Optional[str] = (
+            None  # Track destination name
+        )
 
         # TTS provider for speech feedback
         self.tts_provider = ElevenLabsTTSProvider()
@@ -107,7 +109,8 @@ class UnitreeGo2NavigationProvider:
                     self.ai_status_topic
                 )
                 logging.info(
-                    "AI status publisher initialized on topic: %s", self.ai_status_topic
+                    "AI status publisher initialized on topic: %s",
+                    self.ai_status_topic,
                 )
             except Exception as e:
                 logging.error(f"Error creating AI status publisher: {e}")
@@ -154,7 +157,9 @@ class UnitreeGo2NavigationProvider:
                         self._publish_ai_status(
                             enabled=True
                         )  # Re-enable AI ONLY on success
-                        logging.info("Navigation succeeded - AI mode re-enabled")
+                        logging.info(
+                            "Navigation succeeded - AI mode re-enabled"
+                        )
 
                         # Add speech feedback for successful navigation
                         if self._current_destination:
@@ -199,7 +204,8 @@ class UnitreeGo2NavigationProvider:
             )
             self.ai_status_pub.put(status_msg.serialize())
             logging.info(
-                "AI mode %s during navigation", "enabled" if enabled else "disabled"
+                "AI mode %s during navigation",
+                "enabled" if enabled else "disabled",
             )
         except Exception as e:
             logging.error(f"Error publishing AI status: {e}")
@@ -216,7 +222,8 @@ class UnitreeGo2NavigationProvider:
 
         if not self.running:
             self.session.declare_subscriber(
-                self.navigation_status_topic, self.navigation_status_message_callback
+                self.navigation_status_topic,
+                self.navigation_status_message_callback,
             )
             logging.info(
                 "Subscribed to navigation status topic: %s",
@@ -224,13 +231,17 @@ class UnitreeGo2NavigationProvider:
             )
 
             self.running = True
-            logging.info("Navigation Provider started and listening for messages")
+            logging.info(
+                "Navigation Provider started and listening for messages"
+            )
             return
 
         logging.warning("Navigation Provider is already running")
 
     def publish_goal_pose(
-        self, pose: geometry_msgs.PoseStamped, destination_name: Optional[str] = None
+        self,
+        pose: geometry_msgs.PoseStamped,
+        destination_name: Optional[str] = None,
     ):
         """
         Publish a goal pose to the navigation topic.
@@ -243,7 +254,9 @@ class UnitreeGo2NavigationProvider:
             Name of the destination for speech feedback
         """
         if self.session is None:
-            logging.error("Cannot publish goal pose; Zenoh session is not available.")
+            logging.error(
+                "Cannot publish goal pose; Zenoh session is not available."
+            )
             return
 
         # Store destination name for speech feedback
@@ -252,7 +265,9 @@ class UnitreeGo2NavigationProvider:
         # Disable AI mode immediately when navigation goal is published
         if not self._nav_in_progress:
             self._publish_ai_status(enabled=False)
-            logging.info("Navigation goal published - AI mode disabled immediately")
+            logging.info(
+                "Navigation goal published - AI mode disabled immediately"
+            )
 
         self._nav_in_progress = True
         payload = ZBytes(pose.serialize())
@@ -265,7 +280,9 @@ class UnitreeGo2NavigationProvider:
         Publishes to the cancel_goal topic to stop navigation.
         """
         if self.session is None:
-            logging.error("Cannot cancel goal; Zenoh session is not available.")
+            logging.error(
+                "Cannot cancel goal; Zenoh session is not available."
+            )
             return
 
         try:
@@ -273,7 +290,9 @@ class UnitreeGo2NavigationProvider:
             # Empty payload should cancel all active goals
             cancel_payload = ZBytes(b"")
             self.session.put(self.cancel_goal_topic, cancel_payload)
-            logging.info("Sent cancel all goals request to: %s", self.cancel_goal_topic)
+            logging.info(
+                "Sent cancel all goals request to: %s", self.cancel_goal_topic
+            )
             self._nav_in_progress = False
         except Exception:
             logging.exception("Failed to cancel navigation goals")

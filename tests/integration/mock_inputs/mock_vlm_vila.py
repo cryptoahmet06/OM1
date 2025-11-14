@@ -42,11 +42,14 @@ class MockVideoStream:
 
         # Create event loop for async callbacks (same as original)
         self.loop = asyncio.new_event_loop()
-        self.loop_thread = threading.Thread(target=self._start_loop, daemon=True)
+        self.loop_thread = threading.Thread(
+            target=self._start_loop, daemon=True
+        )
         self.loop_thread.start()
 
         logging.info(
-            "MockVideoStream initialized with %d callbacks", len(self.frame_callbacks)
+            "MockVideoStream initialized with %d callbacks",
+            len(self.frame_callbacks),
         )
 
     def register_frame_callback(self, frame_callback):
@@ -89,10 +92,14 @@ class MockVideoStream:
                 hasattr(self.vlm_provider, "stream_ws_client")
                 and self.vlm_provider.stream_ws_client
             ):
-                stream_connected = self.vlm_provider.stream_ws_client.is_connected()
+                stream_connected = (
+                    self.vlm_provider.stream_ws_client.is_connected()
+                )
 
             if main_connected and stream_connected:
-                logging.info("MockVideoStream: WebSocket connections established")
+                logging.info(
+                    "MockVideoStream: WebSocket connections established"
+                )
                 return True
 
             logging.debug(
@@ -148,7 +155,9 @@ class MockVideoStream:
 
                 # Process frame similar to original VideoStream
                 if elapsed <= 1.5 * frame_time and self.frame_callbacks:
-                    _, buffer = cv2.imencode(".jpg", mock_image, self.encode_quality)
+                    _, buffer = cv2.imencode(
+                        ".jpg", mock_image, self.encode_quality
+                    )
                     frame_data = base64.b64encode(buffer).decode("utf-8")
 
                     # Send to all registered callbacks
@@ -175,18 +184,24 @@ class MockVideoStream:
 
                 # Log progress every 10 images to reduce spam
                 if images_sent > 0 and images_sent % 10 == 0:
-                    logging.debug(f"MockVideoStream: Sent {images_sent} images to VLM")
+                    logging.debug(
+                        f"MockVideoStream: Sent {images_sent} images to VLM"
+                    )
 
         except Exception as e:
             logging.error(f"MockVideoStream: Error in video processing: {e}")
         finally:
-            logging.info(f"MockVideoStream: Finished processing {images_sent} images")
+            logging.info(
+                f"MockVideoStream: Finished processing {images_sent} images"
+            )
 
     def start(self):
         """Start the mock video processing thread."""
         if self._video_thread is None or not self._video_thread.is_alive():
             self.running = True
-            self._video_thread = threading.Thread(target=self.on_video, daemon=True)
+            self._video_thread = threading.Thread(
+                target=self.on_video, daemon=True
+            )
             self._video_thread.start()
             logging.info("MockVideoStream: Started video thread")
 
@@ -233,7 +248,9 @@ class MockVLM_Vila(VLMVila):
 
         # Initialize VLM provider
         api_key = getattr(self.config, "api_key", None)
-        base_url = getattr(self.config, "base_url", "wss://api-vila.openmind.org")
+        base_url = getattr(
+            self.config, "base_url", "wss://api-vila.openmind.org"
+        )
         stream_base_url = getattr(
             self.config,
             "stream_base_url",
@@ -244,7 +261,9 @@ class MockVLM_Vila(VLMVila):
         )
         self.vlm.video_stream.stop()
         logging.debug("MockVLM_Vila: Stopped original video stream")
-        self.vlm.video_stream = MockVideoStream(self.vlm.video_stream, self.vlm)
+        self.vlm.video_stream = MockVideoStream(
+            self.vlm.video_stream, self.vlm
+        )
 
         # Start the mock video stream (it will wait for connections)
         self.vlm.start()
@@ -258,7 +277,11 @@ class MockVLM_Vila(VLMVila):
         """
         logging.debug(
             "MockVLM_Vila: Received message: %s",
-            raw_message[:100] + "..." if len(raw_message) > 100 else raw_message,
+            (
+                raw_message[:100] + "..."
+                if len(raw_message) > 100
+                else raw_message
+            ),
         )
 
         # Add the missing JSON parsing logic from the real VLMVila
@@ -271,7 +294,11 @@ class MockVLM_Vila(VLMVila):
                 self.message_buffer.put(vlm_reply)
                 logging.info(
                     "MockVLM_Vila: Detected VLM message: %s",
-                    vlm_reply[:50] + "..." if len(vlm_reply) > 50 else vlm_reply,
+                    (
+                        vlm_reply[:50] + "..."
+                        if len(vlm_reply) > 50
+                        else vlm_reply
+                    ),
                 )
         except json.JSONDecodeError:
             pass  # Handle non-JSON messages gracefully
@@ -285,7 +312,9 @@ class MockVLM_Vila(VLMVila):
         # Only log when there are messages to avoid spam
         buffer_size = self.message_buffer.qsize()
         if buffer_size > 0:
-            logging.debug(f"MockVLM_Vila: Buffer contains {buffer_size} messages")
+            logging.debug(
+                f"MockVLM_Vila: Buffer contains {buffer_size} messages"
+            )
 
         try:
             message = self.message_buffer.get_nowait()

@@ -75,7 +75,9 @@ class TurtleBot4CameraVideoStream(VideoStream):
             logging.info(
                 f"TurtleBot4 Camera listener starting with URID: {URID} and topic: {topic}"
             )
-            self.camera = self.session.declare_subscriber(topic, self.camera_listener)
+            self.camera = self.session.declare_subscriber(
+                topic, self.camera_listener
+            )
             logging.info("Zenoh TurtleBot4 Camera subscriber created")
         except Exception as e:
             logging.error(f"Error opening Zenoh TurtleBot4 Camera client: {e}")
@@ -126,8 +128,12 @@ class TurtleBot4CameraVideoStream(VideoStream):
                     resized_image = cv2.resize(
                         image, self.resolution, interpolation=cv2.INTER_AREA
                     )
-                    _, buffer = cv2.imencode(".jpg", resized_image, self.encode_quality)
-                    frame_data = base64.b64encode(buffer.tobytes()).decode("utf-8")
+                    _, buffer = cv2.imencode(
+                        ".jpg", resized_image, self.encode_quality
+                    )
+                    frame_data = base64.b64encode(buffer.tobytes()).decode(
+                        "utf-8"
+                    )
 
                     if self.frame_callbacks:
                         for frame_callback in self.frame_callbacks:
@@ -222,7 +228,9 @@ class TurtleBot4CameraVLMProvider:
         if not already running.
         """
         if self.running:
-            logging.warning("TurtleBot4 Camera VLM provider is already running")
+            logging.warning(
+                "TurtleBot4 Camera VLM provider is already running"
+            )
             return
 
         self.running = True

@@ -82,7 +82,9 @@ def rplidar_processor(
             logging.info(f"RPLidar Health: {health[0]}")
 
             if health[0] != "Good":
-                logging.error(f"There is a problem with the LIDAR: {health[0]}")
+                logging.error(
+                    f"There is a problem with the LIDAR: {health[0]}"
+                )
                 time.sleep(0.5)
                 continue
 
@@ -192,7 +194,9 @@ class RPLidarProvider:
 
         self.serial_port = serial_port
         self.half_width_robot = half_width_robot
-        self.angles_blanked = angles_blanked if angles_blanked is not None else []
+        self.angles_blanked = (
+            angles_blanked if angles_blanked is not None else []
+        )
         self.relevant_distance_max = relevant_distance_max
         self.relevant_distance_min = relevant_distance_min
         self.sensor_mounting_angle = sensor_mounting_angle
@@ -273,7 +277,9 @@ class RPLidarProvider:
                     )
 
                 if self.machine_type == "go2":
-                    logging.info(f"{self.machine_type} RPLIDAR listener starting")
+                    logging.info(
+                        f"{self.machine_type} RPLIDAR listener starting"
+                    )
                     self.zen.declare_subscriber("scan", self.listen_scan)
 
                 if self.machine_type != "tb4" and self.machine_type != "go2":
@@ -309,7 +315,8 @@ class RPLidarProvider:
         if (
             self.filename_current is not None
             and os.path.exists(self.filename_current)
-            and os.path.getsize(self.filename_current) > self.max_file_size_bytes
+            and os.path.getsize(self.filename_current)
+            > self.max_file_size_bytes
         ):
             self.filename_current = self.update_filename()
             logging.info(f"New rpscan file name: {self.filename_current}")
@@ -394,7 +401,11 @@ class RPLidarProvider:
                 self.angles = list(
                     map(
                         lambda x: 360.0 * (x + math.pi) / (2 * math.pi),
-                        np.arange(scan.angle_min, scan.angle_max, scan.angle_increment),
+                        np.arange(
+                            scan.angle_min,
+                            scan.angle_max,
+                            scan.angle_increment,
+                        ),
                     )
                 )
                 self.angles_final = np.flip(self.angles)
@@ -469,8 +480,13 @@ class RPLidarProvider:
             complexes.append([x, y, angle, d_m])
 
         # Append the D435 provider's obstacle data if available
-        if self.d435_provider.running and len(self.d435_provider.obstacle) > 50:
-            logging.debug("Appending D435 provider obstacle data to RPLidar data")
+        if (
+            self.d435_provider.running
+            and len(self.d435_provider.obstacle) > 50
+        ):
+            logging.debug(
+                "Appending D435 provider obstacle data to RPLidar data"
+            )
             for obstacle in self.d435_provider.obstacle:
                 complexes.append(
                     [
@@ -547,7 +563,9 @@ class RPLidarProvider:
 
                         # Assuming robot faces positive y direction
                         # Only check obstacles behind the robot
-                        if y >= 0:  # Skip obstacles in front of or beside the robot
+                        if (
+                            y >= 0
+                        ):  # Skip obstacles in front of or beside the robot
                             continue
 
                     dist_to_line = self.distance_point_to_line_segment(
@@ -558,7 +576,9 @@ class RPLidarProvider:
                         # too close - this path will not work
                         # logging.info(f"removing path: {apath}")
                         path_to_remove = np.array([apath])
-                        possible_paths = np.setdiff1d(possible_paths, path_to_remove)
+                        possible_paths = np.setdiff1d(
+                            possible_paths, path_to_remove
+                        )
                         logging.debug(f"remaining paths: {possible_paths}")
                         break  # no need to check other paths
 

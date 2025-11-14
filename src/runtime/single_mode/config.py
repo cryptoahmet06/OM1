@@ -87,7 +87,9 @@ def load_config(
     """
     config_path = (
         os.path.join(
-            os.path.dirname(__file__), "../../../config", config_name + ".json5"
+            os.path.dirname(__file__),
+            "../../../config",
+            config_name + ".json5",
         )
         if config_source_path is None
         else config_source_path
@@ -158,7 +160,11 @@ def load_config(
             load_background(bg["type"])(
                 config=BackgroundConfig(
                     **add_meta(
-                        bg.get("config", {}), g_api_key, g_ut_eth, g_URID, g_robot_ip
+                        bg.get("config", {}),
+                        g_api_key,
+                        g_ut_eth,
+                        g_URID,
+                        g_robot_ip,
                     )
                 )
             )
@@ -168,7 +174,11 @@ def load_config(
             load_input(input["type"])(
                 config=SensorConfig(
                     **add_meta(
-                        input.get("config", {}), g_api_key, g_ut_eth, g_URID, g_robot_ip
+                        input.get("config", {}),
+                        g_api_key,
+                        g_ut_eth,
+                        g_URID,
+                        g_robot_ip,
                     )
                 )
             )
@@ -289,7 +299,9 @@ def build_runtime_config_from_test_case(config: dict) -> RuntimeConfig:
     backgrounds = [
         load_background(bg["type"])(
             config=BackgroundConfig(
-                **add_meta(bg.get("config", {}), api_key, g_ut_eth, g_URID, g_robot_ip)
+                **add_meta(
+                    bg.get("config", {}), api_key, g_ut_eth, g_URID, g_robot_ip
+                )
             )
         )
         for bg in config.get("backgrounds", [])
@@ -297,7 +309,13 @@ def build_runtime_config_from_test_case(config: dict) -> RuntimeConfig:
     agent_inputs = [
         load_input(inp["type"])(
             config=SensorConfig(
-                **add_meta(inp.get("config", {}), api_key, g_ut_eth, g_URID, g_robot_ip)
+                **add_meta(
+                    inp.get("config", {}),
+                    api_key,
+                    g_ut_eth,
+                    g_URID,
+                    g_robot_ip,
+                )
             )
         )
         for inp in config.get("agent_inputs", [])
@@ -307,7 +325,11 @@ def build_runtime_config_from_test_case(config: dict) -> RuntimeConfig:
             config=SimulatorConfig(
                 name=sim["type"],
                 **add_meta(
-                    sim.get("config", {}), api_key, g_ut_eth, g_URID, g_robot_ip
+                    sim.get("config", {}),
+                    api_key,
+                    g_ut_eth,
+                    g_URID,
+                    g_robot_ip,
                 ),
             )
         )
@@ -318,7 +340,11 @@ def build_runtime_config_from_test_case(config: dict) -> RuntimeConfig:
             {
                 **action,
                 "config": add_meta(
-                    action.get("config", {}), api_key, g_ut_eth, g_URID, g_robot_ip
+                    action.get("config", {}),
+                    api_key,
+                    g_ut_eth,
+                    g_URID,
+                    g_robot_ip,
                 ),
             }
         )

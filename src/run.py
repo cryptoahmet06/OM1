@@ -75,7 +75,9 @@ def start(
         help="Interval in seconds between config file checks when hot_reload is enabled.",
     ),
     log_level: str = typer.Option("INFO", help="The logging level to use."),
-    log_to_file: bool = typer.Option(False, help="Whether to log output to a file."),
+    log_to_file: bool = typer.Option(
+        False, help="Whether to log output to a file."
+    ),
 ) -> None:
     """
     Start the OM1 agent with a specific configuration.
@@ -109,7 +111,9 @@ def start(
                 hot_reload=hot_reload,
                 check_interval=check_interval,
             )
-            logging.info(f"Starting OM1 with mode-aware configuration: {config_name}")
+            logging.info(
+                f"Starting OM1 with mode-aware configuration: {config_name}"
+            )
             logging.info(f"Available modes: {list(mode_config.modes.keys())}")
             logging.info(f"Default mode: {mode_config.default_mode}")
         else:
@@ -120,7 +124,9 @@ def start(
                 hot_reload=hot_reload,
                 check_interval=check_interval,
             )
-            logging.info(f"Starting OM1 with standard configuration: {config_name}")
+            logging.info(
+                f"Starting OM1 with standard configuration: {config_name}"
+            )
 
         if hot_reload:
             logging.info(

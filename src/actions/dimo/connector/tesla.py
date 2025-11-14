@@ -33,7 +33,12 @@ class DIMOTeslaConnector(ActionConnector[TeslaInput]):
             private_key = getattr(config, "private_key", None)
             self.token_id = getattr(config, "token_id", None)
 
-            if not client_id or not domain or not private_key or not self.token_id:
+            if (
+                not client_id
+                or not domain
+                or not private_key
+                or not self.token_id
+            ):
                 raise ValueError(
                     "DIMOTeslaConnector: Missing DIMO configuration in config or IOProvider dynamic variables"
                 )
@@ -83,9 +88,14 @@ class DIMOTeslaConnector(ActionConnector[TeslaInput]):
 
             if self.vehicle_jwt is not None:
                 if output_interface.action == "lock doors":
-                    url = f"{self.base_url}/{self.token_id}/commands/doors/lock"
+                    url = (
+                        f"{self.base_url}/{self.token_id}/commands/doors/lock"
+                    )
                     response = requests.post(
-                        url, headers={"Authorization": f"Bearer {self.vehicle_jwt}"}
+                        url,
+                        headers={
+                            "Authorization": f"Bearer {self.vehicle_jwt}"
+                        },
                     )
                     if response.status_code == 200:
                         logging.info("DIMO Tesla: Door locked")
@@ -96,7 +106,10 @@ class DIMOTeslaConnector(ActionConnector[TeslaInput]):
                 elif output_interface.action == "unlock doors":
                     url = f"{self.base_url}/{self.token_id}/commands/doors/unlock"
                     response = requests.post(
-                        url, headers={"Authorization": f"Bearer {self.vehicle_jwt}"}
+                        url,
+                        headers={
+                            "Authorization": f"Bearer {self.vehicle_jwt}"
+                        },
                     )
                     if response.status_code == 200:
                         logging.info("DIMO Tesla: Door unlocked")
@@ -105,9 +118,14 @@ class DIMOTeslaConnector(ActionConnector[TeslaInput]):
                             f"Error unlocking door: {response.status_code} {response.text}"
                         )
                 elif output_interface.action == "open frunk":
-                    url = f"{self.base_url}/{self.token_id}/commands/frunk/open"
+                    url = (
+                        f"{self.base_url}/{self.token_id}/commands/frunk/open"
+                    )
                     response = requests.post(
-                        url, headers={"Authorization": f"Bearer {self.vehicle_jwt}"}
+                        url,
+                        headers={
+                            "Authorization": f"Bearer {self.vehicle_jwt}"
+                        },
                     )
                     if response.status_code == 200:
                         logging.info("DIMO Tesla: Frunk opened")
@@ -116,9 +134,14 @@ class DIMOTeslaConnector(ActionConnector[TeslaInput]):
                             f"Error opening frunk: {response.status_code} {response.text}"
                         )
                 elif output_interface.action == "open trunk":
-                    url = f"{self.base_url}/{self.token_id}/commands/trunk/open"
+                    url = (
+                        f"{self.base_url}/{self.token_id}/commands/trunk/open"
+                    )
                     response = requests.post(
-                        url, headers={"Authorization": f"Bearer {self.vehicle_jwt}"}
+                        url,
+                        headers={
+                            "Authorization": f"Bearer {self.vehicle_jwt}"
+                        },
                     )
                     if response.status_code == 200:
                         logging.info("DIMO Tesla: Trunk opened")

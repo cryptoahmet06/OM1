@@ -44,8 +44,8 @@ class UbTtsConnector(ActionConnector[SpeakInput]):
             self.session.declare_subscriber(
                 self.tts_status_request_topic, self._zenoh_tts_status_request
             )
-            self._zenoh_tts_status_response_pub = self.session.declare_publisher(
-                self.tts_status_response_topic
+            self._zenoh_tts_status_response_pub = (
+                self.session.declare_publisher(self.tts_status_response_topic)
             )
 
             logging.info("UB TTS Zenoh client opened")
@@ -65,7 +65,9 @@ class UbTtsConnector(ActionConnector[SpeakInput]):
             The input protocol containing the action details.
         """
         if not self.tts_enabled:
-            logging.warning("TTS is currently disabled. Ignoring speak request.")
+            logging.warning(
+                "TTS is currently disabled. Ignoring speak request."
+            )
             return
 
         # Call the provider's speak method using data from SpeakInput.
@@ -74,7 +76,9 @@ class UbTtsConnector(ActionConnector[SpeakInput]):
         self.tts.speak(
             tts=output_interface.action,
             interrupt=True,
-            timestamp=int(time.time()),  # Use current time as a sensible default
+            timestamp=int(
+                time.time()
+            ),  # Use current time as a sensible default
         )
 
     def _zenoh_tts_status_request(self, data: zenoh.Sample):
@@ -99,7 +103,9 @@ class UbTtsConnector(ActionConnector[SpeakInput]):
                 request_id=request_id,
                 code=1 if self.tts_enabled else 0,
                 status=String(
-                    data=("TTS Enabled" if self.tts_enabled else "TTS Disabled")
+                    data=(
+                        "TTS Enabled" if self.tts_enabled else "TTS Disabled"
+                    )
                 ),
             )
             return self._zenoh_tts_status_response_pub.put(

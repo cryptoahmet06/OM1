@@ -22,7 +22,9 @@ from zenoh_msgs import (
 
 # unstable / not released
 # from zenoh.ext import HistoryConfig, Miss, RecoveryConfig, declare_advanced_subscriber
-class EmergencyAlertElevenLabsTTSConnector(ActionConnector[EmergencyAlertInput]):
+class EmergencyAlertElevenLabsTTSConnector(
+    ActionConnector[EmergencyAlertInput]
+):
 
     def __init__(self, config: ActionConfig):
 
@@ -59,7 +61,9 @@ class EmergencyAlertElevenLabsTTSConnector(ActionConnector[EmergencyAlertInput])
         try:
             self.session = open_zenoh_session()
             self.auido_pub = self.session.declare_publisher(self.audio_topic)
-            self.session.declare_subscriber(self.audio_topic, self.zenoh_audio_message)
+            self.session.declare_subscriber(
+                self.audio_topic, self.zenoh_audio_message
+            )
             self.session.declare_subscriber(
                 self.tts_status_request_topic, self._zenoh_tts_status_request
             )
@@ -103,7 +107,9 @@ class EmergencyAlertElevenLabsTTSConnector(ActionConnector[EmergencyAlertInput])
         self.tts_enabled = True
 
         # Initialize conversation provider
-        self.conversation_provider = TeleopsConversationProvider(api_key=api_key)
+        self.conversation_provider = TeleopsConversationProvider(
+            api_key=api_key
+        )
 
     def zenoh_audio_message(self, data: zenoh.Sample):
         self.audio_status = AudioStatus.deserialize(data.payload.to_bytes())
@@ -114,14 +120,18 @@ class EmergencyAlertElevenLabsTTSConnector(ActionConnector[EmergencyAlertInput])
             return
 
         # Add pending message to TTS
-        pending_message = self.tts.create_pending_message(output_interface.action)
+        pending_message = self.tts.create_pending_message(
+            output_interface.action
+        )
 
         # Store robot message to conversation history only if there was ASR input
         if (
             self.io_provider.llm_prompt is not None
             and "INPUT: Voice" in self.io_provider.llm_prompt
         ):
-            self.conversation_provider.store_robot_message(output_interface.action)
+            self.conversation_provider.store_robot_message(
+                output_interface.action
+            )
 
         # Avoid queuing too many TTS messages
         if self.tts.get_pending_message_count() > 0:
@@ -141,7 +151,9 @@ class EmergencyAlertElevenLabsTTSConnector(ActionConnector[EmergencyAlertInput])
             self.auido_pub.put(state.serialize())
             return
 
-        self.tts.register_tts_state_callback(self.asr.audio_stream.on_tts_state_change)
+        self.tts.register_tts_state_callback(
+            self.asr.audio_stream.on_tts_state_change
+        )
         self.tts.add_pending_message(pending_message)
 
     def _zenoh_tts_status_request(self, data: zenoh.Sample):

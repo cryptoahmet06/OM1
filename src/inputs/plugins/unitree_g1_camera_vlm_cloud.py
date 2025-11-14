@@ -9,7 +9,9 @@ from typing import Dict, List, Optional
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
 from providers.io_provider import IOProvider
-from providers.unitree_realsense_dev_vlm_provider import UnitreeRealSenseDevVLMProvider
+from providers.unitree_realsense_dev_vlm_provider import (
+    UnitreeRealSenseDevVLMProvider,
+)
 
 
 @dataclass
@@ -47,9 +49,11 @@ class UnitreeG1CameraVLMCloud(FuserInput[str]):
         self.message_buffer: Queue[str] = Queue()
 
         # Initialize VLM provider
-        base_url = getattr(self.config, "base_url", "wss://api-vila.openmind.org")
-        self.vlm: UnitreeRealSenseDevVLMProvider = UnitreeRealSenseDevVLMProvider(
-            ws_url=base_url
+        base_url = getattr(
+            self.config, "base_url", "wss://api-vila.openmind.org"
+        )
+        self.vlm: UnitreeRealSenseDevVLMProvider = (
+            UnitreeRealSenseDevVLMProvider(ws_url=base_url)
         )
         self.vlm.start()
         self.vlm.register_message_callback(self._handle_vlm_message)
@@ -161,7 +165,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

@@ -84,11 +84,9 @@ class VLM_COCO_Local(FuserInput[Image.Image]):
             progress=True,
             weights_backbone="MobileNet_V3_Large_Weights.IMAGENET1K_V1",
         ).to(self.device)
-        self.class_labels = (
-            detection_model.FasterRCNN_MobileNet_V3_Large_320_FPN_Weights.DEFAULT.meta[
-                "categories"
-            ]
-        )
+        self.class_labels = detection_model.FasterRCNN_MobileNet_V3_Large_320_FPN_Weights.DEFAULT.meta[
+            "categories"
+        ]
         self.model.eval()
         logging.info("COCO Object Detector Started")
 
@@ -129,7 +127,9 @@ class VLM_COCO_Local(FuserInput[Image.Image]):
 
         return None
 
-    async def _raw_to_text(self, raw_input: Optional[np.ndarray]) -> Optional[Message]:
+    async def _raw_to_text(
+        self, raw_input: Optional[np.ndarray]
+    ) -> Optional[Message]:
         """
         Process raw image input to generate text description.
 
@@ -180,7 +180,8 @@ class VLM_COCO_Local(FuserInput[Image.Image]):
                 [detection.score for detection in filtered_detections]
             )
             pred_labels = [
-                self.class_labels[detection.label] for detection in filtered_detections
+                self.class_labels[detection.label]
+                for detection in filtered_detections
             ]
             logging.debug(f"COCO labels {pred_labels} scores {pred_scores}")
 
@@ -250,7 +251,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

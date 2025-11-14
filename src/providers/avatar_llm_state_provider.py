@@ -38,12 +38,16 @@ class AvatarLLMState:
             try:
                 self.avatar_provider = AvatarProvider()
             except Exception:
-                logging.error("Failed to initialize AvatarProvider in AvatarLLMState")
+                logging.error(
+                    "Failed to initialize AvatarProvider in AvatarLLMState"
+                )
                 self.avatar_provider = None
             try:
                 self.io_provider = IOProvider()
             except Exception:
-                logging.error("Failed to initialize IOProvider in AvatarLLMState")
+                logging.error(
+                    "Failed to initialize IOProvider in AvatarLLMState"
+                )
                 self.io_provider = None
             self._initialized = True
 
@@ -121,7 +125,9 @@ class AvatarLLMState:
         return any(getattr(a, "type", "").lower() == "face" for a in actions)
 
     @classmethod
-    def trigger_thinking(cls, func: Optional[Callable[..., Awaitable[T]]] = None):
+    def trigger_thinking(
+        cls, func: Optional[Callable[..., Awaitable[T]]] = None
+    ):
         """
         Decorator to manage avatar state during LLM processing.
 
@@ -136,7 +142,9 @@ class AvatarLLMState:
             Wrapped function that manages avatar state
         """
 
-        def decorator(f: Callable[..., Awaitable[T]]) -> Callable[..., Awaitable[T]]:
+        def decorator(
+            f: Callable[..., Awaitable[T]],
+        ) -> Callable[..., Awaitable[T]]:
             @functools.wraps(f)
             async def wrapper(*args: Any, **kwargs: Any) -> T:
                 instance = cls()

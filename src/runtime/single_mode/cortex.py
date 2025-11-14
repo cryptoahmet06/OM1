@@ -74,9 +74,13 @@ class CortexRuntime:
         self.last_modified: float = 0.0
         self.config_watcher_task: Optional[asyncio.Task] = None
         self.input_listener_task: Optional[asyncio.Task] = None
-        self.simulator_task: Optional[Union[asyncio.Task, asyncio.Future]] = None
+        self.simulator_task: Optional[Union[asyncio.Task, asyncio.Future]] = (
+            None
+        )
         self.action_task: Optional[Union[asyncio.Task, asyncio.Future]] = None
-        self.background_task: Optional[Union[asyncio.Task, asyncio.Future]] = None
+        self.background_task: Optional[Union[asyncio.Task, asyncio.Future]] = (
+            None
+        )
         self.cortex_loop_task: Optional[asyncio.Task] = None
 
         self._is_reloading = False
@@ -134,7 +138,9 @@ class CortexRuntime:
                 with open(tmp_path, "w") as wf:
                     json5.dump(raw, wf, indent=2)
                 os.replace(tmp_path, runtime_config_path)
-                logging.debug(f"Wrote runtime config to: {runtime_config_path}")
+                logging.debug(
+                    f"Wrote runtime config to: {runtime_config_path}"
+                )
             else:
                 logging.warning(f"Config not found: {config_path}")
         except Exception as e:
@@ -161,7 +167,9 @@ class CortexRuntime:
 
             await self._start_orchestrators()
 
-            self.cortex_loop_task = asyncio.create_task(self._run_cortex_loop())
+            self.cortex_loop_task = asyncio.create_task(
+                self._run_cortex_loop()
+            )
 
             while True:
                 try:
@@ -171,19 +179,27 @@ class CortexRuntime:
 
                     if self.hot_reload and self.config_watcher_task:
                         awaitables.append(self.config_watcher_task)
-                    if self.input_listener_task and not self.input_listener_task.done():
+                    if (
+                        self.input_listener_task
+                        and not self.input_listener_task.done()
+                    ):
                         awaitables.append(self.input_listener_task)
                     if self.simulator_task and not self.simulator_task.done():
                         awaitables.append(self.simulator_task)
                     if self.action_task and not self.action_task.done():
                         awaitables.append(self.action_task)
-                    if self.background_task and not self.background_task.done():
+                    if (
+                        self.background_task
+                        and not self.background_task.done()
+                    ):
                         awaitables.append(self.background_task)
 
                     await asyncio.gather(*awaitables)
 
                 except asyncio.CancelledError:
-                    logging.debug("Tasks cancelled during config reload, continuing...")
+                    logging.debug(
+                        "Tasks cancelled during config reload, continuing..."
+                    )
                     await asyncio.sleep(0.1)
 
                     if not self.cortex_loop_task.done():
@@ -223,13 +239,17 @@ class CortexRuntime:
             try:
                 await asyncio.sleep(self.check_interval)
 
-                if not self.config_path or not os.path.exists(self.config_path):
+                if not self.config_path or not os.path.exists(
+                    self.config_path
+                ):
                     continue
 
                 current_mtime = self._get_file_mtime()
 
                 if self.last_modified and current_mtime > self.last_modified:
-                    logging.info(f"Config file changed, reloading: {self.config_path}")
+                    logging.info(
+                        f"Config file changed, reloading: {self.config_path}"
+                    )
                     await self._reload_config()
                     self.last_modified = current_mtime
 
@@ -267,7 +287,9 @@ class CortexRuntime:
 
             await self._start_orchestrators()
 
-            self.cortex_loop_task = asyncio.create_task(self._run_cortex_loop())
+            self.cortex_loop_task = asyncio.create_task(
+                self._run_cortex_loop()
+            )
 
             logging.info("Configuration reloaded successfully")
 
@@ -327,7 +349,9 @@ class CortexRuntime:
                         if task in pending
                     ]
                     completed_names = [
-                        name for name, task in tasks_to_cancel.items() if task in done
+                        name
+                        for name, task in tasks_to_cancel.items()
+                        if task in done
                     ]
 
                     logging.warning(
@@ -340,7 +364,9 @@ class CortexRuntime:
                         "Continuing with reload without waiting for unresponsive tasks"
                     )
                 else:
-                    logging.info(f"All {len(done)} tasks cancelled successfully!")
+                    logging.info(
+                        f"All {len(done)} tasks cancelled successfully!"
+                    )
                     for name, task in tasks_to_cancel.items():
                         try:
                             task.result()
@@ -354,7 +380,9 @@ class CortexRuntime:
 
             except Exception as e:
                 logging.warning(f"Error during task cancellation: {e}")
-                logging.info("Continuing with reload despite cancellation errors")
+                logging.info(
+                    "Continuing with reload despite cancellation errors"
+                )
 
         self.cortex_loop_task = None
         self.input_listener_task = None
@@ -369,7 +397,9 @@ class CortexRuntime:
         logging.debug("Starting orchestrators...")
 
         input_orchestrator = InputOrchestrator(self.config.agent_inputs)
-        self.input_listener_task = asyncio.create_task(input_orchestrator.listen())
+        self.input_listener_task = asyncio.create_task(
+            input_orchestrator.listen()
+        )
 
         if self.simulator_orchestrator:
             self.simulator_task = self.simulator_orchestrator.start()
@@ -451,7 +481,9 @@ class CortexRuntime:
         try:
             while True:
                 if not self.sleep_ticker_provider.skip_sleep:
-                    await self.sleep_ticker_provider.sleep(1 / self.config.hertz)
+                    await self.sleep_ticker_provider.sleep(
+                        1 / self.config.hertz
+                    )
 
                 # Helper to yield control to event loop
                 await asyncio.sleep(0)
@@ -482,10 +514,14 @@ class CortexRuntime:
                 return
 
             # collect all the latest inputs
-            finished_promises, _ = await self.action_orchestrator.flush_promises()
+            finished_promises, _ = (
+                await self.action_orchestrator.flush_promises()
+            )
 
             # combine those inputs into a suitable prompt
-            prompt = self.fuser.fuse(self.config.agent_inputs, finished_promises)
+            prompt = self.fuser.fuse(
+                self.config.agent_inputs, finished_promises
+            )
             if prompt is None:
                 logging.debug("No prompt to fuse")
                 return

@@ -14,7 +14,8 @@ class Action(BaseModel):
     """
 
     type: str = Field(
-        ..., description="The specific type of action, such as 'move' or 'speak'"
+        ...,
+        description="The specific type of action, such as 'move' or 'speak'",
     )
     value: str = Field(..., description="The action argument")
 
@@ -29,4 +30,6 @@ class CortexOutputModel(BaseModel):
         List of actions to be executed
     """
 
-    actions: list[Action] = Field(..., description="List of actions to execute")
+    actions: list[Action] = Field(
+        ..., description="List of actions to execute"
+    )

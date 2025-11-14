@@ -24,7 +24,9 @@ class ROS2PublisherProvider(Node):
             self.publisher_ = self.create_publisher(String, topic, 10)
             logging.info(f"Initialized ROS 2 publisher on topic '{topic}'")
         except Exception as e:
-            logging.exception(f"Failed to create publisher on topic '{topic}': {e}")
+            logging.exception(
+                f"Failed to create publisher on topic '{topic}': {e}"
+            )
 
         # Pending message queue and threading constructs
         self._pending_messages = Queue()

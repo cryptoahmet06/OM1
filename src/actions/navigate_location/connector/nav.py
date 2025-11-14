@@ -4,8 +4,12 @@ import logging
 from actions.base import ActionConfig, ActionConnector
 from actions.navigate_location.interface import NavigateLocationInput
 from providers.io_provider import IOProvider
-from providers.unitree_go2_locations_provider import UnitreeGo2LocationsProvider
-from providers.unitree_go2_navigation_provider import UnitreeGo2NavigationProvider
+from providers.unitree_go2_locations_provider import (
+    UnitreeGo2LocationsProvider,
+)
+from providers.unitree_go2_navigation_provider import (
+    UnitreeGo2NavigationProvider,
+)
 from zenoh_msgs import Header, Point, Pose, PoseStamped, Quaternion, Time
 
 
@@ -108,7 +112,11 @@ class NavConnector(ActionConnector[NavigateLocationInput]):
         goal_pose = PoseStamped(header=header, pose=pose_msg)
 
         try:
-            self.unitree_go2_navigation_provider.publish_goal_pose(goal_pose, label)
+            self.unitree_go2_navigation_provider.publish_goal_pose(
+                goal_pose, label
+            )
             logging.info(f"Navigation to '{label}' initiated")
         except Exception as e:
-            logging.error(f"Error querying location list or publishing goal: {e}")
+            logging.error(
+                f"Error querying location list or publishing goal: {e}"
+            )

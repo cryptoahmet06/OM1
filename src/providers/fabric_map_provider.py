@@ -156,9 +156,13 @@ class FabricData:
             "odom_yaw_m180_p180": self.odom_yaw_m180_p180,
             "odom_rockchip_ts": self.odom_rockchip_ts,
             "odom_subscriber_ts": self.odom_subscriber_ts,
-            "rf_data": [rf.to_dict() for rf in self.rf_data] if self.rf_data else [],
+            "rf_data": (
+                [rf.to_dict() for rf in self.rf_data] if self.rf_data else []
+            ),
             "rf_data_raw": (
-                [rf.to_dict() for rf in self.rf_data_raw] if self.rf_data_raw else []
+                [rf.to_dict() for rf in self.rf_data_raw]
+                if self.rf_data_raw
+                else []
             ),
         }
 
@@ -215,7 +219,8 @@ class FabricDataSubmitter:
 
         if (
             os.path.exists(self.filename_current)
-            and os.path.getsize(self.filename_current) > self.max_file_size_bytes
+            and os.path.getsize(self.filename_current)
+            > self.max_file_size_bytes
         ):
             self.filename_current = self.update_filename()
             logging.info(f"new file name: {self.filename_current}")

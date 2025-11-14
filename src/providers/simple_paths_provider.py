@@ -116,7 +116,11 @@ class SimplePathsProvider:
         ):
             self._simple_paths_processor_thread = mp.Process(
                 target=simple_paths_processor,
-                args=(self.data_queue, self.control_queue, get_logging_config()),
+                args=(
+                    self.data_queue,
+                    self.control_queue,
+                    get_logging_config(),
+                ),
             )
             self._simple_paths_processor_thread.start()
             logging.info("SimplePathsProvider started.")

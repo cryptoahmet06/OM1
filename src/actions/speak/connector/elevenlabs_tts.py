@@ -65,12 +65,14 @@ class SpeakElevenLabsTTSConnector(ActionConnector[SpeakInput]):
         try:
             self.session = open_zenoh_session()
             self.auido_pub = self.session.declare_publisher(self.audio_topic)
-            self.session.declare_subscriber(self.audio_topic, self.zenoh_audio_message)
+            self.session.declare_subscriber(
+                self.audio_topic, self.zenoh_audio_message
+            )
             self.session.declare_subscriber(
                 self.tts_status_request_topic, self._zenoh_tts_status_request
             )
-            self._zenoh_tts_status_response_pub = self.session.declare_publisher(
-                self.tts_status_response_topic
+            self._zenoh_tts_status_response_pub = (
+                self.session.declare_publisher(self.tts_status_response_topic)
             )
 
             # Unstable / not released
@@ -112,7 +114,9 @@ class SpeakElevenLabsTTSConnector(ActionConnector[SpeakInput]):
         self.tts_enabled = True
 
         # Initialize conversation provider
-        self.conversation_provider = TeleopsConversationProvider(api_key=api_key)
+        self.conversation_provider = TeleopsConversationProvider(
+            api_key=api_key
+        )
 
     def zenoh_audio_message(self, data: zenoh.Sample):
         self.audio_status = AudioStatus.deserialize(data.payload.to_bytes())
@@ -137,14 +141,18 @@ class SpeakElevenLabsTTSConnector(ActionConnector[SpeakInput]):
         self.silence_counter = 0
 
         # Add pending message to TTS
-        pending_message = self.tts.create_pending_message(output_interface.action)
+        pending_message = self.tts.create_pending_message(
+            output_interface.action
+        )
 
         # Store robot message to conversation history only if there was ASR input
         if (
             self.io_provider.llm_prompt is not None
             and "INPUT: Voice" in self.io_provider.llm_prompt
         ):
-            self.conversation_provider.store_robot_message(output_interface.action)
+            self.conversation_provider.store_robot_message(
+                output_interface.action
+            )
 
         state = AudioStatus(
             header=prepare_header(str(uuid4())),
@@ -157,7 +165,9 @@ class SpeakElevenLabsTTSConnector(ActionConnector[SpeakInput]):
             self.auido_pub.put(state.serialize())
             return
 
-        self.tts.register_tts_state_callback(self.asr.audio_stream.on_tts_state_change)
+        self.tts.register_tts_state_callback(
+            self.asr.audio_stream.on_tts_state_change
+        )
         self.tts.add_pending_message(pending_message)
 
     def _zenoh_tts_status_request(self, data: zenoh.Sample):
@@ -182,7 +192,9 @@ class SpeakElevenLabsTTSConnector(ActionConnector[SpeakInput]):
                 request_id=request_id,
                 code=1 if self.tts_enabled else 0,
                 status=String(
-                    data=("TTS Enabled" if self.tts_enabled else "TTS Disabled")
+                    data=(
+                        "TTS Enabled" if self.tts_enabled else "TTS Disabled"
+                    )
                 ),
             )
             return self._zenoh_tts_status_response_pub.put(

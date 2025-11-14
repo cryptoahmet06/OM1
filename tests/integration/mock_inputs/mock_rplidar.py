@@ -52,7 +52,9 @@ class MockRPLidar(RPLidar):
         lidar_config = self._extract_lidar_config(config)
 
         # Create real RPLidarProvider but prevent hardware connections
-        self.lidar: RPLidarProvider = self._create_mock_lidar_provider(**lidar_config)
+        self.lidar: RPLidarProvider = self._create_mock_lidar_provider(
+            **lidar_config
+        )
 
         # Store the last processed time to rate-limit our mock data
         self.last_processed_time = 0
@@ -110,7 +112,9 @@ class MockRPLidar(RPLidar):
             """Mock stop method for graceful cleanup."""
             provider.running = False
             provider.d435_provider.stop()
-            logging.info("MockRPLidar: RPLidarProvider stop() called (no-op for mock)")
+            logging.info(
+                "MockRPLidar: RPLidarProvider stop() called (no-op for mock)"
+            )
 
         provider.stop = mock_stop
 
@@ -123,15 +127,23 @@ class MockRPLidar(RPLidar):
             "use_zenoh": getattr(config, "use_zenoh", False),
             "half_width_robot": getattr(config, "half_width_robot", 0.20),
             "angles_blanked": getattr(config, "angles_blanked", []),
-            "relevant_distance_max": getattr(config, "relevant_distance_max", 1.1),
-            "relevant_distance_min": getattr(config, "relevant_distance_min", 0.08),
-            "sensor_mounting_angle": getattr(config, "sensor_mounting_angle", 180.0),
+            "relevant_distance_max": getattr(
+                config, "relevant_distance_max", 1.1
+            ),
+            "relevant_distance_min": getattr(
+                config, "relevant_distance_min", 0.08
+            ),
+            "sensor_mounting_angle": getattr(
+                config, "sensor_mounting_angle", 180.0
+            ),
         }
 
         # Handle Zenoh-specific configuration
         if lidar_config["use_zenoh"]:
             lidar_config["URID"] = getattr(config, "URID", "default")
-            logging.info(f"MockRPLidar using Zenoh with URID: {lidar_config['URID']}")
+            logging.info(
+                f"MockRPLidar using Zenoh with URID: {lidar_config['URID']}"
+            )
 
         return lidar_config
 
@@ -148,7 +160,9 @@ class MockRPLidar(RPLidar):
 
         # Rate limit to avoid overwhelming the system
         current_time = time.time()
-        if current_time - self.last_processed_time < 0.5:  # Half second between data
+        if (
+            current_time - self.last_processed_time < 0.5
+        ):  # Half second between data
             return None
 
         self.last_processed_time = current_time
@@ -179,7 +193,9 @@ class MockRPLidar(RPLidar):
         This method handles the Zenoh session cleanup that's specific to RPLidar tests.
         """
         if not self.cortex_runtime:
-            logging.warning("MockRPLidar: No cortex runtime reference for cleanup")
+            logging.warning(
+                "MockRPLidar: No cortex runtime reference for cleanup"
+            )
             return
 
         logging.info("MockRPLidar: Starting cortex cleanup")
@@ -188,15 +204,22 @@ class MockRPLidar(RPLidar):
             cortex = self.cortex_runtime
 
             # Clean up action orchestrator
-            if hasattr(cortex, "action_orchestrator") and cortex.action_orchestrator:
+            if (
+                hasattr(cortex, "action_orchestrator")
+                and cortex.action_orchestrator
+            ):
                 logging.info("MockRPLidar: Cleaning up action orchestrator")
 
                 if (
                     hasattr(cortex.action_orchestrator, "_config")
                     and cortex.action_orchestrator._config
                 ):
-                    if hasattr(cortex.action_orchestrator._config, "agent_actions"):
-                        agent_actions = cortex.action_orchestrator._config.agent_actions
+                    if hasattr(
+                        cortex.action_orchestrator._config, "agent_actions"
+                    ):
+                        agent_actions = (
+                            cortex.action_orchestrator._config.agent_actions
+                        )
 
                         for agent_action in agent_actions:
                             if (
@@ -221,7 +244,10 @@ class MockRPLidar(RPLidar):
                                     and agent_action.connector.odom
                                 ):
                                     if (
-                                        hasattr(agent_action.connector.odom, "session")
+                                        hasattr(
+                                            agent_action.connector.odom,
+                                            "session",
+                                        )
                                         and agent_action.connector.odom.session
                                     ):
                                         try:
@@ -237,7 +263,10 @@ class MockRPLidar(RPLidar):
                 if hasattr(cortex.config, "agent_inputs"):
                     for input_obj in cortex.config.agent_inputs:
                         if hasattr(input_obj, "lidar") and input_obj.lidar:
-                            if hasattr(input_obj.lidar, "zen") and input_obj.lidar.zen:
+                            if (
+                                hasattr(input_obj.lidar, "zen")
+                                and input_obj.lidar.zen
+                            ):
                                 try:
                                     input_obj.lidar.zen.close()
                                 except Exception as e:
@@ -284,7 +313,10 @@ class MockRPLidar(RPLidar):
 
                 # Try to force-kill the Zenoh threads by setting them as daemon
                 for thread in non_daemon_threads:
-                    if "pyo3-closure" in thread.name or "zenoh" in thread.name.lower():
+                    if (
+                        "pyo3-closure" in thread.name
+                        or "zenoh" in thread.name.lower()
+                    ):
                         try:
                             thread.daemon = True
                         except Exception:

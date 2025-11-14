@@ -47,7 +47,9 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
         self.session = None
         try:
             self.session = open_zenoh_session()
-            self.session.declare_subscriber(self.topic, self.zenoh_audio_message)
+            self.session.declare_subscriber(
+                self.topic, self.zenoh_audio_message
+            )
             logging.info("Game Controller Zenoh client opened")
         except Exception as e:
             logging.error(f"Error opening Game Controller Zenoh client: {e}")
@@ -120,7 +122,9 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
                         self.xbox = True
                         break
                     except Exception as e:
-                        logging.error(f"Failed to connect to Xbox controller: {e}")
+                        logging.error(
+                            f"Failed to connect to Xbox controller: {e}"
+                        )
                         continue
                 if "DualSense Wireless Controller" in device["product_string"]:
                     vendor_id = device["vendor_id"]
@@ -133,9 +137,14 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
                         self.sony_dualsense = True
                         break
                     except Exception as e:
-                        logging.error(f"Failed to connect to DualSense controller: {e}")
+                        logging.error(
+                            f"Failed to connect to DualSense controller: {e}"
+                        )
                         continue
-                if "DualSense Edge Wireless Controller" in device["product_string"]:
+                if (
+                    "DualSense Edge Wireless Controller"
+                    in device["product_string"]
+                ):
                     vendor_id = device["vendor_id"]
                     product_id = device["product_id"]
                     try:
@@ -168,16 +177,22 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
 
             if self.unitree_state_provider.state_code == 1002:
                 if self.sport_client:
-                    logging.info("Robot is in jointLock state - issuing BalanceStand()")
+                    logging.info(
+                        "Robot is in jointLock state - issuing BalanceStand()"
+                    )
                     self.sport_client.BalanceStand()
                     self.sport_client.Move(0.05, 0, 0)
 
             code = getattr(self.sport_client, command)()
-            logging.info(f"Unitree command {command} executed with code {code}")
+            logging.info(
+                f"Unitree command {command} executed with code {code}"
+            )
 
             if self.unitree_state_provider.state_code == 1002:
                 if self.sport_client:
-                    logging.info("Robot is in jointLock state - issuing BalanceStand()")
+                    logging.info(
+                        "Robot is in jointLock state - issuing BalanceStand()"
+                    )
                     self.sport_client.BalanceStand()
                     self.sport_client.Move(0.05, 0, 0)
 
@@ -200,7 +215,9 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
 
         try:
             thread = threading.Thread(
-                target=self._execute_command_thread, args=(command,), daemon=True
+                target=self._execute_command_thread,
+                args=(command,),
+                daemon=True,
             )
             thread.start()
         except Exception as e:
@@ -253,7 +270,9 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
             self.sport_client.Move(0.05, 0, 0)
 
         try:
-            logging.info(f"self.sport_client.Move: vx={vx}, vy={vy}, vturn={vturn}")
+            logging.info(
+                f"self.sport_client.Move: vx={vx}, vy={vy}, vturn={vturn}"
+            )
             self.sport_client.Move(vx, vy, vturn)
         except Exception as e:
             logging.error(f"Error moving robot: {e}")
@@ -296,7 +315,9 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
                     self._move_robot(0.0, 0.0, self.turn_speed)
                     return
                 if self.rt_previous > 0:
-                    logging.info("Right Trigger is kept pressed - Clockwise rotation")
+                    logging.info(
+                        "Right Trigger is kept pressed - Clockwise rotation"
+                    )
                     self._move_robot(0.0, 0.0, -self.turn_speed)
                     return
 
@@ -304,12 +325,16 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
                 if self.d_pad_previous == 1:  # Up
                     logging.info("D-pad UP - Moving forward")
                     self._move_robot(
-                        self.move_speed, self.lateral_correction, self.yaw_correction
+                        self.move_speed,
+                        self.lateral_correction,
+                        self.yaw_correction,
                     )
                 elif self.d_pad_previous == 5:  # Down
                     logging.info("D-pad DOWN - Moving backward")
                     self._move_robot(
-                        -self.move_speed, -self.lateral_correction, -self.yaw_correction
+                        -self.move_speed,
+                        -self.lateral_correction,
+                        -self.yaw_correction,
                     )
                 elif self.d_pad_previous == 7:  # Left
                     logging.info("D-pad LEFT - Moving left")
@@ -420,13 +445,17 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
                 logging.info("D-pad UP - Moving forward")
                 move_triggered_dpad = True
                 self._move_robot(
-                    self.move_speed, self.lateral_correction, self.yaw_correction
+                    self.move_speed,
+                    self.lateral_correction,
+                    self.yaw_correction,
                 )
             elif self.d_pad_value == 5:  # Down
                 logging.info("D-pad DOWN - Moving backward")
                 move_triggered_dpad = True
                 self._move_robot(
-                    -self.move_speed, -self.lateral_correction, -self.yaw_correction
+                    -self.move_speed,
+                    -self.lateral_correction,
+                    -self.yaw_correction,
                 )
             elif self.d_pad_value == 7:  # Left
                 logging.info("D-pad LEFT - Moving left")
@@ -481,7 +510,9 @@ class Go2GameControllerConnector(ActionConnector[IDLEInput]):
                 #     self._execute_sport_command_sync("Stretch")
                 #     logging.info("Controller unitree: stretch")
 
-                logging.info(f"Gamepad button depressed edge {self.button_value}")
+                logging.info(
+                    f"Gamepad button depressed edge {self.button_value}"
+                )
 
             # update the value of button_previous
             self.button_previous = self.button_value

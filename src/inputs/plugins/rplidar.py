@@ -140,7 +140,9 @@ class RPLidar(FuserInput[str]):
         )
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 
@@ -153,9 +155,15 @@ class RPLidar(FuserInput[str]):
             "use_zenoh": getattr(config, "use_zenoh", False),
             "half_width_robot": getattr(config, "half_width_robot", 0.20),
             "angles_blanked": getattr(config, "angles_blanked", []),
-            "relevant_distance_max": getattr(config, "relevant_distance_max", 1.1),
-            "relevant_distance_min": getattr(config, "relevant_distance_min", 0.08),
-            "sensor_mounting_angle": getattr(config, "sensor_mounting_angle", 180.0),
+            "relevant_distance_max": getattr(
+                config, "relevant_distance_max", 1.1
+            ),
+            "relevant_distance_min": getattr(
+                config, "relevant_distance_min", 0.08
+            ),
+            "sensor_mounting_angle": getattr(
+                config, "sensor_mounting_angle", 180.0
+            ),
             "URID": getattr(config, "URID", ""),
             "multicast_address": getattr(config, "multicast_address", ""),
             "machine_type": getattr(config, "machine_type", "go2"),

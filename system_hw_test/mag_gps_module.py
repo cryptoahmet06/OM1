@@ -9,7 +9,9 @@ import serial
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--serial", help="serial port to use, when using the low level driver", type=str
+    "--serial",
+    help="serial port to use, when using the low level driver",
+    type=str,
 )
 print(parser.format_help())
 
@@ -38,7 +40,9 @@ while True:
                 print(f"Unable to parse heading: {data}")
         elif data.startswith("YPR:"):
             yaw, pitch, roll = map(str.strip, data[4:].split(","))
-            print(f"Orientation is Yaw: {yaw}°, Pitch: {pitch}°, Roll: {roll}°.")
+            print(
+                f"Orientation is Yaw: {yaw}°, Pitch: {pitch}°, Roll: {roll}°."
+            )
         elif data.startswith("GPS:"):
             try:
                 parts = data[4:].split(",")

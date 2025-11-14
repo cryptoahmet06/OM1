@@ -56,7 +56,9 @@ async def test_summarize_messages_empty(history_manager):
 @pytest.mark.asyncio
 async def test_summarize_messages_api_error(history_manager):
     # Mock API error
-    history_manager.client.chat.completions.create.side_effect = Exception("API Error")
+    history_manager.client.chat.completions.create.side_effect = Exception(
+        "API Error"
+    )
 
     messages = [ChatMessage(role="user", content="Test")]
     result = await history_manager.summarize_messages(messages)

@@ -97,7 +97,11 @@ class MockVLM_OpenAI(VLMOpenAI):
             if hasattr(self, "_mock_thread") and self._mock_thread:
                 self._mock_thread.cancel()
 
-            if hasattr(self, "vlm") and self.vlm and hasattr(self.vlm, "video_stream"):
+            if (
+                hasattr(self, "vlm")
+                and self.vlm
+                and hasattr(self.vlm, "video_stream")
+            ):
                 self.vlm.video_stream.stop()
 
             logging.info("MockVLM_OpenAI: Cleanup completed")

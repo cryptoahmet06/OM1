@@ -24,7 +24,9 @@ class NavigateLocationInput:
 
 
 @dataclass
-class NavigateLocation(Interface[NavigateLocationInput, NavigateLocationInput]):
+class NavigateLocation(
+    Interface[NavigateLocationInput, NavigateLocationInput]
+):
     """
     Navigate to a saved location by name.
 

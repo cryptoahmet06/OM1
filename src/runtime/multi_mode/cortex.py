@@ -128,8 +128,12 @@ class ModeCortexRuntime:
 
         self.fuser = Fuser(self.current_config)
         self.action_orchestrator = ActionOrchestrator(self.current_config)
-        self.simulator_orchestrator = SimulatorOrchestrator(self.current_config)
-        self.background_orchestrator = BackgroundOrchestrator(self.current_config)
+        self.simulator_orchestrator = SimulatorOrchestrator(
+            self.current_config
+        )
+        self.background_orchestrator = BackgroundOrchestrator(
+            self.current_config
+        )
 
         logging.info(f"Mode '{mode_name}' initialized successfully")
 
@@ -146,7 +150,9 @@ class ModeCortexRuntime:
                     target_mode = self._pending_mode_transition
                     self._pending_mode_transition = None
 
-                    logging.info(f"Processing mode transition to: {target_mode}")
+                    logging.info(
+                        f"Processing mode transition to: {target_mode}"
+                    )
 
                     success = await self.mode_manager._execute_transition(
                         target_mode, "input_triggered"
@@ -197,7 +203,9 @@ class ModeCortexRuntime:
             logging.info(f"Successfully transitioned to mode: {to_mode}")
 
         except Exception as e:
-            logging.error(f"Error during mode transition {from_mode} -> {to_mode}: {e}")
+            logging.error(
+                f"Error during mode transition {from_mode} -> {to_mode}: {e}"
+            )
             # TODO: Implement fallback/recovery mechanism
             raise
         finally:
@@ -253,7 +261,9 @@ class ModeCortexRuntime:
                         if task in pending
                     ]
                     completed_names = [
-                        name for name, task in tasks_to_cancel.items() if task in done
+                        name
+                        for name, task in tasks_to_cancel.items()
+                        if task in done
                     ]
 
                     logging.warning(
@@ -266,7 +276,9 @@ class ModeCortexRuntime:
                         "Continuing with reload without waiting for unresponsive tasks"
                     )
                 else:
-                    logging.info(f"All {len(done)} tasks cancelled successfully!")
+                    logging.info(
+                        f"All {len(done)} tasks cancelled successfully!"
+                    )
                     for name, task in tasks_to_cancel.items():
                         try:
                             task.result()
@@ -280,7 +292,9 @@ class ModeCortexRuntime:
 
             except Exception as e:
                 logging.warning(f"Error during task cancellation: {e}")
-                logging.info("Continuing with reload despite cancellation errors")
+                logging.info(
+                    "Continuing with reload despite cancellation errors"
+                )
 
         self.cortex_loop_task = None
         self.input_listener_task = None
@@ -296,8 +310,12 @@ class ModeCortexRuntime:
             raise RuntimeError("No current config available")
 
         # Start input listener
-        self.input_orchestrator = InputOrchestrator(self.current_config.agent_inputs)
-        self.input_listener_task = asyncio.create_task(self.input_orchestrator.listen())
+        self.input_orchestrator = InputOrchestrator(
+            self.current_config.agent_inputs
+        )
+        self.input_listener_task = asyncio.create_task(
+            self.input_orchestrator.listen()
+        )
 
         # Start other orchestrators
         if self.simulator_orchestrator:
@@ -367,13 +385,17 @@ class ModeCortexRuntime:
                     "timestamp": asyncio.get_event_loop().time(),
                 }
 
-                startup_success = await self.mode_config.execute_global_lifecycle_hooks(
-                    LifecycleHookType.ON_STARTUP, startup_context
+                startup_success = (
+                    await self.mode_config.execute_global_lifecycle_hooks(
+                        LifecycleHookType.ON_STARTUP, startup_context
+                    )
                 )
                 if not startup_success:
                     logging.warning("Some global startup hooks failed")
 
-                await self._initialize_mode(self.mode_manager.current_mode_name)
+                await self._initialize_mode(
+                    self.mode_manager.current_mode_name
+                )
                 self._mode_initialized = True
 
                 # Execute initial mode startup hooks
@@ -394,22 +416,34 @@ class ModeCortexRuntime:
             while True:
                 try:
                     awaitables: List[Union[asyncio.Task, asyncio.Future]] = []
-                    if self.cortex_loop_task and not self.cortex_loop_task.done():
+                    if (
+                        self.cortex_loop_task
+                        and not self.cortex_loop_task.done()
+                    ):
                         awaitables.append(self.cortex_loop_task)
                     if (
                         self.mode_transition_task
                         and not self.mode_transition_task.done()
                     ):
                         awaitables.append(self.mode_transition_task)
-                    if self.config_watcher_task and not self.config_watcher_task.done():
+                    if (
+                        self.config_watcher_task
+                        and not self.config_watcher_task.done()
+                    ):
                         awaitables.append(self.config_watcher_task)
-                    if self.input_listener_task and not self.input_listener_task.done():
+                    if (
+                        self.input_listener_task
+                        and not self.input_listener_task.done()
+                    ):
                         awaitables.append(self.input_listener_task)
                     if self.simulator_task and not self.simulator_task.done():
                         awaitables.append(self.simulator_task)
                     if self.action_task and not self.action_task.done():
                         awaitables.append(self.action_task)
-                    if self.background_task and not self.background_task.done():
+                    if (
+                        self.background_task
+                        and not self.background_task.done()
+                    ):
                         awaitables.append(self.background_task)
 
                     await asyncio.gather(*awaitables)
@@ -461,7 +495,10 @@ class ModeCortexRuntime:
 
         try:
             while True:
-                if not self.sleep_ticker_provider.skip_sleep and self.current_config:
+                if (
+                    not self.sleep_ticker_provider.skip_sleep
+                    and self.current_config
+                ):
                     await self.sleep_ticker_provider.sleep(
                         1 / self.current_config.hertz
                     )
@@ -486,7 +523,11 @@ class ModeCortexRuntime:
         """
         Execute a single tick of the mode-aware cortex processing cycle.
         """
-        if not self.current_config or not self.fuser or not self.action_orchestrator:
+        if (
+            not self.current_config
+            or not self.fuser
+            or not self.action_orchestrator
+        ):
             logging.warning("Cortex not properly initialized, skipping tick")
             return
 
@@ -496,7 +537,9 @@ class ModeCortexRuntime:
 
         finished_promises, _ = await self.action_orchestrator.flush_promises()
 
-        prompt = self.fuser.fuse(self.current_config.agent_inputs, finished_promises)
+        prompt = self.fuser.fuse(
+            self.current_config.agent_inputs, finished_promises
+        )
         if prompt is None:
             logging.debug("No prompt to fuse")
             return
@@ -546,7 +589,9 @@ class ModeCortexRuntime:
         bool
             True if the transition was successful, False otherwise
         """
-        return await self.mode_manager.request_transition(target_mode, "manual")
+        return await self.mode_manager.request_transition(
+            target_mode, "manual"
+        )
 
     def get_available_modes(self) -> dict:
         """
@@ -587,7 +632,9 @@ class ModeCortexRuntime:
             try:
                 await asyncio.sleep(self.check_interval)
 
-                if not self.config_path or not os.path.exists(self.config_path):
+                if not self.config_path or not os.path.exists(
+                    self.config_path
+                ):
                     continue
 
                 current_mtime = self._get_file_mtime()

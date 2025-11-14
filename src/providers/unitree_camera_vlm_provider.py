@@ -97,12 +97,16 @@ class UnitreeCameraVideoStream(VideoStream):
 
                         # Resize image
                         resized_image = cv2.resize(
-                            image, (new_width, new_height), interpolation=cv2.INTER_AREA
+                            image,
+                            (new_width, new_height),
+                            interpolation=cv2.INTER_AREA,
                         )
                         _, buffer = cv2.imencode(
                             ".jpg", resized_image, self.encode_quality
                         )
-                        frame_data = base64.b64encode(buffer.tobytes()).decode("utf-8")
+                        frame_data = base64.b64encode(buffer.tobytes()).decode(
+                            "utf-8"
+                        )
 
                         if self.frame_callbacks:
                             for frame_callback in self.frame_callbacks:

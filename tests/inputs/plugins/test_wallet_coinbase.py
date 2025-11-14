@@ -24,7 +24,9 @@ class TestWalletCoinbase:
     def test_initialization_with_wallet_fetch_failure(self):
         """Test that initialization handles wallet fetch failure gracefully."""
         with patch.dict(os.environ, {"COINBASE_WALLET_ID": "test_wallet_id"}):
-            with patch("inputs.plugins.wallet_coinbase.Wallet.fetch") as mock_fetch:
+            with patch(
+                "inputs.plugins.wallet_coinbase.Wallet.fetch"
+            ) as mock_fetch:
                 mock_fetch.side_effect = Exception("Network error")
 
                 wallet = WalletCoinbase()
@@ -39,7 +41,8 @@ class TestWalletCoinbase:
 
         with patch.dict(os.environ, {"COINBASE_WALLET_ID": "test_wallet_id"}):
             with patch(
-                "inputs.plugins.wallet_coinbase.Wallet.fetch", return_value=mock_wallet
+                "inputs.plugins.wallet_coinbase.Wallet.fetch",
+                return_value=mock_wallet,
             ):
                 with patch("inputs.plugins.wallet_coinbase.Cdp.configure"):
                     wallet = WalletCoinbase()
@@ -51,7 +54,9 @@ class TestWalletCoinbase:
     async def test_poll_with_wallet_fetch_failure(self):
         """Test that _poll handles wallet fetch failure gracefully."""
         with patch.dict(os.environ, {"COINBASE_WALLET_ID": "test_wallet_id"}):
-            with patch("inputs.plugins.wallet_coinbase.Wallet.fetch") as mock_fetch:
+            with patch(
+                "inputs.plugins.wallet_coinbase.Wallet.fetch"
+            ) as mock_fetch:
                 mock_fetch.side_effect = Exception("Network error")
 
                 wallet = WalletCoinbase()
@@ -68,7 +73,8 @@ class TestWalletCoinbase:
 
         with patch.dict(os.environ, {"COINBASE_WALLET_ID": "test_wallet_id"}):
             with patch(
-                "inputs.plugins.wallet_coinbase.Wallet.fetch", return_value=mock_wallet
+                "inputs.plugins.wallet_coinbase.Wallet.fetch",
+                return_value=mock_wallet,
             ):
                 with patch("inputs.plugins.wallet_coinbase.Cdp.configure"):
                     wallet = WalletCoinbase()

@@ -26,7 +26,10 @@ RESOLUTIONS = [
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--cam", help="the index of the camera you want to use", type=int, default=0
+    "--cam",
+    help="the index of the camera you want to use",
+    type=int,
+    default=0,
 )
 print(parser.format_help())
 args = parser.parse_args()
@@ -74,9 +77,13 @@ while cap.isOpened():
         break
 
     timestamp = time.time()
-    datetime_str = datetime.datetime.fromtimestamp(timestamp, datetime.UTC).isoformat()
+    datetime_str = datetime.datetime.fromtimestamp(
+        timestamp, datetime.UTC
+    ).isoformat()
 
-    results = model.predict(source=frame, save=False, stream=True, verbose=False)
+    results = model.predict(
+        source=frame, save=False, stream=True, verbose=False
+    )
 
     detections = []
     for r in results:
@@ -94,7 +101,9 @@ while cap.isOpened():
                 }
             )
 
-            cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+            cv2.rectangle(
+                frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2
+            )
             cv2.putText(
                 frame,
                 f"{label} {conf:.2f}",
@@ -106,7 +115,9 @@ while cap.isOpened():
             )
 
     # Print to terminal
-    print(f"\nFrame {frame_index} @ {datetime_str} — {len(detections)} objects:")
+    print(
+        f"\nFrame {frame_index} @ {datetime_str} — {len(detections)} objects:"
+    )
     for det in detections:
         print(f"  {det['class']} ({det['confidence']:.2f}) -> {det['bbox']}")
 

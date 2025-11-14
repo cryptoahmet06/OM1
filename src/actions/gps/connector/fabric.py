@@ -34,7 +34,9 @@ class GPSFabricConnector(ActionConnector[GPSInput]):
         """
         Send GPS coordinates to the Fabric network.
         """
-        logging.info("GPSFabricConnector: Sending coordinates to Fabric network.")
+        logging.info(
+            "GPSFabricConnector: Sending coordinates to Fabric network."
+        )
         latitude = self.io_provider.get_dynamic_variable("latitude")
         longitude = self.io_provider.get_dynamic_variable("longitude")
         yaw = self.io_provider.get_dynamic_variable("yaw_deg")
@@ -53,7 +55,11 @@ class GPSFabricConnector(ActionConnector[GPSInput]):
                 json={
                     "method": "omp2p_shareStatus",
                     "params": [
-                        {"latitude": latitude, "longitude": longitude, "yaw": yaw}
+                        {
+                            "latitude": latitude,
+                            "longitude": longitude,
+                            "yaw": yaw,
+                        }
                     ],
                     "id": 1,
                     "jsonrpc": "2.0",
@@ -62,9 +68,15 @@ class GPSFabricConnector(ActionConnector[GPSInput]):
             )
             response = share_status_response.json()
             if "result" in response and response["result"]:
-                logging.info("GPSFabricConnector: Coordinates shared successfully.")
+                logging.info(
+                    "GPSFabricConnector: Coordinates shared successfully."
+                )
             else:
-                logging.error("GPSFabricConnector: Failed to share coordinates.")
+                logging.error(
+                    "GPSFabricConnector: Failed to share coordinates."
+                )
                 return None
         except requests.RequestException as e:
-            logging.error(f"GPSFabricConnector: Error sending coordinates: {e}")
+            logging.error(
+                f"GPSFabricConnector: Error sending coordinates: {e}"
+            )

@@ -24,7 +24,9 @@ def test_load_background_success():
         result = load_background("MockBackground")
 
         mock_find_module.assert_called_once_with("MockBackground")
-        mock_import.assert_called_once_with("backgrounds.plugins.mock_background")
+        mock_import.assert_called_once_with(
+            "backgrounds.plugins.mock_background"
+        )
         assert result == MockBackground
 
 
@@ -71,7 +73,8 @@ def test_load_background_invalid_type():
         mock_import.return_value = mock_module
 
         with pytest.raises(
-            ValueError, match="'InvalidBackground' is not a valid background subclass"
+            ValueError,
+            match="'InvalidBackground' is not a valid background subclass",
         ):
             load_background("InvalidBackground")
 
@@ -83,7 +86,9 @@ def test_find_module_with_class_success():
         patch("os.listdir") as mock_listdir,
         patch(
             "builtins.open",
-            mock_open(read_data="class TestBackground(Background):\n    pass\n"),
+            mock_open(
+                read_data="class TestBackground(Background):\n    pass\n"
+            ),
         ),
     ):
         mock_join.side_effect = lambda *args: "/".join(args)
@@ -100,7 +105,10 @@ def test_find_module_with_class_not_found():
         patch("os.path.join") as mock_join,
         patch("os.path.exists") as mock_exists,
         patch("os.listdir") as mock_listdir,
-        patch("builtins.open", mock_open(read_data="class OtherClass:\n    pass\n")),
+        patch(
+            "builtins.open",
+            mock_open(read_data="class OtherClass:\n    pass\n"),
+        ),
     ):
         mock_join.side_effect = lambda *args: "/".join(args)
         mock_exists.return_value = True

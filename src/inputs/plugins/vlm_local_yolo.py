@@ -214,7 +214,12 @@ class VLM_Local_YOLO(FuserInput[str]):
                             {
                                 "class": label,
                                 "confidence": round(conf, 4),
-                                "bbox": [round(x1), round(y1), round(x2), round(y2)],
+                                "bbox": [
+                                    round(x1),
+                                    round(y1),
+                                    round(x2),
+                                    round(y2),
+                                ],
                             }
                         )
 
@@ -259,7 +264,8 @@ class VLM_Local_YOLO(FuserInput[str]):
         if (
             self.filename_current is not None
             and os.path.exists(self.filename_current)
-            and os.path.getsize(self.filename_current) > self.max_file_size_bytes
+            and os.path.getsize(self.filename_current)
+            > self.max_file_size_bytes
         ):
             self.filename_current = self.update_filename()
             logging.info(f"New yolo file name: {self.filename_current}")
@@ -269,7 +275,9 @@ class VLM_Local_YOLO(FuserInput[str]):
                 f.write(json_line + "\n")
                 f.flush()
 
-    async def _raw_to_text(self, raw_input: Optional[List]) -> Optional[Message]:
+    async def _raw_to_text(
+        self, raw_input: Optional[List]
+    ) -> Optional[Message]:
         """
         Process raw image input to generate text description.
 
@@ -348,7 +356,9 @@ class VLM_Local_YOLO(FuserInput[str]):
         )
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

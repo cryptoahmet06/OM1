@@ -13,7 +13,9 @@ sys.path.insert(0, "../src")
 from zenoh_msgs import open_zenoh_session
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--URID", help="your robot's URID, when using Zenoh", type=str)
+parser.add_argument(
+    "--URID", help="your robot's URID, when using Zenoh", type=str
+)
 print(parser.format_help())
 
 args = parser.parse_args()
@@ -180,7 +182,9 @@ if __name__ == "__main__":
 
         move_controller = MoveController(URID)
 
-        control_thread = threading.Thread(target=control_loop, args=(move_controller,))
+        control_thread = threading.Thread(
+            target=control_loop, args=(move_controller,)
+        )
         control_thread.daemon = True
         control_thread.start()
 

@@ -103,7 +103,10 @@ def test_find_module_with_class_not_found():
         patch("os.path.join") as mock_join,
         patch("os.path.exists") as mock_exists,
         patch("os.listdir") as mock_listdir,
-        patch("builtins.open", mock_open(read_data="class OtherClass:\n    pass\n")),
+        patch(
+            "builtins.open",
+            mock_open(read_data="class OtherClass:\n    pass\n"),
+        ),
     ):
         mock_join.side_effect = lambda *args: "/".join(args)
         mock_exists.return_value = True

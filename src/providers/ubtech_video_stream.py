@@ -68,15 +68,27 @@ class UbtechCameraVideoStream(VideoStream):
                         height, width = frame.shape[:2]
                         ratio = width / height
                         new_width, new_height = (
-                            (self.resolution[0], int(self.resolution[0] / ratio))
+                            (
+                                self.resolution[0],
+                                int(self.resolution[0] / ratio),
+                            )
                             if width > height
-                            else (int(self.resolution[1] * ratio), self.resolution[1])
+                            else (
+                                int(self.resolution[1] * ratio),
+                                self.resolution[1],
+                            )
                         )
                         resized = cv2.resize(
-                            frame, (new_width, new_height), interpolation=cv2.INTER_AREA
+                            frame,
+                            (new_width, new_height),
+                            interpolation=cv2.INTER_AREA,
                         )
-                        _, buffer = cv2.imencode(".jpg", resized, self.encode_quality)
-                        frame_data = base64.b64encode(buffer.tobytes()).decode("utf-8")
+                        _, buffer = cv2.imencode(
+                            ".jpg", resized, self.encode_quality
+                        )
+                        frame_data = base64.b64encode(buffer.tobytes()).decode(
+                            "utf-8"
+                        )
 
                         for cb in self.frame_callbacks:
                             cb(frame_data)

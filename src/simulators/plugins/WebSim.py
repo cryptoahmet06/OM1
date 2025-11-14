@@ -67,7 +67,9 @@ class WebSim(Simulator):
         assets_path = os.path.join(os.path.dirname(__file__), "assets")
         if not os.path.exists(assets_path):
             os.makedirs(assets_path)
-        self.app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
+        self.app.mount(
+            "/assets", StaticFiles(directory=assets_path), name="assets"
+        )
 
         # Ensure the logo exists in assets directory
         logo_path = os.path.join(assets_path, "OM_Logo_b_transparent.png")
@@ -477,7 +479,9 @@ class WebSim(Simulator):
         # Start server thread
         try:
             logging.info("Starting WebSim server thread...")
-            self.server_thread = threading.Thread(target=self._run_server, daemon=True)
+            self.server_thread = threading.Thread(
+                target=self._run_server, daemon=True
+            )
             self.server_thread.start()
             time.sleep(1)
 
@@ -632,7 +636,9 @@ class WebSim(Simulator):
                         if (llm_end_time and llm_start_time)
                         else 0
                     ),
-                    "complete": llm_end_time - earliest_time if llm_end_time else 0,
+                    "complete": (
+                        llm_end_time - earliest_time if llm_end_time else 0
+                    ),
                 }
 
                 for action in actions:

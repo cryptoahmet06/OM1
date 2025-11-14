@@ -23,7 +23,9 @@ class RememberLocationInput:
 
 
 @dataclass
-class RememberLocation(Interface[RememberLocationInput, RememberLocationInput]):
+class RememberLocation(
+    Interface[RememberLocationInput, RememberLocationInput]
+):
     """
     Save/remember the robot's current location with a name.
 

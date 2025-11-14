@@ -76,11 +76,9 @@ class VLM_COCO_Local_Gazebo(FuserInput[Image.Image]):
             weights_backbone="MobileNet_V3_Large_Weights.IMAGENET1K_V1",
         ).to(self.device)
 
-        self.class_labels = (
-            detection_model.FasterRCNN_MobileNet_V3_Large_320_FPN_Weights.DEFAULT.meta[
-                "categories"
-            ]
-        )
+        self.class_labels = detection_model.FasterRCNN_MobileNet_V3_Large_320_FPN_Weights.DEFAULT.meta[
+            "categories"
+        ]
         self.model.eval()
         logging.info("COCO Object Detector Started")
 
@@ -112,7 +110,9 @@ class VLM_COCO_Local_Gazebo(FuserInput[Image.Image]):
         height = img_msg.height
         step = img_msg.step  # Number of bytes per row (may include padding)
         encoding = img_msg.pixel_format_type
-        raw_data = img_msg.data  # The text parser converts the escaped string to bytes
+        raw_data = (
+            img_msg.data
+        )  # The text parser converts the escaped string to bytes
 
         # Determine number of channels based on pixel format.
         if encoding == image_pb2.PixelFormatType.RGB_INT8:
@@ -141,7 +141,9 @@ class VLM_COCO_Local_Gazebo(FuserInput[Image.Image]):
                 )
             else:
                 # Reshape to (height, step) then crop each row to the actual image data.
-                rows = np.frombuffer(raw_data, dtype=np.uint8).reshape((height, step))
+                rows = np.frombuffer(raw_data, dtype=np.uint8).reshape(
+                    (height, step)
+                )
                 image_array = rows[:, :expected_bytes_per_row].reshape(
                     (height, width, channels)
                 )
@@ -225,7 +227,9 @@ class VLM_COCO_Local_Gazebo(FuserInput[Image.Image]):
 
         return image
 
-    async def _raw_to_text(self, raw_input: Optional[Image.Image]) -> Optional[Message]:
+    async def _raw_to_text(
+        self, raw_input: Optional[Image.Image]
+    ) -> Optional[Message]:
         """
         Process raw image input to generate text description.
 
@@ -283,7 +287,8 @@ class VLM_COCO_Local_Gazebo(FuserInput[Image.Image]):
                 [detection.score for detection in filtered_detections]
             )
             pred_labels = [
-                self.class_labels[detection.label] for detection in filtered_detections
+                self.class_labels[detection.label]
+                for detection in filtered_detections
             ]
             logging.debug(f"COCO labels {pred_labels} scores {pred_scores}")
 
@@ -309,7 +314,8 @@ class VLM_COCO_Local_Gazebo(FuserInput[Image.Image]):
 
         elif full_detections and len(full_detections) > 0:
             full_labels = [
-                self.class_labels[detection.label] for detection in full_detections
+                self.class_labels[detection.label]
+                for detection in full_detections
             ]
             logging.info(
                 f"COCO isn't detecting anything familiar. The closest thing it recognises is {full_labels[0]}"
@@ -360,7 +366,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

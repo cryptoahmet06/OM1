@@ -118,7 +118,9 @@ def generate_function_schemas_from_actions(actions: list) -> list[dict]:
     return schemas
 
 
-def convert_function_calls_to_actions(function_calls: list[dict]) -> list[Action]:
+def convert_function_calls_to_actions(
+    function_calls: list[dict],
+) -> list[Action]:
     """
     Convert OpenAI function call responses to Action objects.
 

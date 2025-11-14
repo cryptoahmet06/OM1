@@ -36,9 +36,7 @@ def find_module_with_class(class_name: str) -> T.Optional[str]:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
-            pattern = (
-                rf"^class\s+{re.escape(class_name)}\s*\([^)]*Background[^)]*\)\s*:"
-            )
+            pattern = rf"^class\s+{re.escape(class_name)}\s*\([^)]*Background[^)]*\)\s*:"
 
             if re.search(pattern, content, re.MULTILINE):
                 return plugin_file[:-3]
@@ -80,13 +78,17 @@ def load_background(class_name: str) -> T.Type[Background]:
             and issubclass(background_class, Background)
             and background_class != Background
         ):
-            raise ValueError(f"'{class_name}' is not a valid background subclass")
+            raise ValueError(
+                f"'{class_name}' is not a valid background subclass"
+            )
 
         logging.debug(f"Loaded background {class_name} from {module_name}.py")
         return background_class
 
     except ImportError as e:
-        raise ValueError(f"Could not import background module '{module_name}': {e}")
+        raise ValueError(
+            f"Could not import background module '{module_name}': {e}"
+        )
     except AttributeError:
         raise ValueError(
             f"Class '{class_name}' not found in background module '{module_name}'"

@@ -12,9 +12,13 @@ class UbTtsProvider:
     def __init__(self, url: str):
         self.tts_url = url
         self.headers = {"Content-Type": "application/json"}
-        logging.info(f"Ubtech TTS Provider initialized for URL: {self.tts_url}")
+        logging.info(
+            f"Ubtech TTS Provider initialized for URL: {self.tts_url}"
+        )
 
-    def speak(self, tts: str, interrupt: bool = True, timestamp: int = 0) -> bool:
+    def speak(
+        self, tts: str, interrupt: bool = True, timestamp: int = 0
+    ) -> bool:
         """Sends a request to the TTS service. Returns True on success."""
         payload = {"tts": tts, "interrupt": interrupt, "timestamp": timestamp}
         try:
@@ -39,7 +43,10 @@ class UbTtsProvider:
         try:
             params = {"timestamp": timestamp}
             response = requests.get(
-                url=self.tts_url, headers=self.headers, params=params, timeout=2
+                url=self.tts_url,
+                headers=self.headers,
+                params=params,
+                timeout=2,
             )
             res = response.json()
             if res.get("code") == 0:

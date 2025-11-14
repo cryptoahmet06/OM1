@@ -47,7 +47,9 @@ class UbtechCameraVLMInput(FuserInput[str]):
         self.message_buffer: Queue[str] = Queue()
 
         # Initialize VLM provider
-        base_url = getattr(self.config, "base_url", "wss://api-vila.openmind.org")
+        base_url = getattr(
+            self.config, "base_url", "wss://api-vila.openmind.org"
+        )
         self.vlm: UbtechVLMProvider = UbtechVLMProvider(
             ws_url=base_url, robot_ip=self.robot_ip
         )
@@ -161,7 +163,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

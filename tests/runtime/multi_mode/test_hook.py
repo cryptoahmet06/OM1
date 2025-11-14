@@ -173,12 +173,15 @@ async def test_message_handler_with_announcement(sample_context):
 
     with patch("runtime.multi_mode.hook.logging") as mock_logging:
         with patch(
-            "runtime.multi_mode.hook.ElevenLabsTTSProvider", return_value=mock_tts
+            "runtime.multi_mode.hook.ElevenLabsTTSProvider",
+            return_value=mock_tts,
         ):
             result = await handler.execute(sample_context)
             assert result is True
             mock_logging.info.assert_called_once()
-            mock_tts.add_pending_message.assert_called_once_with("Mode: test_mode")
+            mock_tts.add_pending_message.assert_called_once_with(
+                "Mode: test_mode"
+            )
 
 
 @pytest.mark.asyncio
@@ -189,11 +192,14 @@ async def test_message_handler_tts_import_error(sample_context):
 
     with patch("runtime.multi_mode.hook.logging") as mock_logging:
         with patch(
-            "runtime.multi_mode.hook.ElevenLabsTTSProvider", side_effect=ImportError
+            "runtime.multi_mode.hook.ElevenLabsTTSProvider",
+            side_effect=ImportError,
         ):
             result = await handler.execute(sample_context)
             assert result is False
-            mock_logging.error.assert_called_once_with("Error adding TTS message: ")
+            mock_logging.error.assert_called_once_with(
+                "Error adding TTS message: "
+            )
 
 
 @pytest.mark.asyncio
@@ -375,7 +381,9 @@ async def test_function_handler_no_module():
         )
 
     @pytest.mark.asyncio
-    async def test_function_handler_successful_sync_execution(self, sample_context):
+    async def test_function_handler_successful_sync_execution(
+        self, sample_context
+    ):
         """Test successful synchronous function execution."""
         config = {"function": "test_func", "module_name": "test_module"}
         handler = FunctionHookHandler(config)
@@ -390,7 +398,9 @@ async def test_function_handler_no_module():
             assert result is True
 
     @pytest.mark.asyncio
-    async def test_function_handler_successful_async_execution(self, sample_context):
+    async def test_function_handler_successful_async_execution(
+        self, sample_context
+    ):
         """Test successful asynchronous function execution."""
         config = {"function": "test_func", "module_name": "test_module"}
         handler = FunctionHookHandler(config)
@@ -399,13 +409,17 @@ async def test_function_handler_no_module():
             return True
 
         with patch.object(
-            handler, "_find_function_in_module", return_value=mock_async_function
+            handler,
+            "_find_function_in_module",
+            return_value=mock_async_function,
         ):
             result = await handler.execute(sample_context)
             assert result is True
 
     @pytest.mark.asyncio
-    async def test_function_handler_function_returns_false(self, sample_context):
+    async def test_function_handler_function_returns_false(
+        self, sample_context
+    ):
         """Test function that returns False."""
         config = {"function": "test_func", "module_name": "test_module"}
         handler = FunctionHookHandler(config)
@@ -420,7 +434,9 @@ async def test_function_handler_no_module():
             assert result is False
 
     @pytest.mark.asyncio
-    async def test_function_handler_function_returns_none(self, sample_context):
+    async def test_function_handler_function_returns_none(
+        self, sample_context
+    ):
         """Test function that returns None (should be treated as success)."""
         config = {"function": "test_func", "module_name": "test_module"}
         handler = FunctionHookHandler(config)
@@ -440,7 +456,9 @@ async def test_function_handler_no_module():
         config = {"function": "test_func", "module_name": "test_module"}
         handler = FunctionHookHandler(config)
 
-        with patch.object(handler, "_find_function_in_module", return_value=None):
+        with patch.object(
+            handler, "_find_function_in_module", return_value=None
+        ):
             result = await handler.execute(sample_context)
             assert result is False
 
@@ -465,9 +483,13 @@ async def test_function_handler_no_module():
         """Test function search when hooks directory doesn't exist."""
         handler = FunctionHookHandler({})
 
-        with patch("runtime.multi_mode.hook.os.path.exists", return_value=False):
+        with patch(
+            "runtime.multi_mode.hook.os.path.exists", return_value=False
+        ):
             with patch("runtime.multi_mode.hook.logging") as mock_logging:
-                result = handler._find_function_in_module("test_module", "test_func")
+                result = handler._find_function_in_module(
+                    "test_module", "test_func"
+                )
                 assert result is None
                 mock_logging.error.assert_called_once()
 
@@ -475,9 +497,13 @@ async def test_function_handler_no_module():
         """Test function search when module file doesn't exist."""
         handler = FunctionHookHandler({})
 
-        with patch("runtime.multi_mode.hook.os.path.exists", side_effect=[True, False]):
+        with patch(
+            "runtime.multi_mode.hook.os.path.exists", side_effect=[True, False]
+        ):
             with patch("runtime.multi_mode.hook.logging") as mock_logging:
-                result = handler._find_function_in_module("test_module", "test_func")
+                result = handler._find_function_in_module(
+                    "test_module", "test_func"
+                )
                 assert result is None
                 mock_logging.error.assert_called_once()
 
@@ -487,7 +513,9 @@ async def test_function_handler_no_module():
 
         file_content = "def other_function():\n    pass"
 
-        with patch("runtime.multi_mode.hook.os.path.exists", return_value=True):
+        with patch(
+            "runtime.multi_mode.hook.os.path.exists", return_value=True
+        ):
             with patch("builtins.open", mock_open(read_data=file_content)):
                 with patch("runtime.multi_mode.hook.logging") as mock_logging:
                     result = handler._find_function_in_module(
@@ -502,13 +530,17 @@ async def test_function_handler_no_module():
 
         file_content = "def test_func():\n    pass"
 
-        with patch("runtime.multi_mode.hook.os.path.exists", return_value=True):
+        with patch(
+            "runtime.multi_mode.hook.os.path.exists", return_value=True
+        ):
             with patch("builtins.open", mock_open(read_data=file_content)):
                 with patch(
                     "runtime.multi_mode.hook.importlib.import_module",
                     side_effect=ImportError("Module not found"),
                 ):
-                    with patch("runtime.multi_mode.hook.logging") as mock_logging:
+                    with patch(
+                        "runtime.multi_mode.hook.logging"
+                    ) as mock_logging:
                         result = handler._find_function_in_module(
                             "test_module", "test_func"
                         )
@@ -527,13 +559,17 @@ async def test_function_handler_no_module():
         mock_module = Mock()
         mock_module.test_func = mock_function
 
-        with patch("runtime.multi_mode.hook.os.path.exists", return_value=True):
+        with patch(
+            "runtime.multi_mode.hook.os.path.exists", return_value=True
+        ):
             with patch("builtins.open", mock_open(read_data=file_content)):
                 with patch(
                     "runtime.multi_mode.hook.importlib.import_module",
                     return_value=mock_module,
                 ):
-                    with patch("runtime.multi_mode.hook.hasattr", return_value=True):
+                    with patch(
+                        "runtime.multi_mode.hook.hasattr", return_value=True
+                    ):
                         result = handler._find_function_in_module(
                             "test_module", "test_func"
                         )
@@ -551,13 +587,17 @@ async def test_function_handler_no_module():
         mock_module = Mock()
         mock_module.test_func = mock_async_function
 
-        with patch("runtime.multi_mode.hook.os.path.exists", return_value=True):
+        with patch(
+            "runtime.multi_mode.hook.os.path.exists", return_value=True
+        ):
             with patch("builtins.open", mock_open(read_data=file_content)):
                 with patch(
                     "runtime.multi_mode.hook.importlib.import_module",
                     return_value=mock_module,
                 ):
-                    with patch("runtime.multi_mode.hook.hasattr", return_value=True):
+                    with patch(
+                        "runtime.multi_mode.hook.hasattr", return_value=True
+                    ):
                         result = handler._find_function_in_module(
                             "test_module", "test_func"
                         )
@@ -593,7 +633,9 @@ class TestActionHookHandler:
         config = {"action_type": "nonexistent_action", "action_config": {}}
         handler = ActionHookHandler(config)
 
-        with patch("actions.load_action", side_effect=ImportError("Action not found")):
+        with patch(
+            "actions.load_action", side_effect=ImportError("Action not found")
+        ):
             with patch("runtime.multi_mode.hook.logging") as mock_logging:
                 result = await handler.execute(sample_context)
                 assert result is False
@@ -602,7 +644,10 @@ class TestActionHookHandler:
     @pytest.mark.asyncio
     async def test_action_handler_successful_execution(self, sample_context):
         """Test successful action execution."""
-        config = {"action_type": "test_action", "action_config": {"param": "value"}}
+        config = {
+            "action_type": "test_action",
+            "action_config": {"param": "value"},
+        }
         handler = ActionHookHandler(config)
 
         # Mock action and connector
@@ -625,7 +670,9 @@ class TestActionHookHandler:
         handler = ActionHookHandler(config)
 
         mock_connector = AsyncMock()
-        mock_connector.connect = AsyncMock(side_effect=Exception("Connection failed"))
+        mock_connector.connect = AsyncMock(
+            side_effect=Exception("Connection failed")
+        )
         mock_action = Mock()
         mock_action.connector = mock_connector
 
@@ -813,7 +860,9 @@ class TestExecuteLifecycleHooks:
     async def test_execute_hooks_no_matching_type(self, sample_message_hook):
         """Test executing hooks with no matching type."""
         hooks = [sample_message_hook]  # ON_ENTRY hook
-        result = await execute_lifecycle_hooks(hooks, LifecycleHookType.ON_EXIT)
+        result = await execute_lifecycle_hooks(
+            hooks, LifecycleHookType.ON_EXIT
+        )
         assert result is True
 
     @pytest.mark.asyncio
@@ -834,7 +883,9 @@ class TestExecuteLifecycleHooks:
             ),
         ]
 
-        with patch("runtime.multi_mode.hook.create_hook_handler") as mock_create:
+        with patch(
+            "runtime.multi_mode.hook.create_hook_handler"
+        ) as mock_create:
             mock_handler1 = AsyncMock()
             mock_handler1.execute.return_value = True
             mock_handler2 = AsyncMock()
@@ -846,7 +897,9 @@ class TestExecuteLifecycleHooks:
                     hooks, LifecycleHookType.ON_ENTRY, sample_context
                 )
                 assert result is True
-                mock_logging.info.assert_called_once_with("Executing 2 on_entry hooks")
+                mock_logging.info.assert_called_once_with(
+                    "Executing 2 on_entry hooks"
+                )
 
                 # Verify hooks are executed in priority order (higher priority first)
                 assert mock_create.call_count == 2
@@ -890,9 +943,12 @@ class TestExecuteLifecycleHooks:
             return handler
 
         with patch(
-            "runtime.multi_mode.hook.create_hook_handler", side_effect=track_execution
+            "runtime.multi_mode.hook.create_hook_handler",
+            side_effect=track_execution,
         ):
-            result = await execute_lifecycle_hooks(hooks, LifecycleHookType.ON_ENTRY)
+            result = await execute_lifecycle_hooks(
+                hooks, LifecycleHookType.ON_ENTRY
+            )
             assert result is True
             assert execution_order == [
                 "High priority",
@@ -911,7 +967,9 @@ class TestExecuteLifecycleHooks:
             )
         ]
 
-        with patch("runtime.multi_mode.hook.create_hook_handler", return_value=None):
+        with patch(
+            "runtime.multi_mode.hook.create_hook_handler", return_value=None
+        ):
             with patch("runtime.multi_mode.hook.logging") as mock_logging:
                 result = await execute_lifecycle_hooks(
                     hooks, LifecycleHookType.ON_ENTRY
@@ -935,10 +993,15 @@ class TestExecuteLifecycleHooks:
         mock_handler.execute.return_value = False
 
         with patch(
-            "runtime.multi_mode.hook.create_hook_handler", return_value=mock_handler
+            "runtime.multi_mode.hook.create_hook_handler",
+            return_value=mock_handler,
         ):
-            result = await execute_lifecycle_hooks(hooks, LifecycleHookType.ON_ENTRY)
-            assert result is False  # Overall result is False, but execution continues
+            result = await execute_lifecycle_hooks(
+                hooks, LifecycleHookType.ON_ENTRY
+            )
+            assert (
+                result is False
+            )  # Overall result is False, but execution continues
 
     @pytest.mark.asyncio
     async def test_execute_hooks_failure_abort_policy(self):
@@ -995,7 +1058,8 @@ class TestExecuteLifecycleHooks:
         mock_handler.execute.side_effect = slow_execution
 
         with patch(
-            "runtime.multi_mode.hook.create_hook_handler", return_value=mock_handler
+            "runtime.multi_mode.hook.create_hook_handler",
+            return_value=mock_handler,
         ):
             with patch("runtime.multi_mode.hook.logging") as mock_logging:
                 result = await execute_lifecycle_hooks(
@@ -1025,9 +1089,12 @@ class TestExecuteLifecycleHooks:
         mock_handler.execute.side_effect = slow_execution
 
         with patch(
-            "runtime.multi_mode.hook.create_hook_handler", return_value=mock_handler
+            "runtime.multi_mode.hook.create_hook_handler",
+            return_value=mock_handler,
         ):
-            result = await execute_lifecycle_hooks(hooks, LifecycleHookType.ON_ENTRY)
+            result = await execute_lifecycle_hooks(
+                hooks, LifecycleHookType.ON_ENTRY
+            )
             assert result is False
 
     @pytest.mark.asyncio
@@ -1046,9 +1113,12 @@ class TestExecuteLifecycleHooks:
         mock_handler.execute.return_value = True
 
         with patch(
-            "runtime.multi_mode.hook.create_hook_handler", return_value=mock_handler
+            "runtime.multi_mode.hook.create_hook_handler",
+            return_value=mock_handler,
         ):
-            result = await execute_lifecycle_hooks(hooks, LifecycleHookType.ON_ENTRY)
+            result = await execute_lifecycle_hooks(
+                hooks, LifecycleHookType.ON_ENTRY
+            )
             assert result is True
 
     @pytest.mark.asyncio
@@ -1074,7 +1144,8 @@ class TestExecuteLifecycleHooks:
         mock_handler.execute = capture_context
 
         with patch(
-            "runtime.multi_mode.hook.create_hook_handler", return_value=mock_handler
+            "runtime.multi_mode.hook.create_hook_handler",
+            return_value=mock_handler,
         ):
             await execute_lifecycle_hooks(
                 hooks, LifecycleHookType.ON_ENTRY, sample_context
@@ -1100,7 +1171,8 @@ class TestExecuteLifecycleHooks:
         mock_handler.execute.side_effect = Exception("General error")
 
         with patch(
-            "runtime.multi_mode.hook.create_hook_handler", return_value=mock_handler
+            "runtime.multi_mode.hook.create_hook_handler",
+            return_value=mock_handler,
         ):
             with patch("runtime.multi_mode.hook.logging") as mock_logging:
                 result = await execute_lifecycle_hooks(
@@ -1125,9 +1197,12 @@ class TestExecuteLifecycleHooks:
         mock_handler.execute.side_effect = Exception("General error")
 
         with patch(
-            "runtime.multi_mode.hook.create_hook_handler", return_value=mock_handler
+            "runtime.multi_mode.hook.create_hook_handler",
+            return_value=mock_handler,
         ):
-            result = await execute_lifecycle_hooks(hooks, LifecycleHookType.ON_ENTRY)
+            result = await execute_lifecycle_hooks(
+                hooks, LifecycleHookType.ON_ENTRY
+            )
             assert result is False
 
     @pytest.mark.asyncio
@@ -1158,5 +1233,9 @@ class TestExecuteLifecycleHooks:
             "runtime.multi_mode.hook.create_hook_handler",
             side_effect=[mock_handler_success, mock_handler_failure],
         ):
-            result = await execute_lifecycle_hooks(hooks, LifecycleHookType.ON_ENTRY)
-            assert result is False  # Overall result is False due to one failure
+            result = await execute_lifecycle_hooks(
+                hooks, LifecycleHookType.ON_ENTRY
+            )
+            assert (
+                result is False
+            )  # Overall result is False due to one failure

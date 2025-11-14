@@ -211,13 +211,17 @@ class TestModeManager:
         result = await mode_manager.check_time_based_transitions()
         assert result is None
 
-    async def test_check_time_based_transitions_within_timeout(self, mode_manager):
+    async def test_check_time_based_transitions_within_timeout(
+        self, mode_manager
+    ):
         """Test time-based transitions within timeout period."""
         mode_manager.config.modes["default"].timeout_seconds = 3600.0
         result = await mode_manager.check_time_based_transitions()
         assert result is None
 
-    async def test_check_time_based_transitions_exceeded_timeout(self, mode_manager):
+    async def test_check_time_based_transitions_exceeded_timeout(
+        self, mode_manager
+    ):
         """Test time-based transitions when timeout is exceeded."""
         mode_manager.state.current_mode = "advanced"
         mode_manager.config.modes["advanced"].timeout_seconds = 0.1
@@ -234,12 +238,18 @@ class TestModeManager:
         result = mode_manager.check_input_triggered_transitions("")
         assert result is None
 
-    def test_check_input_triggered_transitions_matching_keyword(self, mode_manager):
+    def test_check_input_triggered_transitions_matching_keyword(
+        self, mode_manager
+    ):
         """Test input-triggered transitions with matching keyword."""
-        result = mode_manager.check_input_triggered_transitions("I need advanced mode")
+        result = mode_manager.check_input_triggered_transitions(
+            "I need advanced mode"
+        )
         assert result == "advanced"
 
-    def test_check_input_triggered_transitions_emergency_priority(self, mode_manager):
+    def test_check_input_triggered_transitions_emergency_priority(
+        self, mode_manager
+    ):
         """Test that emergency mode takes priority due to higher priority value."""
         result = mode_manager.check_input_triggered_transitions(
             "advanced emergency help"
@@ -248,17 +258,25 @@ class TestModeManager:
 
     def test_check_input_triggered_transitions_no_match(self, mode_manager):
         """Test input-triggered transitions with no matching keywords."""
-        result = mode_manager.check_input_triggered_transitions("just some random text")
+        result = mode_manager.check_input_triggered_transitions(
+            "just some random text"
+        )
         assert result is None
 
-    def test_check_input_triggered_transitions_wildcard_from_mode(self, mode_manager):
+    def test_check_input_triggered_transitions_wildcard_from_mode(
+        self, mode_manager
+    ):
         """Test input-triggered transitions with wildcard from_mode."""
         mode_manager.state.current_mode = "advanced"
 
-        result = mode_manager.check_input_triggered_transitions("emergency help needed")
+        result = mode_manager.check_input_triggered_transitions(
+            "emergency help needed"
+        )
         assert result == "emergency"
 
-    def test_can_transition_success(self, mode_manager, sample_transition_rules):
+    def test_can_transition_success(
+        self, mode_manager, sample_transition_rules
+    ):
         """Test successful transition validation."""
         rule = sample_transition_rules[0]
         result = mode_manager._can_transition(rule)
@@ -334,14 +352,17 @@ class TestModeManager:
         mode_manager.add_transition_callback(callback)
 
         with patch.object(mode_manager, "_save_mode_state") as mock_save:
-            result = await mode_manager._execute_transition("advanced", "test_reason")
+            result = await mode_manager._execute_transition(
+                "advanced", "test_reason"
+            )
 
             assert result is True
             assert mode_manager.state.current_mode == "advanced"
             assert mode_manager.state.previous_mode == "default"
             assert len(mode_manager.state.transition_history) == 1
             assert (
-                "default->advanced:test_reason" in mode_manager.state.transition_history
+                "default->advanced:test_reason"
+                in mode_manager.state.transition_history
             )
 
             callback.assert_called_once_with("default", "advanced")
@@ -350,7 +371,9 @@ class TestModeManager:
     @pytest.mark.asyncio
     async def test_execute_transition_history_limit(self, mode_manager):
         """Test that transition history is limited to prevent excessive growth."""
-        mode_manager.state.transition_history = [f"transition_{i}" for i in range(60)]
+        mode_manager.state.transition_history = [
+            f"transition_{i}" for i in range(60)
+        ]
 
         with patch.object(mode_manager, "_save_mode_state"):
             await mode_manager._execute_transition("advanced", "test")
@@ -436,7 +459,9 @@ class TestModeManager:
     async def test_process_tick_time_transition(self, mode_manager):
         """Test process_tick with time-based transition."""
         with patch.object(
-            mode_manager, "check_time_based_transitions", return_value="advanced"
+            mode_manager,
+            "check_time_based_transitions",
+            return_value="advanced",
         ):
             result = await mode_manager.process_tick("some input")
 
@@ -464,7 +489,9 @@ class TestModeManager:
             mode_manager, "check_time_based_transitions", return_value=None
         ):
             with patch.object(
-                mode_manager, "check_input_triggered_transitions", return_value=None
+                mode_manager,
+                "check_input_triggered_transitions",
+                return_value=None,
             ):
                 result = await mode_manager.process_tick("normal input")
 
@@ -474,7 +501,9 @@ class TestModeManager:
     async def test_process_tick_failed_transition(self, mode_manager):
         """Test process_tick with failed transition execution."""
         with patch.object(
-            mode_manager, "check_time_based_transitions", return_value="advanced"
+            mode_manager,
+            "check_time_based_transitions",
+            return_value="advanced",
         ):
             result = await mode_manager.process_tick("some input")
 
@@ -499,7 +528,9 @@ class TestModeManager:
         mode_manager.state.transition_history = ["default->advanced:test"]
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            with patch.object(mode_manager, "_get_state_file_path") as mock_path:
+            with patch.object(
+                mode_manager, "_get_state_file_path"
+            ) as mock_path:
                 state_file = f"{temp_dir}/test_state.json5"
                 mock_path.return_value = state_file
 
@@ -510,17 +541,24 @@ class TestModeManager:
 
                 assert saved_data["last_active_mode"] == "advanced"
                 assert saved_data["previous_mode"] == "default"
-                assert saved_data["transition_history"] == ["default->advanced:test"]
+                assert saved_data["transition_history"] == [
+                    "default->advanced:test"
+                ]
                 assert "timestamp" in saved_data
 
     def test_load_mode_state_no_file(self, mode_manager, sample_system_config):
         """Test loading state when no state file exists."""
         with patch.object(
-            mode_manager, "_get_state_file_path", return_value="/nonexistent/file.json5"
+            mode_manager,
+            "_get_state_file_path",
+            return_value="/nonexistent/file.json5",
         ):
             mode_manager._load_mode_state()
 
-            assert mode_manager.state.current_mode == sample_system_config.default_mode
+            assert (
+                mode_manager.state.current_mode
+                == sample_system_config.default_mode
+            )
 
     def test_load_mode_state_success(self, mode_manager):
         """Test successful state loading."""
@@ -531,7 +569,9 @@ class TestModeManager:
             "transition_history": ["default->advanced:test"],
         }
 
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json5", delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json5", delete=False
+        ) as f:
             json.dump(saved_state, f)
             temp_file = f.name
 
@@ -559,7 +599,9 @@ class TestModeManager:
             "timestamp": time.time(),
         }
 
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json5", delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json5", delete=False
+        ) as f:
             json.dump(saved_state, f)
             temp_file = f.name
 
@@ -577,7 +619,9 @@ class TestModeManager:
 
     def test_load_mode_state_corrupted_file(self, mode_manager):
         """Test loading state with corrupted file falls back to default."""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json5", delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json5", delete=False
+        ) as f:
             f.write("invalid json content")
             temp_file = f.name
 

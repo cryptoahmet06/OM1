@@ -60,7 +60,9 @@ class GPSOdomReader(FuserInput[str]):
                 "GPSOdomReader: origin_lat, origin_lon, and origin_yaw_deg must be set in the config."
             )
             raise ValueError("Missing origin coordinates or yaw in config.")
-        self._yaw_offset = math.radians(yaw0_deg) if yaw0_deg is not None else 0.0
+        self._yaw_offset = (
+            math.radians(yaw0_deg) if yaw0_deg is not None else 0.0
+        )
 
         # --- current pose -----------------------------------------------
         self.pose_x = 0.0  # metres East  of origin
@@ -72,7 +74,9 @@ class GPSOdomReader(FuserInput[str]):
         self.buf: list[Message] = []
         self.descriptor_for_LLM = "Latitude, Longitude, and Yaw"
 
-        unitree_ethernet: str | None = getattr(config, "unitree_ethernet", None)
+        unitree_ethernet: str | None = getattr(
+            config, "unitree_ethernet", None
+        )
         self.odom = OdomProvider(channel=unitree_ethernet)
         logging.info(f"Mapper Odom Provider: {self.odom}")
 
@@ -100,7 +104,9 @@ class GPSOdomReader(FuserInput[str]):
         lat, lon = self._xy_to_latlon(self.pose_x, self.pose_y)
         self.io_provider.add_dynamic_variable("latitude", lat)
         self.io_provider.add_dynamic_variable("longitude", lon)
-        self.io_provider.add_dynamic_variable("yaw_deg", math.degrees(self.pose_yaw))
+        self.io_provider.add_dynamic_variable(
+            "yaw_deg", math.degrees(self.pose_yaw)
+        )
 
     # ── polling loop (FuserInput interface) ─────────────────────────────
     async def _poll(self) -> Optional[str]:
@@ -132,7 +138,9 @@ class GPSOdomReader(FuserInput[str]):
             return None
         m = self.buf[-1]
         self.buf.clear()
-        self.io_provider.add_input(self.__class__.__name__, m.text, m.timestamp)
+        self.io_provider.add_input(
+            self.__class__.__name__, m.text, m.timestamp
+        )
         return f"""
 {self.descriptor_for_LLM} INPUT
 // START

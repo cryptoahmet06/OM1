@@ -8,7 +8,12 @@ import zenoh
 
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
-from providers import BatteryStatus, IOProvider, TeleopsStatus, TeleopsStatusProvider
+from providers import (
+    BatteryStatus,
+    IOProvider,
+    TeleopsStatus,
+    TeleopsStatusProvider,
+)
 from zenoh_msgs import open_zenoh_session, sensor_msgs
 
 
@@ -80,7 +85,9 @@ class TurtleBot4Battery(FuserInput[str]):
         sample : zenoh.Sample
             Zenoh sample containing battery state data
         """
-        battery = sensor_msgs.BatteryState.deserialize(sample.payload.to_bytes())
+        battery = sensor_msgs.BatteryState.deserialize(
+            sample.payload.to_bytes()
+        )
 
         logging.debug(f"TB4 battery callback: {battery}")
 
@@ -209,7 +216,9 @@ class TurtleBot4Battery(FuserInput[str]):
         )
 
         self.io_provider.add_input(
-            self.__class__.__name__, latest_message.message, latest_message.timestamp
+            self.__class__.__name__,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

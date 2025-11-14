@@ -24,7 +24,9 @@ def test_load_simulator_success():
         result = load_simulator("MockSimulator")
 
         mock_find_module.assert_called_once_with("MockSimulator")
-        mock_import.assert_called_once_with("simulators.plugins.mock_simulator")
+        mock_import.assert_called_once_with(
+            "simulators.plugins.mock_simulator"
+        )
         assert result == MockSimulator
 
 
@@ -71,7 +73,8 @@ def test_load_simulator_invalid_type():
         mock_import.return_value = mock_module
 
         with pytest.raises(
-            ValueError, match="'InvalidSimulator' is not a valid simulator subclass"
+            ValueError,
+            match="'InvalidSimulator' is not a valid simulator subclass",
         ):
             load_simulator("InvalidSimulator")
 
@@ -100,7 +103,10 @@ def test_find_module_with_class_not_found():
         patch("os.path.join") as mock_join,
         patch("os.path.exists") as mock_exists,
         patch("os.listdir") as mock_listdir,
-        patch("builtins.open", mock_open(read_data="class OtherClass:\n    pass\n")),
+        patch(
+            "builtins.open",
+            mock_open(read_data="class OtherClass:\n    pass\n"),
+        ),
     ):
         mock_join.side_effect = lambda *args: "/".join(args)
         mock_exists.return_value = True

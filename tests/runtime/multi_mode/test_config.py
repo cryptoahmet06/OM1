@@ -175,7 +175,9 @@ class TestModeConfig:
         sample_mode_config.cortex_llm = mock_llm
         sample_system_config.modes = {"test_mode": sample_mode_config}
 
-        runtime_config = sample_mode_config.to_runtime_config(sample_system_config)
+        runtime_config = sample_mode_config.to_runtime_config(
+            sample_system_config
+        )
 
         assert isinstance(runtime_config, RuntimeConfig)
         assert runtime_config.hertz == 2.0
@@ -189,11 +191,15 @@ class TestModeConfig:
         assert runtime_config.URID == "test_urid"
         assert runtime_config.unitree_ethernet == "eth0"
 
-    def test_to_runtime_config_no_llm(self, sample_mode_config, sample_system_config):
+    def test_to_runtime_config_no_llm(
+        self, sample_mode_config, sample_system_config
+    ):
         """Test conversion to RuntimeConfig fails when no LLM is configured."""
         sample_system_config.modes = {"test_mode": sample_mode_config}
 
-        with pytest.raises(ValueError, match="No LLM configured for mode test_mode"):
+        with pytest.raises(
+            ValueError, match="No LLM configured for mode test_mode"
+        ):
             sample_mode_config.to_runtime_config(sample_system_config)
 
     def test_is_loaded_false(self, sample_mode_config):
@@ -210,7 +216,9 @@ class TestModeConfig:
         sample_mode_config.cortex_llm = mock_llm
         assert sample_mode_config.is_loaded() is True
 
-    def test_is_loaded_true_with_actions(self, sample_mode_config, mock_action):
+    def test_is_loaded_true_with_actions(
+        self, sample_mode_config, mock_action
+    ):
         """Test is_loaded() returns True when actions are loaded."""
         sample_mode_config.agent_actions = [mock_action]
         assert sample_mode_config.is_loaded() is True
@@ -295,8 +303,12 @@ class TestLoadModeComponents:
         mock_load_llm.return_value = lambda config, available_actions: mock_llm
 
         sample_mode_config._raw_inputs = [{"type": "test_input", "config": {}}]
-        sample_mode_config._raw_simulators = [{"type": "test_simulator", "config": {}}]
-        sample_mode_config._raw_actions = [{"type": "test_action", "config": {}}]
+        sample_mode_config._raw_simulators = [
+            {"type": "test_simulator", "config": {}}
+        ]
+        sample_mode_config._raw_actions = [
+            {"type": "test_action", "config": {}}
+        ]
         sample_mode_config._raw_backgrounds = [
             {"type": "test_background", "config": {}}
         ]
@@ -326,7 +338,10 @@ class TestLoadModeComponents:
         mock_load_llm.return_value = lambda config, available_actions: mock_llm
 
         sample_mode_config._raw_llm = None
-        sample_system_config.global_cortex_llm = {"type": "global_llm", "config": {}}
+        sample_system_config.global_cortex_llm = {
+            "type": "global_llm",
+            "config": {},
+        }
 
         _load_mode_components(sample_mode_config, sample_system_config)
 
@@ -358,7 +373,11 @@ class TestLoadModeConfig:
 
     @patch.dict(
         os.environ,
-        {"ROBOT_IP": "env_robot_ip", "OM_API_KEY": "env_api_key", "URID": "env_urid"},
+        {
+            "ROBOT_IP": "env_robot_ip",
+            "OM_API_KEY": "env_api_key",
+            "URID": "env_urid",
+        },
     )
     def test_load_mode_config_env_fallback(self):
         """Test that environment variables are used as fallback."""
@@ -377,7 +396,9 @@ class TestLoadModeConfig:
             },
         }
 
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json5", delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json5", delete=False
+        ) as f:
             import json5
 
             json5.dump(config_data, f)
@@ -412,7 +433,9 @@ class TestLoadModeConfig:
             },
         }
 
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json5", delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json5", delete=False
+        ) as f:
             import json5
 
             json5.dump(config_data, f)

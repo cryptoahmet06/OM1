@@ -61,7 +61,9 @@ class VLMVila(FuserInput[str]):
 
         # Initialize VLM provider
         api_key = getattr(self.config, "api_key", None)
-        base_url = getattr(self.config, "base_url", "wss://api-vila.openmind.org")
+        base_url = getattr(
+            self.config, "base_url", "wss://api-vila.openmind.org"
+        )
         stream_base_url = getattr(
             self.config,
             "stream_base_url",
@@ -70,7 +72,9 @@ class VLMVila(FuserInput[str]):
         camera_index = getattr(self.config, "camera_index", 0)
 
         self.vlm: VLMVilaProvider = VLMVilaProvider(
-            ws_url=base_url, stream_url=stream_base_url, camera_index=camera_index
+            ws_url=base_url,
+            stream_url=stream_base_url,
+            camera_index=camera_index,
         )
         self.vlm.start()
         self.vlm.register_message_callback(self._handle_vlm_message)
@@ -184,7 +188,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.descriptor_for_LLM, latest_message.message, latest_message.timestamp
+            self.descriptor_for_LLM,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages = []
 

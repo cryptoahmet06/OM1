@@ -21,7 +21,9 @@ class SpeakRivaTTSConnector(ActionConnector[SpeakInput]):
         super().__init__(config)
 
         # Get microphone and speaker device IDs and names
-        microphone_device_id = getattr(self.config, "microphone_device_id", None)
+        microphone_device_id = getattr(
+            self.config, "microphone_device_id", None
+        )
         microphone_name = getattr(self.config, "microphone_name", None)
 
         # OM API key
@@ -38,8 +40,8 @@ class SpeakRivaTTSConnector(ActionConnector[SpeakInput]):
             self.session.declare_subscriber(
                 self.tts_status_request_topic, self._zenoh_tts_status_request
             )
-            self._zenoh_tts_status_response_pub = self.session.declare_publisher(
-                self.tts_status_response_topic
+            self._zenoh_tts_status_response_pub = (
+                self.session.declare_publisher(self.tts_status_response_topic)
             )
 
             logging.info("Riva TTS Zenoh client opened")
@@ -70,7 +72,9 @@ class SpeakRivaTTSConnector(ActionConnector[SpeakInput]):
             return
 
         # Block ASR until TTS is done
-        self.tts.register_tts_state_callback(self.asr.audio_stream.on_tts_state_change)
+        self.tts.register_tts_state_callback(
+            self.asr.audio_stream.on_tts_state_change
+        )
         # Add pending message to TTS
         self.tts.add_pending_message(output_interface.action)
 
@@ -96,7 +100,9 @@ class SpeakRivaTTSConnector(ActionConnector[SpeakInput]):
                 request_id=request_id,
                 code=1 if self.tts_enabled else 0,
                 status=String(
-                    data=("TTS Enabled" if self.tts_enabled else "TTS Disabled")
+                    data=(
+                        "TTS Enabled" if self.tts_enabled else "TTS Disabled"
+                    )
                 ),
             )
             return self._zenoh_tts_status_response_pub.put(

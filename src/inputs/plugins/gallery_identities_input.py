@@ -66,8 +66,12 @@ class GalleryIdentities(FuserInput[str]):
         self.message_buffer: Queue[str] = Queue(maxsize=64)
 
         # Config mirrors FacePresence input naming where possible
-        base_url = getattr(self.config, "face_http_base_url", "http://127.0.0.1:6793")
-        fps = float(getattr(self.config, "gallery_poll_fps", 1.0))  # default 1 Hz
+        base_url = getattr(
+            self.config, "face_http_base_url", "http://127.0.0.1:6793"
+        )
+        fps = float(
+            getattr(self.config, "gallery_poll_fps", 1.0)
+        )  # default 1 Hz
 
         self.provider: GalleryIdentitiesProvider = GalleryIdentitiesProvider(
             base_url=base_url, fps=fps, timeout_s=2.0
@@ -165,7 +169,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.__class__.__name__, latest_message.message, latest_message.timestamp
+            self.__class__.__name__,
+            latest_message.message,
+            latest_message.timestamp,
         )
 
         self.messages.clear()

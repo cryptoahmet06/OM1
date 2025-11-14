@@ -111,7 +111,9 @@ class RemoteAudioInput:
             elif self._device_name is not None:
                 available_devices = []
                 for i in range(device_count):
-                    device_info = self._audio_interface.get_device_info_by_index(i)
+                    device_info = (
+                        self._audio_interface.get_device_info_by_index(i)
+                    )
                     device_name = device_info["name"]
                     available_devices.append({"name": device_name, "index": i})
                     if self._device_name.lower() in device_name.lower():
@@ -123,7 +125,9 @@ class RemoteAudioInput:
                         f"Input device '{self._device_name}' not found. Available devices: {available_devices}"
                     )
             else:
-                input_device = self._audio_interface.get_default_input_device_info()
+                input_device = (
+                    self._audio_interface.get_default_input_device_info()
+                )
                 self._device = input_device["index"]
                 logging.info(
                     f"Default input device: {input_device['name']} ({self._device})"
@@ -138,7 +142,9 @@ class RemoteAudioInput:
 
             if rate is None:
                 self._rate = int(input_device.get("defaultSampleRate", 16000))
-                logging.info(f"Using device default sample rate: {self._rate} Hz")
+                logging.info(
+                    f"Using device default sample rate: {self._rate} Hz"
+                )
             else:
                 self._rate = rate
                 logging.info(f"Using specified sample rate: {self._rate} Hz")
@@ -200,7 +206,9 @@ class RemoteAudioInput:
 
         return self
 
-    def _fill_buffer(self, in_data: bytes, frame_count: int, time_info, status_flags):
+    def _fill_buffer(
+        self, in_data: bytes, frame_count: int, time_info, status_flags
+    ):
         """
         Callback function to handle incoming audio data.
 
@@ -235,7 +243,9 @@ class RemoteAudioInput:
         The thread runs as a daemon to ensure it terminates when the main program exits.
         """
         if self._audio_thread is None or not self._audio_thread.is_alive():
-            self._audio_thread = threading.Thread(target=self.on_audio, daemon=True)
+            self._audio_thread = threading.Thread(
+                target=self.on_audio, daemon=True
+            )
             self._audio_thread.start()
             logging.info("Started audio processing thread")
 

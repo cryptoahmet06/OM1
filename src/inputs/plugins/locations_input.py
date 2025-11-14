@@ -7,7 +7,9 @@ from typing import List, Optional
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
 from providers.io_provider import IOProvider
-from providers.unitree_go2_locations_provider import UnitreeGo2LocationsProvider
+from providers.unitree_go2_locations_provider import (
+    UnitreeGo2LocationsProvider,
+)
 
 
 @dataclass
@@ -48,7 +50,9 @@ class LocationsInput(FuserInput[str]):
         self.io_provider = IOProvider()
 
         self.messages: List[Message] = []
-        self.descriptor_for_LLM = "These are the saved locations you can navigate to."
+        self.descriptor_for_LLM = (
+            "These are the saved locations you can navigate to."
+        )
 
     async def _poll(self) -> Optional[str]:
         """
@@ -69,7 +73,9 @@ class LocationsInput(FuserInput[str]):
             pose = entry.get("pose") if isinstance(entry, dict) else None
             if pose and isinstance(pose, dict):
                 pos = pose.get("position", {})
-                lines.append(f"{label} (x:{pos.get('x',0):.2f} y:{pos.get('y',0):.2f})")
+                lines.append(
+                    f"{label} (x:{pos.get('x',0):.2f} y:{pos.get('y',0):.2f})"
+                )
             else:
                 lines.append(f"{label}")
 

@@ -41,7 +41,9 @@ class MoveToPeerRos2Connector(ActionConnector[MoveToPeerInput]):
         self.sport_client.Init()
 
     # ────────────────────────────────────────────────────────────────────────
-    async def connect(self, inp: MoveToPeerInput) -> None:  # noqa: D401  (imperative)
+    async def connect(
+        self, inp: MoveToPeerInput
+    ) -> None:  # noqa: D401  (imperative)
         """Execute the *navigate‑to‑peer* behaviour once."""
         if inp.action == MoveToPeerAction.IDLE:
             logging.info("MoveToPeer: idle, no movement commanded.")
@@ -59,7 +61,9 @@ class MoveToPeerRos2Connector(ActionConnector[MoveToPeerInput]):
             logging.info("MoveToPeer: own location not available, not moving.")
             return
         if None in (lat1, lon1):
-            logging.info("MoveToPeer: peer location not available, not moving.")
+            logging.info(
+                "MoveToPeer: peer location not available, not moving."
+            )
             return
 
         lat0, lon0, lat1, lon1 = map(float, (lat0, lon0, lat1, lon1))
@@ -84,7 +88,9 @@ class MoveToPeerRos2Connector(ActionConnector[MoveToPeerInput]):
 
         # --------------------------------------------------------------------
         if yaw_deg is None:
-            logging.info("MoveToPeer: yaw unknown → driving body‑frame vector instead.")
+            logging.info(
+                "MoveToPeer: yaw unknown → driving body‑frame vector instead."
+            )
             # project desired displacement into body frame *assuming* current
             # body‑frame aligns with world‑frame (worst‑case, but still works).
             norm = distance or 1.0
@@ -94,7 +100,9 @@ class MoveToPeerRos2Connector(ActionConnector[MoveToPeerInput]):
             return
 
         # heading error – positive → need CW rotation
-        heading_err = ((bearing_deg - yaw_deg + 180.0) % 360.0) - 180.0  # -> (‑180,180]
+        heading_err = (
+            (bearing_deg - yaw_deg + 180.0) % 360.0
+        ) - 180.0  # -> (‑180,180]
         logging.info(
             f"MoveToPeer: bearing={bearing_deg:.1f}°, yaw={yaw_deg:.1f}°, error={heading_err:.1f}°"
         )
@@ -102,12 +110,16 @@ class MoveToPeerRos2Connector(ActionConnector[MoveToPeerInput]):
         # phase 1 — rotate toward peer --------------------------------------
         if abs(heading_err) > self.ANG_TOL_DEG:
             yaw_rate = math.copysign(self.MAX_ROT_SPEED, -heading_err)
-            logging.info(f"MoveToPeer: rotating in place at {yaw_rate:.2f} rad/s")
+            logging.info(
+                f"MoveToPeer: rotating in place at {yaw_rate:.2f} rad/s"
+            )
             self.sport_client.Move(0.0, 0.0, yaw_rate)
             # give the robot time to rotate a bit before this action returns
             await asyncio.sleep(0.5)
             return  # caller may schedule subsequent actions for refinement
 
         # phase 2 — drive forward -------------------------------------------
-        logging.info(f"MoveToPeer: aligned → driving forward {self.FWD_SPEED} m/s")
+        logging.info(
+            f"MoveToPeer: aligned → driving forward {self.FWD_SPEED} m/s"
+        )
         self.sport_client.Move(self.FWD_SPEED, 0.0, 0.0)

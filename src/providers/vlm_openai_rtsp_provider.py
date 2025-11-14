@@ -53,7 +53,9 @@ class VLMOpenAIRTSPProvider:
             Time interval in seconds between batch processing. Defaults to 0.5.
         """
         self.running: bool = False
-        self.api_client: AsyncOpenAI = AsyncOpenAI(api_key=api_key, base_url=base_url)
+        self.api_client: AsyncOpenAI = AsyncOpenAI(
+            api_key=api_key, base_url=base_url
+        )
         self.video_stream: VideoRTSPStream = VideoRTSPStream(
             rtsp_url,
             decode_format,
@@ -137,7 +139,9 @@ class VLMOpenAIRTSPProvider:
             )
 
             processing_latency = time.perf_counter() - processing_start
-            logging.debug(f"Batch processing latency: {processing_latency:.3f} seconds")
+            logging.debug(
+                f"Batch processing latency: {processing_latency:.3f} seconds"
+            )
             logging.debug(f"Processed {len(frames)} frames")
             logging.debug(f"OpenAI LLM VLM Response: {response}")
 

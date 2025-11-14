@@ -1,7 +1,9 @@
 import logging
 
 from backgrounds.base import Background, BackgroundConfig
-from providers.unitree_go2_navigation_provider import UnitreeGo2NavigationProvider
+from providers.unitree_go2_navigation_provider import (
+    UnitreeGo2NavigationProvider,
+)
 
 
 class UnitreeGo2Navigation(Background):
@@ -14,4 +16,6 @@ class UnitreeGo2Navigation(Background):
 
         self.unitree_go2_navigation_provider = UnitreeGo2NavigationProvider()
         self.unitree_go2_navigation_provider.start()
-        logging.info("Unitree Go2 Navigation Provider initialized in background")
+        logging.info(
+            "Unitree Go2 Navigation Provider initialized in background"
+        )

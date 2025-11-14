@@ -22,7 +22,9 @@ def io_provider():
 def test_add_input_with_timestamp(io_provider):
     timestamp = time.time()
     io_provider.add_input("key1", "value1", timestamp)
-    assert io_provider.inputs["key1"] == Input(input="value1", timestamp=timestamp)
+    assert io_provider.inputs["key1"] == Input(
+        input="value1", timestamp=timestamp
+    )
 
 
 def test_remove_input(io_provider):
@@ -89,7 +91,9 @@ def test_thread_safety(io_provider):
 
     threads = []
     for i in range(10):
-        t = threading.Thread(target=worker, args=(f"key{i}", f"value{i}", time.time()))
+        t = threading.Thread(
+            target=worker, args=(f"key{i}", f"value{i}", time.time())
+        )
         threads.append(t)
         t.start()
 

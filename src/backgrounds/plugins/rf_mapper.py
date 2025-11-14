@@ -84,7 +84,9 @@ class RFmapper(Background):
         self.odom = OdomProvider()
         logging.info(f"Mapper Odom Provider: {self.odom}")
 
-        self.fds = FabricDataSubmitter(api_key=self.api_key, write_to_local_file=True)
+        self.fds = FabricDataSubmitter(
+            api_key=self.api_key, write_to_local_file=True
+        )
 
         self.seen_devices: Dict[str, RFData] = {}
 
@@ -133,7 +135,9 @@ class RFmapper(Background):
                     )
                 if local_name and self.seen_devices[addr].name is None:
                     self.seen_devices[addr].name = local_name
-                    logging.info(f"Updated BLE name: {self.seen_devices[addr].name}")
+                    logging.info(
+                        f"Updated BLE name: {self.seen_devices[addr].name}"
+                    )
                 if len(mfgval) > len(self.seen_devices[addr].mfgval):
                     self.seen_devices[addr].mfgval = mfgval
                     logging.info(
@@ -215,7 +219,9 @@ class RFmapper(Background):
                     fresh_scan_results = self.scan_results
                     self.scan_last_sent = self.scan_idx
                     self.scan_results = []
-                    logging.info(f"RF scan sending new payload: {self.scan_last_sent}")
+                    logging.info(
+                        f"RF scan sending new payload: {self.scan_last_sent}"
+                    )
 
                 # basic gps data and occasional scan results
                 try:

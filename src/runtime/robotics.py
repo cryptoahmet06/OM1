@@ -29,11 +29,15 @@ def load_unitree(unitree_ethernet: str):
             f"Using {unitree_ethernet} as the Unitree Network Ethernet Adapter"
         )
 
-        from unitree.unitree_sdk2py.core.channel import ChannelFactoryInitialize
+        from unitree.unitree_sdk2py.core.channel import (
+            ChannelFactoryInitialize,
+        )
 
         try:
             ChannelFactoryInitialize(0, unitree_ethernet)
         except Exception as e:
-            logging.error(f"Failed to initialize Unitree Ethernet channel: {e}")
+            logging.error(
+                f"Failed to initialize Unitree Ethernet channel: {e}"
+            )
             # raise e
         logging.info("Booting Unitree and CycloneDDS")

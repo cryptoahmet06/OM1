@@ -36,9 +36,13 @@ class MockLidarProvider:
         """
         self.test_scans = scans
         self.current_index = 0
-        logging.info(f"MockLidarProvider loaded {len(self.test_scans)} test scans")
+        logging.info(
+            f"MockLidarProvider loaded {len(self.test_scans)} test scans"
+        )
 
-    def load_scans_from_json_files(self, file_paths: List[str], base_dir: Path):
+    def load_scans_from_json_files(
+        self, file_paths: List[str], base_dir: Path
+    ):
         """
         Load lidar scan data from JSON files.
 
@@ -58,7 +62,9 @@ class MockLidarProvider:
                 lidar_file_path = base_dir / file_path
 
             if not lidar_file_path.exists():
-                logging.warning(f"Lidar data file not found: {lidar_file_path}")
+                logging.warning(
+                    f"Lidar data file not found: {lidar_file_path}"
+                )
                 continue
 
             try:
@@ -82,7 +88,9 @@ class MockLidarProvider:
                     )
 
             except FileNotFoundError:
-                logging.error(f"MockLidarProvider: File not found: {lidar_file_path}")
+                logging.error(
+                    f"MockLidarProvider: File not found: {lidar_file_path}"
+                )
             except json.JSONDecodeError as e:
                 logging.error(
                     f"MockLidarProvider: Invalid JSON in {lidar_file_path}: {e}"
@@ -134,7 +142,9 @@ class MockLidarProvider:
         bool
             True if more scans are available, False otherwise
         """
-        return bool(self.test_scans and self.current_index < len(self.test_scans))
+        return bool(
+            self.test_scans and self.current_index < len(self.test_scans)
+        )
 
     def reset(self):
         """Reset the lidar provider to start from the first scan again."""

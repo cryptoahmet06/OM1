@@ -21,7 +21,9 @@ def mock_model():
 
 @pytest.fixture
 def mock_check_webcam():
-    with patch("inputs.plugins.vlm_coco_local.check_webcam", return_value=True):
+    with patch(
+        "inputs.plugins.vlm_coco_local.check_webcam", return_value=True
+    ):
         yield
 
 
@@ -62,7 +64,10 @@ async def test_raw_to_text_with_detection(vlm_coco_local, mock_model):
     # Setup mock model output
     dummy_detection = {
         "labels": [1, 2],
-        "boxes": [torch.tensor([10, 10, 100, 100]), torch.tensor([200, 10, 300, 100])],
+        "boxes": [
+            torch.tensor([10, 10, 100, 100]),
+            torch.tensor([200, 10, 300, 100]),
+        ],
         "scores": [torch.tensor(0.9), torch.tensor(0.8)],
     }
     vlm_coco_local.model = Mock(return_value=[dummy_detection])
@@ -84,7 +89,9 @@ async def test_raw_to_text_buffer_management(vlm_coco_local):
 
 
 def test_formatted_latest_buffer(vlm_coco_local):
-    vlm_coco_local.messages = [Message(message="test message", timestamp=123.456)]
+    vlm_coco_local.messages = [
+        Message(message="test message", timestamp=123.456)
+    ]
     result = vlm_coco_local.formatted_latest_buffer()
     assert "test message" in result
     assert vlm_coco_local.messages == []

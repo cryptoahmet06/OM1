@@ -24,7 +24,9 @@ class AvatarProvider:
         The Avatar server port
     """
 
-    def __init__(self, avatar_server: str = "localhost", avatar_port: int = 8123):
+    def __init__(
+        self, avatar_server: str = "localhost", avatar_port: int = 8123
+    ):
         """
         Robot and sensor configuration
         """
@@ -42,7 +44,9 @@ class AvatarProvider:
                 self.avatar_server_host, self.avatar_server_port
             )
             self.avatar_server.start()
-            logging.info(f"Connected to Avatar server at {avatar_server}:{avatar_port}")
+            logging.info(
+                f"Connected to Avatar server at {avatar_server}:{avatar_port}"
+            )
         except Exception as e:
             logging.error(f"Error: {e}")
 
@@ -59,7 +63,9 @@ class AvatarProvider:
             self.avatar_server.handle_global_response(command)
             logging.info(f"Sent avatar command: {command}")
         else:
-            logging.warning("Avatar server is not running, cannot send command.")
+            logging.warning(
+                "Avatar server is not running, cannot send command."
+            )
 
     def stop(self):
         """

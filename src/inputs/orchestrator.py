@@ -31,7 +31,8 @@ class InputOrchestrator:
         Creates and manages async tasks for each input source.
         """
         input_tasks = [
-            asyncio.create_task(self._listen_to_input(input)) for input in self.inputs
+            asyncio.create_task(self._listen_to_input(input))
+            for input in self.inputs
         ]
         await asyncio.gather(*input_tasks)
 

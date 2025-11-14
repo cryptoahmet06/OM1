@@ -46,7 +46,9 @@ class ActionOrchestrator:
                     f"Connector {agent_action.llm_label} already submitted, skipping."
                 )
                 continue
-            self._connector_executor.submit(self._run_connector_loop, agent_action)
+            self._connector_executor.submit(
+                self._run_connector_loop, agent_action
+            )
             self._submitted_connectors.add(agent_action.llm_label)
 
         return asyncio.Future()  # Return future for compatibility
@@ -62,7 +64,9 @@ class ActionOrchestrator:
                 logging.error(f"Error in connector {action.llm_label}: {e}")
                 time.sleep(0.1)
 
-    async def flush_promises(self) -> tuple[list[T.Any], list[asyncio.Task[T.Any]]]:
+    async def flush_promises(
+        self,
+    ) -> tuple[list[T.Any], list[asyncio.Task[T.Any]]]:
         """
         Flushes the promise queue and returns the completed promises and the pending promises.
         """
@@ -71,7 +75,9 @@ class ActionOrchestrator:
             if promise.done():
                 await promise
                 done_promises.append(promise)
-        self.promise_queue = [p for p in self.promise_queue if p not in done_promises]
+        self.promise_queue = [
+            p for p in self.promise_queue if p not in done_promises
+        ]
         return done_promises, self.promise_queue
 
     async def promise(self, actions: list[Action]) -> None:
@@ -124,7 +130,9 @@ class ActionOrchestrator:
             )
             self.promise_queue.append(action_response)
 
-    async def _promise_action(self, agent_action: AgentAction, action: Action) -> T.Any:
+    async def _promise_action(
+        self, agent_action: AgentAction, action: Action
+    ) -> T.Any:
         logging.debug(
             f"Calling action {agent_action.llm_label} with type {action.type.lower()} and argument {action.value}"
         )

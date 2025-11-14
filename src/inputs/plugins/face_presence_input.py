@@ -54,7 +54,9 @@ class FacePresence(FuserInput[str]):
         self.message_buffer: Queue[str] = Queue(maxsize=64)
 
         # Read config and construct the provider WITH required args
-        base_url = getattr(self.config, "face_http_base_url", "http://127.0.0.1:6793")
+        base_url = getattr(
+            self.config, "face_http_base_url", "http://127.0.0.1:6793"
+        )
         recent_sec = float(getattr(self.config, "face_recent_sec", 2.0))
         fps = float(getattr(self.config, "face_poll_fps", 5.0))
 
@@ -172,7 +174,9 @@ INPUT: {self.descriptor_for_LLM}
 """
 
         self.io_provider.add_input(
-            self.__class__.__name__, latest_message.message, latest_message.timestamp
+            self.__class__.__name__,
+            latest_message.message,
+            latest_message.timestamp,
         )
         self.messages.clear()
         return result

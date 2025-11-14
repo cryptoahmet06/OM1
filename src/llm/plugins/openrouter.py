@@ -55,7 +55,8 @@ class OpenRouter(LLM[R]):
             self._config.model = "meta-llama/llama-3.3-70b-instruct"
 
         self._client = openai.AsyncClient(
-            base_url=config.base_url or "https://api.openmind.org/api/core/openrouter",
+            base_url=config.base_url
+            or "https://api.openmind.org/api/core/openrouter",
             api_key=config.api_key,
         )
 
@@ -91,13 +92,17 @@ class OpenRouter(LLM[R]):
             self.io_provider.set_llm_prompt(prompt)
 
             formatted_messages = [
-                {"role": msg.get("role", "user"), "content": msg.get("content", "")}
+                {
+                    "role": msg.get("role", "user"),
+                    "content": msg.get("content", ""),
+                }
                 for msg in messages
             ]
             formatted_messages.append({"role": "user", "content": prompt})
 
             response = await self._client.chat.completions.create(
-                model=self._config.model or "meta-llama/llama-3.3-70b-instruct",
+                model=self._config.model
+                or "meta-llama/llama-3.3-70b-instruct",
                 messages=T.cast(T.Any, formatted_messages),
                 tools=T.cast(T.Any, self.function_schemas),
                 tool_choice="auto",
@@ -108,7 +113,9 @@ class OpenRouter(LLM[R]):
             self.io_provider.llm_end_time = time.time()
 
             if message.tool_calls:
-                logging.info(f"Received {len(message.tool_calls)} function calls")
+                logging.info(
+                    f"Received {len(message.tool_calls)} function calls"
+                )
                 logging.info(f"Function calls: {message.tool_calls}")
 
                 function_call_data = [

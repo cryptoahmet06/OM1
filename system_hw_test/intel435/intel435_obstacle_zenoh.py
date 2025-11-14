@@ -18,7 +18,8 @@ class Intel435ObstacleDector:
         self.session = open_zenoh_session()
 
         self.session.declare_subscriber(
-            "camera/realsense2_camera_node/depth/obstacle_point", self.obstacle_callback
+            "camera/realsense2_camera_node/depth/obstacle_point",
+            self.obstacle_callback,
         )
 
         logging.info("Zenoh is open for Intel435ObstacleDector")

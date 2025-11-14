@@ -75,7 +75,10 @@ class ActionUnitreeSDKConnector(ActionConnector[ActionInput]):
                 try:
                     if self.sport_client is not None:
                         dance_move = random.choice(
-                            [self.sport_client.Dance1, self.sport_client.Dance2]
+                            [
+                                self.sport_client.Dance1,
+                                self.sport_client.Dance2,
+                            ]
                         )
                         dance_move()
                 except Exception as e:
@@ -97,4 +100,6 @@ class ActionUnitreeSDKConnector(ActionConnector[ActionInput]):
                     "ActionUnitreeSDKConnector: Still performing previous action"
                 )
         else:
-            logging.warning(f"Action '{action}' not recognized or not implemented.")
+            logging.warning(
+                f"Action '{action}' not recognized or not implemented."
+            )
