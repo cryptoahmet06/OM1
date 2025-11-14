@@ -140,7 +140,6 @@ class VLMGeminiProvider:
             # Event loop yoksa yeni loop oluştur
             asyncio.run(self._process_frame(frame))
 
-
     def stop(self):
         """
         Stop the Gemini provider.
