@@ -8,6 +8,15 @@ from openai import AsyncOpenAI
 
 from .singleton import singleton
 
+import asyncio
+
+def frame_callback_sync(frame: str):
+    try:
+        loop = asyncio.get_running_loop()
+        loop.create_task(async_frame_callback(frame))
+    except RuntimeError:
+        asyncio.run(async_frame_callback(frame))
+
 
 @singleton
 class VLMGeminiProvider:
@@ -49,10 +58,11 @@ class VLMGeminiProvider:
             ws.Client(url=stream_url) if stream_url else None
         )
         self.video_stream: VideoStream = VideoStream(
-            frame_callback=self._process_frame,
+            frame_callback=frame_callback_sync,  # <- senkron wrapper
             fps=fps,
             device_index=camera_index,  # type: ignore
         )
+
         self.message_callback: Optional[Callable] = None
 
     async def _process_frame(self, frame: str):
