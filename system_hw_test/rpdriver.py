@@ -24,11 +24,11 @@ For additional information please refer to the RPLidar class documentation.
 """
 
 import codecs
+from collections import namedtuple
 import logging
 import struct
 import sys
 import time
-from collections import namedtuple
 
 import serial
 

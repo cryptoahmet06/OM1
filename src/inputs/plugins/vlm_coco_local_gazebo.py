@@ -2,18 +2,18 @@
 
 import asyncio
 import collections
+from dataclasses import dataclass
 import logging
 import subprocess
 import time
-from dataclasses import dataclass
 from typing import Optional
 
 import cv2
-import numpy as np
-import torch
 from google.protobuf import text_format
+import numpy as np
 from om1_vlm.gz.msgs import image_pb2  # noqa
 from PIL import Image
+import torch
 from torchvision.models import detection as detection_model
 
 from inputs.base import SensorConfig

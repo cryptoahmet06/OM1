@@ -1,7 +1,7 @@
-import time
-import typing as T
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+import time
+import typing as T
 
 IT = T.TypeVar("IT")
 OT = T.TypeVar("OT")

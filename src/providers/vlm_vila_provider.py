@@ -1,8 +1,9 @@
 import logging
 from typing import Callable, Optional
 
-from om1_utils import ws
 from om1_vlm import VideoStream
+
+from om1_utils import ws
 
 from .singleton import singleton
 

@@ -1,12 +1,12 @@
 import logging
 import math
+from queue import Queue
 import random
 import time
-from queue import Queue
 from typing import List, Optional
 
-import zenoh
 from unitree.unitree_sdk2py.go2.sport.sport_client import SportClient
+import zenoh
 
 from actions.base import ActionConfig, ActionConnector, MoveCommand
 from actions.move_go2_autonomy.interface import MoveInput

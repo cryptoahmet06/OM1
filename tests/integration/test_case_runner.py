@@ -1,15 +1,15 @@
 import asyncio
 import logging
 import os
+from pathlib import Path
 import re
 import time
-from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 import json5
 import openai
-import pytest
 from PIL import Image
+import pytest
 
 from llm.output_model import Action, CortexOutputModel
 from runtime.single_mode.config import build_runtime_config_from_test_case

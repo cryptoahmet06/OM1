@@ -1,9 +1,9 @@
 import argparse
+from dataclasses import dataclass
 import logging
 import sys
 import threading
 import time
-from dataclasses import dataclass
 
 from pycdr2 import IdlStruct
 from pycdr2.types import float64

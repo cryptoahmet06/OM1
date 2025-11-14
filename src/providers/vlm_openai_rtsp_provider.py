@@ -1,8 +1,8 @@
 import asyncio
+from collections import deque
 import json
 import logging
 import time
-from collections import deque
 from typing import Any, Callable, Dict, List, Optional
 
 from om1_vlm import VideoRTSPStream

@@ -1,7 +1,7 @@
 from typing import Type
 
-import pytest
 from pydantic import BaseModel
+import pytest
 
 from llm import LLM, LLMConfig
 

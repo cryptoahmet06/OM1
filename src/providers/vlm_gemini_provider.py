@@ -2,9 +2,10 @@ import logging
 import time
 from typing import Callable, Optional
 
-from om1_utils import ws
 from om1_vlm import VideoStream
 from openai import AsyncOpenAI
+
+from om1_utils import ws
 
 from .singleton import singleton
 

@@ -1,5 +1,5 @@
-import time
 from dataclasses import dataclass
+import time
 from typing import List
 
 from llm.output_model import Action
