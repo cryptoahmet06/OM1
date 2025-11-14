@@ -1,7 +1,7 @@
 import asyncio
 import logging
-import time
 from queue import Queue
+import time
 from typing import List, Optional
 
 from inputs.base import SensorConfig

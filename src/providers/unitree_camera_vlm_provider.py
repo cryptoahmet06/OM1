@@ -5,8 +5,9 @@ from typing import Callable, List, Optional, Tuple
 
 import cv2
 import numpy as np
-from om1_utils import ws
 from om1_vlm import VideoStream
+
+from om1_utils import ws
 
 from .singleton import singleton
 

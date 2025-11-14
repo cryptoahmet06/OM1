@@ -1,7 +1,7 @@
 from unittest.mock import Mock, mock_open, patch
 
-import pytest
 from pydantic import BaseModel
+import pytest
 
 from llm import LLM, LLMConfig, find_module_with_class, load_llm
 from providers.io_provider import IOProvider

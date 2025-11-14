@@ -1,8 +1,8 @@
 import logging
 import math
+from queue import Queue
 import random
 import time
-from queue import Queue
 from typing import List, Optional
 
 import zenoh

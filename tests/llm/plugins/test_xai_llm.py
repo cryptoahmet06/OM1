@@ -1,7 +1,7 @@
 from unittest.mock import AsyncMock, MagicMock
 
-import pytest
 from pydantic import BaseModel
+import pytest
 
 from llm import LLMConfig
 from llm.output_model import Action, CortexOutputModel

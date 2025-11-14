@@ -2,6 +2,7 @@ import logging
 from typing import Callable, Optional
 
 from om1_speech import AudioInputStream
+
 from om1_utils import ws
 
 from .singleton import singleton

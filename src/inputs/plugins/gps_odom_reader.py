@@ -6,10 +6,10 @@ Light-weight odometry reader (Unitree DDS).
 from __future__ import annotations
 
 import asyncio
+from dataclasses import dataclass
 import logging
 import math
 import time
-from dataclasses import dataclass
 from typing import Optional
 
 from inputs.base import SensorConfig

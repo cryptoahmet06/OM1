@@ -3,16 +3,17 @@ This script is used to test the remote audio input functionality of a system.
 """
 
 import base64
+from dataclasses import dataclass
 import json
 import logging
 import os
 import sys
 import threading
 import time
-from dataclasses import dataclass
 from typing import Optional
 
 import pyaudio
+
 from om1_utils import ws
 
 logging.basicConfig(
