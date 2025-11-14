@@ -133,11 +133,9 @@ class VLMGeminiProvider:
 
     def frame_callback_sync(self, frame: str) -> None:
         try:
-            # Mevcut event loop varsa task olarak çalıştır
-            loop = asyncio.get_running_loop()
-            loop.create_task(self._process_frame(frame))
+            asyncio.ensure_future(self._process_frame(frame))
         except RuntimeError:
-            # Event loop yoksa yeni loop oluştur
+            # Eğer event loop yoksa yeni loop oluşturup çalıştır
             asyncio.run(self._process_frame(frame))
 
     def stop(self):
