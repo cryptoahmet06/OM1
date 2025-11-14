@@ -93,6 +93,10 @@ indent-width = 4
 src = ["src"]
 exclude = ["src/unitree","gazebo", "src/ubtech"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["actions", "providers", "om1_utils", "zenoh_msgs"]
+force-sort-within-sections = true
+
 [tool.ruff.lint]
 select = ["E", "F", "I"]
 ignore = ["E203", "E501"]
