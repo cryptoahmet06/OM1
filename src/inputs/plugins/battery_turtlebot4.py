@@ -1,7 +1,7 @@
 import asyncio
-from dataclasses import dataclass
 import logging
 import time
+from dataclasses import dataclass
 from typing import List, Optional
 
 import zenoh

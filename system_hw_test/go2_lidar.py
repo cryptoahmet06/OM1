@@ -3,9 +3,9 @@ import struct
 import sys
 import time
 
-from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.animation import FuncAnimation
 
 sys.path.insert(0, "../src")
 

@@ -1,9 +1,9 @@
-from enum import Enum
 import logging
 import math
 import multiprocessing as mp
 import threading
 import time
+from enum import Enum
 from typing import Optional, Union
 
 import zenoh

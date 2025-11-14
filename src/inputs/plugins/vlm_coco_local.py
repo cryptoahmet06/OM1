@@ -1,14 +1,14 @@
 import asyncio
 import collections
-from dataclasses import dataclass
 import logging
 import time
+from dataclasses import dataclass
 from typing import Optional
 
 import cv2
 import numpy as np
-from PIL import Image
 import torch
+from PIL import Image
 from torchvision.models import detection as detection_model
 
 from inputs.base import SensorConfig

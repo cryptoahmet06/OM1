@@ -1,8 +1,8 @@
 import asyncio
-from dataclasses import dataclass
 import logging
-from queue import Queue
 import time
+from dataclasses import dataclass
+from queue import Queue
 from typing import List, Optional
 
 from dimo import DIMO

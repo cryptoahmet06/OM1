@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 import logging
 import os
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 import json5

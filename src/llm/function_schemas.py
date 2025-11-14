@@ -4,9 +4,9 @@ Utility functions for generating OpenAI function schemas from AgentActions.
 This module is separate from both the actions and llm modules to avoid circular imports.
 """
 
-from enum import Enum
 import json
 import logging
+from enum import Enum
 from typing import get_type_hints
 
 from llm.output_model import Action

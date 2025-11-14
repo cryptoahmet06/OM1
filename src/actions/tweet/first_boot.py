@@ -2,8 +2,8 @@ import logging
 import os
 import warnings
 
-from dotenv import load_dotenv
 import openai
+from dotenv import load_dotenv
 
 from runtime.single_mode.config import RuntimeConfig
 

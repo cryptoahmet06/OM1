@@ -1,7 +1,7 @@
 import asyncio
-from dataclasses import dataclass
 import functools
 import logging
+from dataclasses import dataclass
 from typing import Any, Awaitable, Callable, List, Optional, TypeVar, Union
 
 import openai

@@ -2,8 +2,8 @@ import json
 import os
 
 import json5
-from jsonschema import ValidationError, validate
 import pytest
+from jsonschema import ValidationError, validate
 
 json_dir = os.path.join(os.path.dirname(__file__), "../../config")
 
