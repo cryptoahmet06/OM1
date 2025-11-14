@@ -1,9 +1,9 @@
 import asyncio
 import base64
 import logging
-from queue import Queue
 import threading
 import time
+from queue import Queue
 from typing import List, Optional
 
 import cv2

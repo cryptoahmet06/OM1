@@ -1,7 +1,7 @@
-from dataclasses import dataclass
 import logging
 import subprocess
 import time
+from dataclasses import dataclass
 
 from actions.base import ActionConfig, ActionConnector
 from actions.move.interface import MoveInput

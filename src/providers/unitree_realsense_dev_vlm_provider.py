@@ -6,9 +6,8 @@ import time
 from typing import Callable, List, Optional, Tuple
 
 import cv2
-from om1_vlm import VideoStream
-
 from om1_utils import ws
+from om1_vlm import VideoStream
 
 from .singleton import singleton
 

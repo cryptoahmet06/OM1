@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 import typing as T
+from dataclasses import dataclass
 
 R = T.TypeVar("R")
 

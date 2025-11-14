@@ -1,6 +1,6 @@
 import logging
-from queue import Queue
 import random
+from queue import Queue
 from typing import Optional
 
 from unitree.unitree_sdk2py.go2.sport.sport_client import SportClient

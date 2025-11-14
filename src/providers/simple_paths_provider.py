@@ -1,8 +1,8 @@
 import logging
 import multiprocessing as mp
-from queue import Empty, Full
 import threading
 import time
+from queue import Empty, Full
 from typing import Dict, List, Optional, Union
 
 import zenoh

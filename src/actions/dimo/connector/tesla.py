@@ -1,8 +1,8 @@
 import logging
 import time
 
-from dimo import DIMO
 import requests
+from dimo import DIMO
 
 from actions.base import ActionConfig, ActionConnector
 from actions.dimo.interface import TeslaInput
