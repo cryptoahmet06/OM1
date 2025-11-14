@@ -58,9 +58,7 @@ def test_fuser_timestamps(mock_time):
 @patch("fuser.describe_action")
 def test_fuser_with_inputs_and_actions(mock_describe):
     mock_describe.return_value = "action description"
-    config = MockConfig(
-        agent_actions=[MockAction("action1"), MockAction("action2")]
-    )
+    config = MockConfig(agent_actions=[MockAction("action1"), MockAction("action2")])
     inputs = [MockSensor()]
     io_provider = IOProvider()
 

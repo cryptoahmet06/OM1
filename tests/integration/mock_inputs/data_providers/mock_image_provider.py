@@ -35,9 +35,7 @@ class MockImageProvider:
         """
         self.test_images = images
         self.current_index = 0
-        logging.info(
-            f"MockImageProvider loaded {len(self.test_images)} test images"
-        )
+        logging.info(f"MockImageProvider loaded {len(self.test_images)} test images")
 
     def get_next_image(self) -> Optional[Image.Image]:
         """

@@ -74,9 +74,7 @@ async def test_start_simulators(orchestrator):
         )
         assert isinstance(future, asyncio.Future)
 
-        expected_simulator_names = {
-            bg.name for bg in orchestrator._config.simulators
-        }
+        expected_simulator_names = {bg.name for bg in orchestrator._config.simulators}
         assert orchestrator._submitted_simulators == expected_simulator_names
     finally:
         orchestrator.stop()

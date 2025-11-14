@@ -53,9 +53,7 @@ def test_init_connection_failed(mock_web3):
 @pytest.mark.asyncio
 async def test_poll(wallet_eth, mock_web3):
     mock_web3.eth.block_number = 12345
-    mock_web3.eth.get_balance.return_value = (
-        1000000000000000000  # 1 ETH in Wei
-    )
+    mock_web3.eth.get_balance.return_value = 1000000000000000000  # 1 ETH in Wei
     mock_web3.from_wei.return_value = 1.0
 
     result = await wallet_eth._poll()
@@ -64,9 +62,7 @@ async def test_poll(wallet_eth, mock_web3):
     assert isinstance(result[0], float)  # current balance
     assert isinstance(result[1], float)  # balance change
 
-    mock_web3.eth.get_balance.assert_called_once_with(
-        wallet_eth.ACCOUNT_ADDRESS
-    )
+    mock_web3.eth.get_balance.assert_called_once_with(wallet_eth.ACCOUNT_ADDRESS)
     mock_web3.from_wei.assert_called_once()
 
 
@@ -98,9 +94,7 @@ async def test_raw_to_text_buffer_management(wallet_eth):
 
 def test_formatted_latest_buffer_with_message(wallet_eth):
     current_time = time.time()
-    test_message = Message(
-        timestamp=current_time, message="test balance update"
-    )
+    test_message = Message(timestamp=current_time, message="test balance update")
     wallet_eth.messages = [test_message]
 
     result = wallet_eth.formatted_latest_buffer()

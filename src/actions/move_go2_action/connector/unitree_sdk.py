@@ -100,6 +100,4 @@ class ActionUnitreeSDKConnector(ActionConnector[ActionInput]):
                     "ActionUnitreeSDKConnector: Still performing previous action"
                 )
         else:
-            logging.warning(
-                f"Action '{action}' not recognized or not implemented."
-            )
+            logging.warning(f"Action '{action}' not recognized or not implemented.")

@@ -24,9 +24,7 @@ def test_load_simulator_success():
         result = load_simulator("MockSimulator")
 
         mock_find_module.assert_called_once_with("MockSimulator")
-        mock_import.assert_called_once_with(
-            "simulators.plugins.mock_simulator"
-        )
+        mock_import.assert_called_once_with("simulators.plugins.mock_simulator")
         assert result == MockSimulator
 
 

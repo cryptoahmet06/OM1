@@ -83,12 +83,8 @@ class UbtechCameraVideoStream(VideoStream):
                             (new_width, new_height),
                             interpolation=cv2.INTER_AREA,
                         )
-                        _, buffer = cv2.imencode(
-                            ".jpg", resized, self.encode_quality
-                        )
-                        frame_data = base64.b64encode(buffer.tobytes()).decode(
-                            "utf-8"
-                        )
+                        _, buffer = cv2.imencode(".jpg", resized, self.encode_quality)
+                        frame_data = base64.b64encode(buffer.tobytes()).decode("utf-8")
 
                         for cb in self.frame_callbacks:
                             cb(frame_data)

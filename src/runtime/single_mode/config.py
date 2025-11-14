@@ -299,9 +299,7 @@ def build_runtime_config_from_test_case(config: dict) -> RuntimeConfig:
     backgrounds = [
         load_background(bg["type"])(
             config=BackgroundConfig(
-                **add_meta(
-                    bg.get("config", {}), api_key, g_ut_eth, g_URID, g_robot_ip
-                )
+                **add_meta(bg.get("config", {}), api_key, g_ut_eth, g_URID, g_robot_ip)
             )
         )
         for bg in config.get("backgrounds", [])

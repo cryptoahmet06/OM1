@@ -43,9 +43,7 @@ class UbtechVLMProvider:
         self.robot_ip = robot_ip
         self.running = False
         self.ws_client = ws.Client(url=ws_url)
-        self.stream_ws_client = (
-            ws.Client(url=stream_url) if stream_url else None
-        )
+        self.stream_ws_client = ws.Client(url=stream_url) if stream_url else None
 
         self.video_stream = UbtechCameraVideoStream(
             frame_callback=self.ws_client.send_message,

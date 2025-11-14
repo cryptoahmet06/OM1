@@ -44,9 +44,7 @@ async def test_start_background(orchestrator):
     try:
         future = orchestrator.start()
 
-        assert isinstance(
-            orchestrator._background_executor, ThreadPoolExecutor
-        )
+        assert isinstance(orchestrator._background_executor, ThreadPoolExecutor)
         assert (
             orchestrator._background_executor._max_workers
             == orchestrator._background_workers
@@ -57,9 +55,7 @@ async def test_start_background(orchestrator):
         )
         assert isinstance(future, asyncio.Future)
 
-        expected_background_names = {
-            bg.name for bg in orchestrator._config.backgrounds
-        }
+        expected_background_names = {bg.name for bg in orchestrator._config.backgrounds}
         assert orchestrator._submitted_backgrounds == expected_background_names
     finally:
         orchestrator.stop()

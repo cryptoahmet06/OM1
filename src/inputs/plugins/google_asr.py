@@ -67,9 +67,7 @@ class GoogleASRInput(FuserInput[str]):
             "stream_base_url",
             f"wss://api.openmind.org/api/core/teleops/stream/audio?api_key={api_key}",
         )
-        microphone_device_id = getattr(
-            self.config, "microphone_device_id", None
-        )
+        microphone_device_id = getattr(self.config, "microphone_device_id", None)
         microphone_name = getattr(self.config, "microphone_name", None)
 
         language = getattr(self.config, "language", "english").strip().lower()
@@ -102,9 +100,7 @@ class GoogleASRInput(FuserInput[str]):
         self.global_sleep_ticker_provider = SleepTickerProvider()
 
         # Initialize conversation provider
-        self.conversation_provider = TeleopsConversationProvider(
-            api_key=api_key
-        )
+        self.conversation_provider = TeleopsConversationProvider(api_key=api_key)
 
         # Initialize Zenoh session
         self.asr_topic = "om/asr/text"
@@ -114,13 +110,9 @@ class GoogleASRInput(FuserInput[str]):
         try:
             self.session = open_zenoh_session()
             self.asr_publisher = self.session.declare_publisher(self.asr_topic)
-            logging.info(
-                "Zenoh ASR publisher initialized on topic 'om/asr/text'"
-            )
+            logging.info("Zenoh ASR publisher initialized on topic 'om/asr/text'")
         except Exception as e:
-            logging.warning(
-                f"Could not initialize Zenoh for ASR broadcast: {e}"
-            )
+            logging.warning(f"Could not initialize Zenoh for ASR broadcast: {e}")
             self.session = None
             self.asr_publisher = None
 

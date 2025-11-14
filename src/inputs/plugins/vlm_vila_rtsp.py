@@ -60,12 +60,8 @@ class VLMVilaRTSP(FuserInput[str]):
         self.message_buffer: Queue[str] = Queue()
 
         # Initialize VLM provider
-        base_url = getattr(
-            self.config, "base_url", "wss://api-vila.openmind.org"
-        )
-        rtsp_url = getattr(
-            self.config, "rtsp_url", "rtsp://localhost:8554/top_camera"
-        )
+        base_url = getattr(self.config, "base_url", "wss://api-vila.openmind.org")
+        rtsp_url = getattr(self.config, "rtsp_url", "rtsp://localhost:8554/top_camera")
         decode_format = getattr(self.config, "decode_format", "H264")
 
         self.vlm: VLMVilaRTSPProvider = VLMVilaRTSPProvider(

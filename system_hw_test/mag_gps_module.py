@@ -40,9 +40,7 @@ while True:
                 print(f"Unable to parse heading: {data}")
         elif data.startswith("YPR:"):
             yaw, pitch, roll = map(str.strip, data[4:].split(","))
-            print(
-                f"Orientation is Yaw: {yaw}°, Pitch: {pitch}°, Roll: {roll}°."
-            )
+            print(f"Orientation is Yaw: {yaw}°, Pitch: {pitch}°, Roll: {roll}°.")
         elif data.startswith("GPS:"):
             try:
                 parts = data[4:].split(",")

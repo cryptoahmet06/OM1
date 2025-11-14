@@ -31,9 +31,7 @@ class GpsProvider:
         Robot and sensor configuration
         """
 
-        logging.info(
-            f"GPS_Provider booting GPS Provider at serial: {serial_port}"
-        )
+        logging.info(f"GPS_Provider booting GPS Provider at serial: {serial_port}")
 
         baudrate = 115200
         timeout = 1
@@ -109,9 +107,7 @@ class GpsProvider:
                     sat = parts[5].split(":")[1]
                     time = parts[6][5:]
                     # turn 25 into full year -> 2025, for example
-                    self.gps_unix_ts = self.string_to_unix_timestamp(
-                        "20" + time
-                    )
+                    self.gps_unix_ts = self.string_to_unix_timestamp("20" + time)
 
                     qua = 0
                     if len(parts) > 7:
@@ -152,9 +148,7 @@ class GpsProvider:
                 except Exception as e:
                     logging.warning(f"Failed to parse BLE: {data} ({e})")
         except Exception as e:
-            logging.warning(
-                f"Error processing serial MAG/GPS/BLE input: {data} ({e})"
-            )
+            logging.warning(f"Error processing serial MAG/GPS/BLE input: {data} ({e})")
 
         self._gps = {
             "yaw_mag_0_360": self.yaw_mag_0_360,
@@ -198,9 +192,7 @@ class GpsProvider:
             rssi = int(match[1])
             packet = match[2].lower()
             devices.append(
-                RFDataRaw(
-                    unix_ts=unix_ts, address=address, rssi=rssi, packet=packet
-                )
+                RFDataRaw(unix_ts=unix_ts, address=address, rssi=rssi, packet=packet)
             )
 
         return devices
@@ -226,9 +218,7 @@ class GpsProvider:
         while self.running:
             if self.serial_connection:
                 # Read a line, decode, and remove whitespace
-                data = (
-                    self.serial_connection.readline().decode("utf-8").strip()
-                )
+                data = self.serial_connection.readline().decode("utf-8").strip()
                 logging.debug(f"Serial GPS/MAG: {data}")
                 self.magGPSProcessor(data)
             time.sleep(0.1)

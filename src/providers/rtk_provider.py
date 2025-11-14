@@ -135,9 +135,7 @@ class RtkProvider:
                         )
                     )
                 except Exception as e:
-                    logging.warning(
-                        f"Failed to parse GGA message: {msg} ({e})"
-                    )
+                    logging.warning(f"Failed to parse GGA message: {msg} ({e})")
         except Exception as e:
             logging.warning(f"Error processing serial RTK input: {msg} ({e})")
 

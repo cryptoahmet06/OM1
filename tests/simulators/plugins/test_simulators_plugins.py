@@ -14,19 +14,13 @@ def get_all_simulator_classes():
     Returns a list of simulator classes that inherit from the base Simulator class.
     """
     plugins_dir = os.path.join("src", "simulators", "plugins")
-    plugin_files = [
-        f[:-3] for f in os.listdir(plugins_dir) if f.endswith(".py")
-    ]
+    plugin_files = [f[:-3] for f in os.listdir(plugins_dir) if f.endswith(".py")]
     simulator_classes = []
 
     for plugin in plugin_files:
         module = importlib.import_module(f"simulators.plugins.{plugin}")
         for name, obj in inspect.getmembers(module):
-            if (
-                inspect.isclass(obj)
-                and issubclass(obj, Simulator)
-                and obj != Simulator
-            ):
+            if inspect.isclass(obj) and issubclass(obj, Simulator) and obj != Simulator:
                 simulator_classes.append(obj)
 
     return simulator_classes
@@ -68,16 +62,12 @@ def test_return_type_annotations(simulator_class: Type[Simulator]):
     methods_to_check = ["tick", "sim"]
 
     for method_name in methods_to_check:
-        base_return = Simulator.__dict__[method_name].__annotations__.get(
+        base_return = Simulator.__dict__[method_name].__annotations__.get("return")
+        impl_return = simulator_class.__dict__[method_name].__annotations__.get(
             "return"
         )
-        impl_return = simulator_class.__dict__[
-            method_name
-        ].__annotations__.get("return")
 
-        if (
-            base_return is not None
-        ):  # Only check if base class specifies return type
+        if base_return is not None:  # Only check if base class specifies return type
             assert impl_return == base_return, (
                 f"{simulator_class.__name__}.{method_name} return type mismatch. "
                 f"Expected {base_return}, got {impl_return}"

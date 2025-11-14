@@ -14,9 +14,7 @@ class DummyOutputModel(BaseModel):
 
 @pytest.fixture
 def config():
-    return LLMConfig(
-        base_url="test_url/", api_key="test_key", model="test_model"
-    )
+    return LLMConfig(base_url="test_url/", api_key="test_key", model="test_model")
 
 
 @pytest.fixture
@@ -25,9 +23,7 @@ def mock_response():
     response = MagicMock()
     response.choices = [
         MagicMock(
-            message=MagicMock(
-                content='{"test_field": "success"}', tool_calls=None
-            )
+            message=MagicMock(content='{"test_field": "success"}', tool_calls=None)
         )
     ]
     return response
@@ -90,10 +86,7 @@ async def test_io_provider_timing(llm, mock_response):
         await llm.ask("test prompt")
         assert llm.io_provider.llm_start_time is not None
         assert llm.io_provider.llm_end_time is not None
-        assert (
-            llm.io_provider.llm_end_time
-            >= llm.io_provider.llm_start_time - 0.1
-        )
+        assert llm.io_provider.llm_end_time >= llm.io_provider.llm_start_time - 0.1
 
 
 @pytest.mark.asyncio
@@ -136,9 +129,7 @@ async def test_ask_with_tool_calls(llm, mock_response_with_tool_calls):
 async def test_ask_invalid_json(llm):
     """Test handling of invalid JSON response"""
     invalid_response = MagicMock()
-    invalid_response.choices = [
-        MagicMock(message=MagicMock(content="invalid"))
-    ]
+    invalid_response.choices = [MagicMock(message=MagicMock(content="invalid"))]
 
     with pytest.MonkeyPatch.context() as m:
         m.setattr(

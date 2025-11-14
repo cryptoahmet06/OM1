@@ -230,9 +230,7 @@ class UnitreeGo2StateProvider:
             try:
                 data = self.data_queue.get_nowait()
 
-                self.go2_sport_mode_state_msg = data.get(
-                    "go2_sport_mode_state_msg"
-                )
+                self.go2_sport_mode_state_msg = data.get("go2_sport_mode_state_msg")
                 self.go2_state = data.get("go2_state")
                 self.go2_state_code = data.get("go2_state_code")
                 self.go2_action_progress = data.get("go2_action_progress")

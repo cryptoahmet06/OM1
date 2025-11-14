@@ -21,9 +21,7 @@ def listener(sample):
 
 if __name__ == "__main__":
     with open_zenoh_session() as session:
-        camera = session.declare_subscriber(
-            "pi/oakd/rgb/preview/image_raw", listener
-        )
+        camera = session.declare_subscriber("pi/oakd/rgb/preview/image_raw", listener)
         print("Zenoh is open")
         while True:
             print("Waiting for camera messages")

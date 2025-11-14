@@ -94,9 +94,7 @@ class UnitreeGo2LocationsProvider:
 
             data = resp.json()
 
-            raw_message = (
-                data.get("message") if isinstance(data, dict) else None
-            )
+            raw_message = data.get("message") if isinstance(data, dict) else None
             if raw_message and isinstance(raw_message, str):
                 try:
                     locations = json.loads(raw_message)

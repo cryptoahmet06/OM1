@@ -41,9 +41,7 @@ class RivaTTSProvider:
             headers={"x-api-key": api_key} if api_key else None,
         )
 
-    def register_tts_state_callback(
-        self, tts_state_callback: Optional[Callable]
-    ):
+    def register_tts_state_callback(self, tts_state_callback: Optional[Callable]):
         """
         Register a callback for TTS state changes.
 

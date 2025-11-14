@@ -34,17 +34,13 @@ def modes(config_name: str) -> None:
         )
 
         if mode_config.global_lifecycle_hooks:
-            print(
-                f"Global Lifecycle Hooks: {len(mode_config.global_lifecycle_hooks)}"
-            )
+            print(f"Global Lifecycle Hooks: {len(mode_config.global_lifecycle_hooks)}")
         print()
 
         print("Available Modes:")
         print("-" * 50)
         for name, mode in mode_config.modes.items():
-            is_default = (
-                " (DEFAULT)" if name == mode_config.default_mode else ""
-            )
+            is_default = " (DEFAULT)" if name == mode_config.default_mode else ""
             print(f"• {mode.display_name}{is_default}")
             print(f"  Name: {name}")
             print(f"  Description: {mode.description}")
@@ -111,9 +107,7 @@ def list_configs() -> None:
                         (config_name, raw_config.get("name", config_name))
                     )
                 else:
-                    configs.append(
-                        (config_name, raw_config.get("name", config_name))
-                    )
+                    configs.append((config_name, raw_config.get("name", config_name)))
             except Exception as _:
                 configs.append((config_name, "Invalid config"))
 

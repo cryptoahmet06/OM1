@@ -43,9 +43,7 @@ class RememberLocationConnector(ActionConnector[RememberLocationInput]):
             The input protocol containing the action details.
         """
         if not self.base_url:
-            logging.error(
-                "RememberLocation connector missing 'base_url' in config"
-            )
+            logging.error("RememberLocation connector missing 'base_url' in config")
             return
 
         payload: dict[str, Any] = {

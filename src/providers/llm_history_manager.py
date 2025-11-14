@@ -62,9 +62,7 @@ class LLMHistoryManager:
         # io provider
         self.io_provider = IOProvider()
 
-    async def summarize_messages(
-        self, messages: List[ChatMessage]
-    ) -> ChatMessage:
+    async def summarize_messages(self, messages: List[ChatMessage]) -> ChatMessage:
         """
         Summarize a list of messages using the OpenAI API.
         Returns a new message containing the summary.
@@ -72,9 +70,7 @@ class LLMHistoryManager:
         try:
             if not messages:
                 logging.warning("No messages to summarize")
-                return ChatMessage(
-                    role="system", content="No history to summarize"
-                )
+                return ChatMessage(role="system", content="No history to summarize")
 
             logging.debug(f"All raw info: {messages} len{len(messages)}")
 
@@ -86,9 +82,7 @@ class LLMHistoryManager:
                 summary_prompt += f"{messages[0].content}\n"
                 # actions - already part of the summary - no need to add
                 # summary_prompt += f"{messages[1].content}\n"
-                summary_prompt += (
-                    "\nNow, the following new information has arrived. "
-                )
+                summary_prompt += "\nNow, the following new information has arrived. "
                 summary_prompt += f"{messages[2].content}\n"
                 summary_prompt += f"{messages[3].content}\n"
             else:
@@ -133,15 +127,11 @@ class LLMHistoryManager:
                     role="system",
                     content="Error: Received empty summary from API",
                 )
-            return ChatMessage(
-                role="assistant", content=f"Previously, {summary}"
-            )
+            return ChatMessage(role="assistant", content=f"Previously, {summary}")
 
         except asyncio.TimeoutError:
             logging.error(f"API request timed out after {timeout} seconds")
-            return ChatMessage(
-                role="system", content="Error: API request timed out"
-            )
+            return ChatMessage(role="system", content="Error: API request timed out")
         except openai.APIError as e:
             logging.error(f"OpenAI API error: {e}")
             return ChatMessage(
@@ -149,12 +139,8 @@ class LLMHistoryManager:
                 content=f"Error: API service unavailable: {str(e)}",
             )
         except Exception as e:
-            logging.error(
-                f"Error summarizing messages: {type(e).__name__}: {e}"
-            )
-            return ChatMessage(
-                role="system", content="Error summarizing state"
-            )
+            logging.error(f"Error summarizing messages: {type(e).__name__}: {e}")
+            return ChatMessage(role="system", content="Error summarizing state")
 
     async def start_summary_task(self, messages: List[ChatMessage]):
         """
@@ -195,9 +181,7 @@ class LLMHistoryManager:
                         messages.pop(0) if messages else None
                         messages.pop(0) if messages else None
                     else:
-                        logging.warning(
-                            f"Unexpected summary result: {summary_message}"
-                        )
+                        logging.warning(f"Unexpected summary result: {summary_message}")
                 except asyncio.CancelledError:
                     logging.warning("Summary task callback cancelled")
                 except Exception as e:
@@ -212,9 +196,7 @@ class LLMHistoryManager:
         except asyncio.CancelledError:
             logging.warning("Summary task creation cancelled")
         except Exception as e:
-            logging.error(
-                f"Error starting summary task: {type(e).__name__}: {e}"
-            )
+            logging.error(f"Error starting summary task: {type(e).__name__}: {e}")
             messages.pop(0) if messages else None
             messages.pop(0) if messages else None
 
@@ -222,9 +204,7 @@ class LLMHistoryManager:
         """
         Get messages in format required by OpenAI API.
         """
-        return [
-            {"role": msg.role, "content": msg.content} for msg in self.history
-        ]
+        return [{"role": msg.role, "content": msg.content} for msg in self.history]
 
     @staticmethod
     def update_history():
@@ -279,9 +259,7 @@ class LLMHistoryManager:
                         )
                     )
 
-                    action_message = action_message.replace(
-                        "****", self.agent_name
-                    )
+                    action_message = action_message.replace("****", self.agent_name)
 
                     self.history_manager.history.append(
                         ChatMessage(role="user", content=action_message)

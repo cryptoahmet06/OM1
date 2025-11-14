@@ -78,17 +78,13 @@ def load_simulator(class_name: str) -> T.Type[Simulator]:
             and issubclass(simulator_class, Simulator)
             and simulator_class != Simulator
         ):
-            raise ValueError(
-                f"'{class_name}' is not a valid simulator subclass"
-            )
+            raise ValueError(f"'{class_name}' is not a valid simulator subclass")
 
         logging.debug(f"Loaded simulator {class_name} from {module_name}.py")
         return simulator_class
 
     except ImportError as e:
-        raise ValueError(
-            f"Could not import simulator module '{module_name}': {e}"
-        )
+        raise ValueError(f"Could not import simulator module '{module_name}': {e}")
     except AttributeError:
         raise ValueError(
             f"Class '{class_name}' not found in simulator module '{module_name}'"

@@ -50,9 +50,7 @@ class FunctionGenerator:
             args = get_args(python_type)
             if len(args) == 2 and type(None) in args:
                 non_none_type = args[0] if args[1] is type(None) else args[1]
-                schema = FunctionGenerator.python_type_to_json_schema(
-                    non_none_type
-                )
+                schema = FunctionGenerator.python_type_to_json_schema(non_none_type)
                 return schema
             else:
                 return {"type": "string"}
@@ -93,9 +91,7 @@ class FunctionGenerator:
 
             param_type = type_hints.get(param_name, str)
 
-            param_schema = FunctionGenerator.python_type_to_json_schema(
-                param_type
-            )
+            param_schema = FunctionGenerator.python_type_to_json_schema(param_type)
 
             docstring = inspect.getdoc(method)
             if docstring and param_name in docstring:
@@ -109,9 +105,7 @@ class FunctionGenerator:
                 required.append(param_name)
                 if isinstance(param_type, str) and param.default == "":
                     param_schema["description"] = (
-                        param_schema.get(
-                            "description", f"Parameter {param_name}"
-                        )
+                        param_schema.get("description", f"Parameter {param_name}")
                         + " (optional - can be empty string)"
                     )
 
@@ -145,16 +139,12 @@ class FunctionGenerator:
         """
         functions = {}
 
-        for _, method in inspect.getmembers(
-            cls_instance, predicate=inspect.ismethod
-        ):
+        for _, method in inspect.getmembers(cls_instance, predicate=inspect.ismethod):
             if (
                 hasattr(method.__func__, "_llm_function")
                 and method.__func__._llm_function
             ):
-                function_schema = FunctionGenerator.extract_function_schema(
-                    method
-                )
+                function_schema = FunctionGenerator.extract_function_schema(method)
                 functions[method.__func__._llm_name] = function_schema
 
         return functions

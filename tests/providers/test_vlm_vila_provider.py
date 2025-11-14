@@ -58,9 +58,7 @@ def test_register_message_callback(ws_url, fps, mock_dependencies):
     callback = Mock()
 
     provider.register_message_callback(callback)
-    provider.ws_client.register_message_callback.assert_called_once_with(
-        callback
-    )
+    provider.ws_client.register_message_callback.assert_called_once_with(callback)
 
 
 def test_start(ws_url, fps, mock_dependencies):

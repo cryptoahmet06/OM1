@@ -66,9 +66,7 @@ class TeleopsConversationProvider:
 
     def _store_message_worker(self, message: ConversationMessage) -> None:
         if self.api_key is None or self.api_key == "":
-            logging.debug(
-                "API key is missing. Cannot store conversation message."
-            )
+            logging.debug("API key is missing. Cannot store conversation message.")
             return
 
         if not message.content or not message.content.strip():

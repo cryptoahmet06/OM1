@@ -21,9 +21,7 @@ def mock_model():
 
 @pytest.fixture
 def mock_check_webcam():
-    with patch(
-        "inputs.plugins.vlm_coco_local.check_webcam", return_value=True
-    ):
+    with patch("inputs.plugins.vlm_coco_local.check_webcam", return_value=True):
         yield
 
 
@@ -89,9 +87,7 @@ async def test_raw_to_text_buffer_management(vlm_coco_local):
 
 
 def test_formatted_latest_buffer(vlm_coco_local):
-    vlm_coco_local.messages = [
-        Message(message="test message", timestamp=123.456)
-    ]
+    vlm_coco_local.messages = [Message(message="test message", timestamp=123.456)]
     result = vlm_coco_local.formatted_latest_buffer()
     assert "test message" in result
     assert vlm_coco_local.messages == []

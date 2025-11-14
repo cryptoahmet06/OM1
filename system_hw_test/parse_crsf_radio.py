@@ -114,16 +114,10 @@ def handleCrsfPacket(ptype, data):
             f"ant={antenna} snr={snr} power={power} drssi={downlink_rssi} dlq={downlink_lq} dsnr={downlink_snr}"
         )
     elif ptype == PacketsTypes.ATTITUDE:
-        pitch = (
-            int.from_bytes(data[3:5], byteorder="big", signed=True) / 10000.0
-        )
-        roll = (
-            int.from_bytes(data[5:7], byteorder="big", signed=True) / 10000.0
-        )
+        pitch = int.from_bytes(data[3:5], byteorder="big", signed=True) / 10000.0
+        roll = int.from_bytes(data[5:7], byteorder="big", signed=True) / 10000.0
         yaw = int.from_bytes(data[7:9], byteorder="big", signed=True) / 10000.0
-        print(
-            f"Attitude: Pitch={pitch:0.2f} Roll={roll:0.2f} Yaw={yaw:0.2f} (rad)"
-        )
+        print(f"Attitude: Pitch={pitch:0.2f} Roll={roll:0.2f} Yaw={yaw:0.2f} (rad)")
     elif ptype == PacketsTypes.FLIGHT_MODE:
         packet = "".join(map(chr, data[3:-2]))
         print(f"Flight Mode: {packet}")
@@ -155,13 +149,9 @@ def handleCrsfPacket(ptype, data):
         # RC_CHANNELS_PACKED = 0x16
         packet = data[2:-1]
         packet = packet[1:-1]  # remove type and crc
-        packet_bin_8 = [
-            "{0:08b}".format(i)[::-1] for i in packet
-        ]  # [::-1] reverse
+        packet_bin_8 = ["{0:08b}".format(i)[::-1] for i in packet]  # [::-1] reverse
         packet_bin_full = "".join(packet_bin_8)
-        packet_bin_11 = [
-            packet_bin_full[11 * i : 11 * (i + 1)] for i in range(16)
-        ]
+        packet_bin_11 = [packet_bin_full[11 * i : 11 * (i + 1)] for i in range(16)]
         rc_packet = [int(b[::-1], 2) for b in packet_bin_11]
 
         # sometimes there is noise in the packets - anything above a value of 2000 is garbage

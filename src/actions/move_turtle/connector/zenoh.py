@@ -32,9 +32,7 @@ class MoveZenohConnector(ActionConnector[MoveInput]):
         URID = getattr(self.config, "URID", None)
 
         if URID is None:
-            logging.warning(
-                "Aborting TurtleBot4 Move system, no URID provided"
-            )
+            logging.warning("Aborting TurtleBot4 Move system, no URID provided")
             return
         else:
             logging.info(f"TurtleBot4 Move system is using URID: {URID}")
@@ -44,9 +42,7 @@ class MoveZenohConnector(ActionConnector[MoveInput]):
         try:
             self.session = open_zenoh_session()
             logging.info(f"Zenoh move client opened {self.session}")
-            logging.info(
-                f"TurtleBot4 hazard listener starting with URID: {URID}"
-            )
+            logging.info(f"TurtleBot4 hazard listener starting with URID: {URID}")
             self.session.declare_subscriber(
                 f"{URID}/c3/hazard_detection", self.listen_hazard
             )
@@ -176,9 +172,7 @@ class MoveZenohConnector(ActionConnector[MoveInput]):
             logging.info(f"AI movement command: {output_interface.action}")
             # do nothing
         else:
-            logging.info(
-                f"AI movement command unknown: {output_interface.action}"
-            )
+            logging.info(f"AI movement command unknown: {output_interface.action}")
 
     def _calculate_angle_gap(self, current: float, target: float) -> float:
         """
@@ -240,9 +234,7 @@ class MoveZenohConnector(ActionConnector[MoveInput]):
 
             # clear the hazard flag
             self.hazard = None
-            logging.info(
-                f"Should have non-zero avoidance yaw: {self.emergency}"
-            )
+            logging.info(f"Should have non-zero avoidance yaw: {self.emergency}")
 
         if self.emergency:
             # target = self.emergency
@@ -313,17 +305,13 @@ class MoveZenohConnector(ActionConnector[MoveInput]):
                     logging.info(f"Phase 1 - Turn GAP delta: {progress}DEG")
 
                 if abs(gap) > 10.0:
-                    logging.debug(
-                        "Phase 1 - Gap is big, using large displacements"
-                    )
+                    logging.debug("Phase 1 - Gap is big, using large displacements")
                     self.movement_attempts += 1
                     if not self._execute_turn(gap):
                         self.clean_abort()
                         return
                 elif abs(gap) > self.angle_tolerance and abs(gap) <= 10.0:
-                    logging.debug(
-                        "Phase 1 - Gap is decreasing, using smaller steps"
-                    )
+                    logging.debug("Phase 1 - Gap is decreasing, using smaller steps")
                     self.movement_attempts += 1
                     # rotate only because we are so close
                     # no need to check barriers because we are just performing small rotations
@@ -337,9 +325,7 @@ class MoveZenohConnector(ActionConnector[MoveInput]):
                     self.gap_previous = 0
             else:
                 if goal_dx == 0:
-                    logging.info(
-                        "No movement required, processing next AI command"
-                    )
+                    logging.info("No movement required, processing next AI command")
                     self.clean_abort()
                     return
 

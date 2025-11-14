@@ -115,9 +115,7 @@ class LLM(T.Generic[R]):
         # Set up the IO provider
         self.io_provider = IOProvider()
 
-    async def ask(
-        self, prompt: str, messages: T.List[T.Dict[str, str]] = []
-    ) -> R:
+    async def ask(self, prompt: str, messages: T.List[T.Dict[str, str]] = []) -> R:
         """
         Send a prompt to the LLM and receive a typed response.
 
@@ -169,9 +167,7 @@ def find_module_with_class(class_name: str) -> T.Optional[str]:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
-            pattern = (
-                rf"^class\s+{re.escape(class_name)}\s*\([^)]*LLM[^)]*\)\s*:"
-            )
+            pattern = rf"^class\s+{re.escape(class_name)}\s*\([^)]*LLM[^)]*\)\s*:"
 
             if re.search(pattern, content, re.MULTILINE):
                 return plugin_file[:-3]
@@ -200,9 +196,7 @@ def load_llm(class_name: str) -> T.Type[LLM]:
     module_name = find_module_with_class(class_name)
 
     if module_name is None:
-        raise ValueError(
-            f"Class '{class_name}' not found in any LLM plugin module"
-        )
+        raise ValueError(f"Class '{class_name}' not found in any LLM plugin module")
 
     try:
         module = importlib.import_module(f"llm.plugins.{module_name}")

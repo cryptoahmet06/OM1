@@ -35,9 +35,7 @@ def mock_avatar_provider() -> Generator[MagicMock, None, None]:
     reset_avatar_llm_state()
 
     with (
-        patch(
-            "providers.avatar_llm_state_provider.AvatarProvider"
-        ) as avatar_mock,
+        patch("providers.avatar_llm_state_provider.AvatarProvider") as avatar_mock,
         patch("providers.avatar_llm_state_provider.IOProvider") as io_mock,
     ):
 
@@ -61,8 +59,7 @@ async def test_decorator_sets_thinking_state(mock_avatar_provider):
     await llm.ask("test prompt")
 
     calls = [
-        args[0]
-        for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
+        args[0] for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
     ]
     assert "Think" in calls
 
@@ -75,8 +72,7 @@ async def test_decorator_restores_happy_when_no_face_action(
     await llm.ask("test prompt")
 
     calls = [
-        args[0]
-        for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
+        args[0] for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
     ]
     assert "Think" in calls
     assert "Happy" in calls
@@ -89,8 +85,7 @@ async def test_decorator_keeps_face_action(mock_avatar_provider):
     await llm.ask_with_face("test prompt")
 
     calls = [
-        args[0]
-        for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
+        args[0] for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
     ]
     assert "Think" in calls
     assert "Happy" not in calls
@@ -103,8 +98,7 @@ async def test_decorator_restores_happy_on_exception(mock_avatar_provider):
         await llm.ask_that_fails("test prompt")
 
     calls = [
-        args[0]
-        for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
+        args[0] for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
     ]
     assert "Think" in calls
     assert "Happy" in calls
@@ -115,9 +109,7 @@ async def test_decorator_handles_avatar_provider_not_running():
     reset_avatar_llm_state()
 
     with (
-        patch(
-            "providers.avatar_llm_state_provider.AvatarProvider"
-        ) as avatar_mock,
+        patch("providers.avatar_llm_state_provider.AvatarProvider") as avatar_mock,
         patch("providers.avatar_llm_state_provider.IOProvider") as io_mock,
     ):
 
@@ -142,9 +134,7 @@ async def test_decorator_handles_avatar_provider_exception():
     reset_avatar_llm_state()
 
     with (
-        patch(
-            "providers.avatar_llm_state_provider.AvatarProvider"
-        ) as avatar_mock,
+        patch("providers.avatar_llm_state_provider.AvatarProvider") as avatar_mock,
         patch("providers.avatar_llm_state_provider.IOProvider") as io_mock,
     ):
 
@@ -183,8 +173,7 @@ async def test_decorator_handles_result_without_actions(mock_avatar_provider):
 
     assert result is not None
     calls = [
-        args[0]
-        for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
+        args[0] for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
     ]
     assert "Think" in calls
     assert "Happy" in calls
@@ -202,8 +191,7 @@ async def test_decorator_handles_none_result(mock_avatar_provider):
 
     assert result is None
     calls = [
-        args[0]
-        for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
+        args[0] for args, _ in mock_avatar_provider.send_avatar_command.call_args_list
     ]
     assert "Think" in calls
     assert "Happy" in calls

@@ -22,9 +22,7 @@ def mock_sleep_ticker():
 
 @pytest.fixture
 def mock_conversation():
-    with patch(
-        "inputs.plugins.google_asr.TeleopsConversationProvider"
-    ) as mock:
+    with patch("inputs.plugins.google_asr.TeleopsConversationProvider") as mock:
         yield mock
 
 

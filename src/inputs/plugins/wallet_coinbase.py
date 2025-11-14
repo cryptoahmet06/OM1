@@ -53,9 +53,7 @@ class WalletCoinbase(FuserInput[float]):
         try:
             # fetch wallet data
             if not self.COINBASE_WALLET_ID:
-                raise ValueError(
-                    "COINBASE_WALLET_ID environment variable is not set"
-                )
+                raise ValueError("COINBASE_WALLET_ID environment variable is not set")
 
             self.wallet = Wallet.fetch(self.COINBASE_WALLET_ID)
             logging.info(f"Wallet: {self.wallet}")

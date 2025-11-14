@@ -10,13 +10,9 @@ from runtime.single_mode.config import load_input, load_llm, load_simulator
 
 def test_configs():
     """Test that all config files can be loaded."""
-    config_folder_path = os.path.join(
-        os.path.dirname(__file__), "../../config"
-    )
+    config_folder_path = os.path.join(os.path.dirname(__file__), "../../config")
     files_names = [
-        entry.name
-        for entry in os.scandir(config_folder_path)
-        if entry.is_file()
+        entry.name for entry in os.scandir(config_folder_path) if entry.is_file()
     ]
 
     for file_name in files_names:
@@ -31,9 +27,7 @@ def test_configs():
 
         cortex_llm = raw_config.get("cortex_llm", {})
         assert isinstance(cortex_llm, dict)
-        assert (
-            "type" in cortex_llm
-        ), f"'type' key missing in cortex_llm of {file_name}"
+        assert "type" in cortex_llm, f"'type' key missing in cortex_llm of {file_name}"
         assert load_llm(cortex_llm["type"]) is not None
 
         simulators = raw_config.get("simulators", [])

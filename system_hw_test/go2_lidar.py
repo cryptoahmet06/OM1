@@ -61,9 +61,7 @@ class Custom:
         # create subscriber #
         # /utlidar/cloud - this is noisy
         # /utlidar/cloud_deskewed - much better behaved?
-        self.subscriber = ChannelSubscriber(
-            "rt/utlidar/cloud_deskewed", PointCloud2_
-        )
+        self.subscriber = ChannelSubscriber("rt/utlidar/cloud_deskewed", PointCloud2_)
 
         # self.subscriber = ChannelSubscriber("rt/utlidar/cloud", PointCloud2_)
         self.subscriber.Init(self.MessageHandler, 10)

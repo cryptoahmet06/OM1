@@ -45,8 +45,7 @@ class GeminiLLM(LLM[R]):
             self._config.model = "gemini-2.5-flash"
 
         self._client = openai.AsyncOpenAI(
-            base_url=config.base_url
-            or "https://api.openmind.org/api/core/gemini",
+            base_url=config.base_url or "https://api.openmind.org/api/core/gemini",
             api_key=config.api_key,
         )
 
@@ -55,9 +54,7 @@ class GeminiLLM(LLM[R]):
 
     @AvatarLLMState.trigger_thinking()
     @LLMHistoryManager.update_history()
-    async def ask(
-        self, prompt: str, messages: T.List[T.Dict[str, str]]
-    ) -> R | None:
+    async def ask(self, prompt: str, messages: T.List[T.Dict[str, str]]) -> R | None:
         """
         Execute LLM query and parse response
 
@@ -102,9 +99,7 @@ class GeminiLLM(LLM[R]):
             self.io_provider.llm_end_time = time.time()
 
             if message.tool_calls:
-                logging.info(
-                    f"Received {len(message.tool_calls)} function calls"
-                )
+                logging.info(f"Received {len(message.tool_calls)} function calls")
                 logging.info(f"Function calls: {message.tool_calls}")
 
                 function_call_data = [

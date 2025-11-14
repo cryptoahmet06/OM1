@@ -112,11 +112,7 @@ class NavConnector(ActionConnector[NavigateLocationInput]):
         goal_pose = PoseStamped(header=header, pose=pose_msg)
 
         try:
-            self.unitree_go2_navigation_provider.publish_goal_pose(
-                goal_pose, label
-            )
+            self.unitree_go2_navigation_provider.publish_goal_pose(goal_pose, label)
             logging.info(f"Navigation to '{label}' initiated")
         except Exception as e:
-            logging.error(
-                f"Error querying location list or publishing goal: {e}"
-            )
+            logging.error(f"Error querying location list or publishing goal: {e}")

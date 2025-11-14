@@ -18,6 +18,4 @@ class Rtk(Background):
             return
 
         self.rtk = RtkProvider(serial_port=port)
-        logging.info(
-            f"Initiated RTK Provider with serial port: {port} in background"
-        )
+        logging.info(f"Initiated RTK Provider with serial port: {port} in background")

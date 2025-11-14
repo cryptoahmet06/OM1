@@ -31,9 +31,7 @@ class D435Provider:
 
         self.start()
 
-    def calculate_angle_and_distance(
-        self, world_x: float, world_y: float
-    ) -> tuple:
+    def calculate_angle_and_distance(self, world_x: float, world_y: float) -> tuple:
         """
         Calculate the angle and distance from the world coordinates.
 
@@ -66,9 +64,7 @@ class D435Provider:
             The sample containing the point cloud data.
         """
         try:
-            points = sensor_msgs.PointCloud.deserialize(
-                sample.payload.to_bytes()
-            )
+            points = sensor_msgs.PointCloud.deserialize(sample.payload.to_bytes())
 
             obstacles = []
             for pt in points.points:  # type: ignore

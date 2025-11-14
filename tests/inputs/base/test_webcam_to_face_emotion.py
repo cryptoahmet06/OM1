@@ -35,13 +35,9 @@ def mock_io_provider():
 
 @pytest.fixture
 def face_emotion(mock_cv2, mock_io_provider, mock_deepface):
-    with patch(
-        "inputs.plugins.webcam_to_face_emotion.check_webcam", return_value=True
-    ):
+    with patch("inputs.plugins.webcam_to_face_emotion.check_webcam", return_value=True):
         instance = FaceEmotionCapture()
-        instance.face_cascade.detectMultiScale = Mock(
-            return_value=[(10, 10, 50, 50)]
-        )
+        instance.face_cascade.detectMultiScale = Mock(return_value=[(10, 10, 50, 50)])
         instance.have_cam = True
         mock_cap = Mock()
         mock_cap.read.return_value = (True, np.zeros((100, 100, 3)))
@@ -67,9 +63,7 @@ async def test_poll(face_emotion):
 @pytest.mark.asyncio
 async def test_raw_to_text_with_face(face_emotion, mock_cv2, mock_deepface):
     frame = np.zeros((100, 100, 3), dtype=np.uint8)
-    face_emotion.face_cascade.detectMultiScale.return_value = [
-        (10, 10, 50, 50)
-    ]
+    face_emotion.face_cascade.detectMultiScale.return_value = [(10, 10, 50, 50)]
 
     result = await face_emotion._raw_to_text(frame)
 

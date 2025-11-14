@@ -15,11 +15,7 @@ def describe_action(
     interface = None
     action = importlib.import_module(f"actions.{action_name}.interface")
     for _, obj in action.__dict__.items():
-        if (
-            isinstance(obj, type)
-            and issubclass(obj, Interface)
-            and obj != Interface
-        ):
+        if isinstance(obj, type) and issubclass(obj, Interface) and obj != Interface:
             interface = obj
     if interface is None:
         raise ValueError(f"No interface found for action {action_name}")
@@ -45,9 +41,7 @@ def describe_action(
 
     # Format the full docstring
     type_hints = "\n".join(f"{desc}" for name, desc in hints.items())
-    final_description = (
-        f"{llm_label.upper()}: {doc}\ntype={llm_label}\n{type_hints}"
-    )
+    final_description = f"{llm_label.upper()}: {doc}\ntype={llm_label}\n{type_hints}"
     # logging.info(f"final_description:{final_description}")
     # remove indents
     final_description = final_description.replace("    ", "")
@@ -59,20 +53,12 @@ def load_action(
     action_config: T.Dict[str, T.Union[str, T.Dict[str, str]]],
 ) -> AgentAction:
     interface = None
-    action = importlib.import_module(
-        f"actions.{action_config['name']}.interface"
-    )
+    action = importlib.import_module(f"actions.{action_config['name']}.interface")
     for _, obj in action.__dict__.items():
-        if (
-            isinstance(obj, type)
-            and issubclass(obj, Interface)
-            and obj != Interface
-        ):
+        if isinstance(obj, type) and issubclass(obj, Interface) and obj != Interface:
             interface = obj
     if interface is None:
-        raise ValueError(
-            f"No interface found for action {action_config['name']}"
-        )
+        raise ValueError(f"No interface found for action {action_config['name']}")
     connector = importlib.import_module(
         f"actions.{action_config['name']}.connector.{action_config['connector']}"
     )

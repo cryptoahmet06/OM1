@@ -55,9 +55,7 @@ class ElevenLabsTTSProvider:
         self._model_id = model_id
         self._output_format = output_format
 
-    def register_tts_state_callback(
-        self, tts_state_callback: Optional[Callable]
-    ):
+    def register_tts_state_callback(self, tts_state_callback: Optional[Callable]):
         """
         Register a callback for TTS state changes.
 

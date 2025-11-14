@@ -123,9 +123,7 @@ def mock_multiple_components_config():
 
 def test_load_config(mock_config_data, mock_dependencies):
     with (
-        patch(
-            "builtins.open", mock_open(read_data=json5.dumps(mock_config_data))
-        ),
+        patch("builtins.open", mock_open(read_data=json5.dumps(mock_config_data))),
         patch(
             "runtime.single_mode.config.load_input",
             return_value=mock_dependencies["input"],
@@ -148,23 +146,15 @@ def test_load_config(mock_config_data, mock_dependencies):
         assert isinstance(config, RuntimeConfig)
         assert config.hertz == mock_config_data["hertz"]
         assert config.name == mock_config_data["name"]
+        assert config.system_prompt_base == mock_config_data["system_prompt_base"]
+        assert config.system_governance == mock_config_data["system_governance"]
         assert (
-            config.system_prompt_base == mock_config_data["system_prompt_base"]
-        )
-        assert (
-            config.system_governance == mock_config_data["system_governance"]
-        )
-        assert (
-            config.system_prompt_examples
-            == mock_config_data["system_prompt_examples"]
+            config.system_prompt_examples == mock_config_data["system_prompt_examples"]
         )
         assert config.api_key == mock_config_data["api_key"]
         assert len(config.agent_inputs) == 1
         assert isinstance(config.agent_inputs[0], mock_dependencies["input"])
-        assert (
-            config.agent_inputs[0].config.api_key
-            == mock_config_data["api_key"]
-        )
+        assert config.agent_inputs[0].config.api_key == mock_config_data["api_key"]
         assert isinstance(config.cortex_llm, mock_dependencies["llm"])
         assert len(config.simulators) == 1
         assert isinstance(config.simulators[0], mock_dependencies["simulator"])
@@ -211,9 +201,7 @@ def test_load_empty_config(mock_empty_config_data, mock_dependencies):
         assert len(config.agent_actions) == 0
 
 
-def test_load_multiple_components(
-    mock_multiple_components_config, mock_dependencies
-):
+def test_load_multiple_components(mock_multiple_components_config, mock_dependencies):
     with (
         patch(
             "builtins.open",
@@ -251,11 +239,7 @@ def test_load_config_missing_required_fields():
         "name": "invalid_config",
     }
 
-    with (
-        patch(
-            "builtins.open", mock_open(read_data=json5.dumps(invalid_config))
-        ),
-    ):
+    with (patch("builtins.open", mock_open(read_data=json5.dumps(invalid_config))),):
         with pytest.raises(KeyError):
             load_config("invalid_config")
 
@@ -273,11 +257,7 @@ def test_load_config_invalid_hertz():
         "agent_actions": [],
     }
 
-    with (
-        patch(
-            "builtins.open", mock_open(read_data=json5.dumps(invalid_config))
-        ),
-    ):
+    with (patch("builtins.open", mock_open(read_data=json5.dumps(invalid_config))),):
         with pytest.raises(ValueError):
             load_config("invalid_config")
 
@@ -312,12 +292,8 @@ def test_load_config_invalid_component_type():
     }
 
     with (
-        patch(
-            "builtins.open", mock_open(read_data=json5.dumps(invalid_config))
-        ),
-        patch(
-            "runtime.single_mode.config.load_input", side_effect=ImportError
-        ),
+        patch("builtins.open", mock_open(read_data=json5.dumps(invalid_config))),
+        patch("runtime.single_mode.config.load_input", side_effect=ImportError),
     ):
         with pytest.raises(ImportError):
             load_config("invalid_config")

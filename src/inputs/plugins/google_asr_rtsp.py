@@ -55,9 +55,7 @@ class GoogleASRRTSPInput(FuserInput[str]):
 
         # Initialize ASR provider
         api_key = getattr(self.config, "api_key", None)
-        rtsp_url = getattr(
-            self.config, "rtsp_url", "rtsp://localhost:8554/audio"
-        )
+        rtsp_url = getattr(self.config, "rtsp_url", "rtsp://localhost:8554/audio")
         rate = getattr(self.config, "rate", 16000)
         base_url = getattr(
             self.config,
@@ -89,9 +87,7 @@ class GoogleASRRTSPInput(FuserInput[str]):
         self.global_sleep_ticker_provider = SleepTickerProvider()
 
         # Initialize conversation provider
-        self.conversation_provider = TeleopsConversationProvider(
-            api_key=api_key
-        )
+        self.conversation_provider = TeleopsConversationProvider(api_key=api_key)
 
         # Initialize Zenoh session
         self.asr_topic = "om/asr/text"
@@ -101,13 +97,9 @@ class GoogleASRRTSPInput(FuserInput[str]):
         try:
             self.session = open_zenoh_session()
             self.asr_publisher = self.session.declare_publisher(self.asr_topic)
-            logging.info(
-                "Zenoh ASR publisher initialized on topic 'om/asr/text'"
-            )
+            logging.info("Zenoh ASR publisher initialized on topic 'om/asr/text'")
         except Exception as e:
-            logging.warning(
-                f"Could not initialize Zenoh for ASR broadcast: {e}"
-            )
+            logging.warning(f"Could not initialize Zenoh for ASR broadcast: {e}")
             self.session = None
             self.asr_publisher = None
 

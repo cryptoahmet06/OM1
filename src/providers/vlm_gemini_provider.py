@@ -44,9 +44,7 @@ class VLMGeminiProvider:
             The camera index for the video stream device. Defaults to 0.
         """
         self.running: bool = False
-        self.api_client: AsyncOpenAI = AsyncOpenAI(
-            api_key=api_key, base_url=base_url
-        )
+        self.api_client: AsyncOpenAI = AsyncOpenAI(api_key=api_key, base_url=base_url)
         self.stream_ws_client: Optional[ws.Client] = (
             ws.Client(url=stream_url) if stream_url else None
         )
@@ -91,9 +89,7 @@ class VLMGeminiProvider:
                 max_tokens=300,
             )
             processing_latency = time.perf_counter() - processing_start
-            logging.debug(
-                f"Processing latency: {processing_latency:.3f} seconds"
-            )
+            logging.debug(f"Processing latency: {processing_latency:.3f} seconds")
             logging.debug(f"Gemini LLM VLM Response: {response}")
             if self.message_callback:
                 self.message_callback(response)

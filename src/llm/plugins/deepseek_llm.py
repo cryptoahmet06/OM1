@@ -46,8 +46,7 @@ class DeepSeekLLM(LLM[R]):
             self._config.model = "deepseek-chat"
 
         self._client = openai.AsyncOpenAI(
-            base_url=config.base_url
-            or "https://api.openmind.org/api/core/deepseek",
+            base_url=config.base_url or "https://api.openmind.org/api/core/deepseek",
             api_key=config.api_key,
         )
 
@@ -56,9 +55,7 @@ class DeepSeekLLM(LLM[R]):
 
     @AvatarLLMState.trigger_thinking()
     @LLMHistoryManager.update_history()
-    async def ask(
-        self, prompt: str, messages: T.List[T.Dict[str, str]]
-    ) -> R | None:
+    async def ask(self, prompt: str, messages: T.List[T.Dict[str, str]]) -> R | None:
         """
         Send a prompt to the DeepSeek API and get a structured response.
 
@@ -103,9 +100,7 @@ class DeepSeekLLM(LLM[R]):
             self.io_provider.llm_end_time = time.time()
 
             if message.tool_calls:
-                logging.info(
-                    f"Received {len(message.tool_calls)} function calls"
-                )
+                logging.info(f"Received {len(message.tool_calls)} function calls")
                 logging.info(f"Function calls: {message.tool_calls}")
 
                 function_call_data = [

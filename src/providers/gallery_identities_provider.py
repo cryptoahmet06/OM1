@@ -197,9 +197,7 @@ class GalleryIdentitiesProvider:
         ok = bool(data.get("ok"))
         if not ok:
             # Graceful empty snapshot on bad response
-            return IdentitiesSnapshot(
-                ts=time.time(), total=0, names=[], raw=data
-            )
+            return IdentitiesSnapshot(ts=time.time(), total=0, names=[], raw=data)
 
         total = int(data.get("total", 0) or 0)
         raw_identities = data.get("identities", []) or []

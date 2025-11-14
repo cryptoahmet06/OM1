@@ -217,9 +217,7 @@ class UbtechASRProvider:
                 timeout=3,
             )  # Use session
         except requests.RequestException as e:
-            logging.error(
-                f"UbtechASRProvider: Failed to set robot language: {e}"
-            )
+            logging.error(f"UbtechASRProvider: Failed to set robot language: {e}")
 
     def _start_voice_iat(self, ts: int) -> bool:
         if not self.robot_ip:
@@ -241,9 +239,7 @@ class UbtechASRProvider:
             )
             return response_json.get("code") == 0
         except requests.RequestException as e:
-            logging.error(
-                f"UbtechASRProvider: _start_voice_iat request failed: {e}"
-            )
+            logging.error(f"UbtechASRProvider: _start_voice_iat request failed: {e}")
             return False
 
     def _stop_voice_iat(self):
@@ -259,9 +255,7 @@ class UbtechASRProvider:
                     f"{self.basic_url}voice/iat", timeout=2
                 )  # Use session
                 response.raise_for_status()  # Check for HTTP errors
-                logging.debug(
-                    "UbtechASRProvider: _stop_voice_iat request successful."
-                )
+                logging.debug("UbtechASRProvider: _stop_voice_iat request successful.")
                 return  # Success
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code >= 500 and attempt < max_retries - 1:
@@ -311,17 +305,13 @@ class UbtechASRProvider:
                     and isinstance(response_json["data"], str)
                     and response_json.get("code") == 0
                 ):
-                    cleaned_data_str = (
-                        response_json["data"].strip().rstrip("\x00")
-                    )
+                    cleaned_data_str = response_json["data"].strip().rstrip("\x00")
                     logging.debug(
                         f"UbtechASRProvider: _get_voice_iat cleaned data string: '{cleaned_data_str}'"
                     )
                     if cleaned_data_str:
                         try:
-                            response_json["data"] = json.loads(
-                                cleaned_data_str
-                            )
+                            response_json["data"] = json.loads(cleaned_data_str)
                         except json.JSONDecodeError:
                             logging.error(
                                 f"UbtechASRProvider: Failed to decode JSON from data string: '{cleaned_data_str}'"

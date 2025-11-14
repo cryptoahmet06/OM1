@@ -33,16 +33,10 @@ class SelfieConnector(ActionConnector[SelfieInput]):
             self.config, "face_http_base_url", "http://127.0.0.1:6793"
         )
 
-        self.recent_sec: float = float(
-            getattr(self.config, "face_recent_sec", 1.0)
-        )
+        self.recent_sec: float = float(getattr(self.config, "face_recent_sec", 1.0))
         self.poll_ms: int = int(getattr(self.config, "poll_ms", 200))
-        self.default_timeout: int = int(
-            getattr(self.config, "timeout_sec", 15)
-        )
-        self.http_timeout: float = float(
-            getattr(self.config, "http_timeout_sec", 5.0)
-        )
+        self.default_timeout: int = int(getattr(self.config, "timeout_sec", 15))
+        self.http_timeout: float = float(getattr(self.config, "http_timeout_sec", 5.0))
 
         self.evelenlabs_tts_provider = ElevenLabsTTSProvider()
         self.io_provider = IOProvider()
@@ -177,20 +171,14 @@ class SelfieConnector(ActionConnector[SelfieInput]):
         await loop.run_in_executor(None, self._set_blur, False)
 
         try:
-            ok = await loop.run_in_executor(
-                None, self._wait_single_face, timeout_sec
-            )
+            ok = await loop.run_in_executor(None, self._wait_single_face, timeout_sec)
             if not ok:
-                snapshot = (
-                    await loop.run_in_executor(None, self._who_snapshot) or {}
-                )
+                snapshot = await loop.run_in_executor(None, self._who_snapshot) or {}
                 now = snapshot.get("now") or []
                 unknown_now = int(snapshot.get("unknown_now") or 0)
                 faces = len(now) + unknown_now
                 reason = "none" if faces == 0 else "multiple"
-                logging.info(
-                    "[Selfie] Gating failed: %s (faces=%d)", reason, faces
-                )
+                logging.info("[Selfie] Gating failed: %s (faces=%d)", reason, faces)
                 self.io_provider.add_input(
                     "SelfieStatus",
                     f"failed reason={reason} faces={faces}",
@@ -205,9 +193,7 @@ class SelfieConnector(ActionConnector[SelfieInput]):
                 None, self._post_json, "/selfie", {"id": name}
             )
             if not (isinstance(resp, dict) and resp.get("ok")):
-                logging.error(
-                    "[Selfie] /selfie failed or returned non-ok: %s", resp
-                )
+                logging.error("[Selfie] /selfie failed or returned non-ok: %s", resp)
                 self.io_provider.add_input(
                     "SelfieStatus", "failed reason=service", time.time()
                 )
@@ -216,12 +202,8 @@ class SelfieConnector(ActionConnector[SelfieInput]):
                 )
                 return
 
-            logging.info(
-                "[Selfie] Enrolled selfie for '%s' successfully.", name
-            )
-            self.io_provider.add_input(
-                "SelfieStatus", f"ok id={name}", time.time()
-            )
+            logging.info("[Selfie] Enrolled selfie for '%s' successfully.", name)
+            self.io_provider.add_input("SelfieStatus", f"ok id={name}", time.time())
             self.evelenlabs_tts_provider.add_pending_message(
                 f"Woof! Woof! I remember you, {name}! You are now enrolled."
             )

@@ -48,9 +48,7 @@ class BackgroundOrchestrator:
                     f"Background {background.name} already submitted, skipping."
                 )
                 continue
-            self._background_executor.submit(
-                self._run_background_loop, background
-            )
+            self._background_executor.submit(self._run_background_loop, background)
             self._submitted_backgrounds.add(background.name)
 
         return asyncio.Future()

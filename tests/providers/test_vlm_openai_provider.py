@@ -30,9 +30,7 @@ def reset_singleton():
 def mock_dependencies():
     with (
         patch("providers.vlm_openai_provider.AsyncOpenAI") as mock_client,
-        patch(
-            "providers.vlm_openai_provider.VideoStream"
-        ) as mock_video_stream,
+        patch("providers.vlm_openai_provider.VideoStream") as mock_video_stream,
     ):
         yield mock_client, mock_video_stream
 

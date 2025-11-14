@@ -55,8 +55,7 @@ class OpenAILLM(LLM[R]):
             self._config.model = "gpt-4.1-mini"
 
         self._client = openai.AsyncClient(
-            base_url=config.base_url
-            or "https://api.openmind.org/api/core/openai",
+            base_url=config.base_url or "https://api.openmind.org/api/core/openai",
             api_key=config.api_key,
         )
 
@@ -112,9 +111,7 @@ class OpenAILLM(LLM[R]):
             self.io_provider.llm_end_time = time.time()
 
             if message.tool_calls:
-                logging.info(
-                    f"Received {len(message.tool_calls)} function calls"
-                )
+                logging.info(f"Received {len(message.tool_calls)} function calls")
                 logging.info(f"Function calls: {message.tool_calls}")
 
                 function_call_data = [

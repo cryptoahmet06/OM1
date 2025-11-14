@@ -14,9 +14,7 @@ class DummyOutputModel(BaseModel):
 
 @pytest.fixture
 def config():
-    return LLMConfig(
-        base_url="test_url/", api_key="test_key", model="test_model"
-    )
+    return LLMConfig(base_url="test_url/", api_key="test_key", model="test_model")
 
 
 @pytest.fixture
@@ -25,9 +23,7 @@ def mock_response():
     response = MagicMock()
     response.choices = [
         MagicMock(
-            message=MagicMock(
-                content='{"test_field": "success"}', tool_calls=None
-            )
+            message=MagicMock(content='{"test_field": "success"}', tool_calls=None)
         )
     ]
     return response
@@ -101,9 +97,7 @@ async def test_ask_with_tool_calls(llm, mock_response_with_tool_calls):
 @pytest.mark.asyncio
 async def test_ask_invalid_json(llm):
     invalid_response = MagicMock()
-    invalid_response.choices = [
-        MagicMock(message=MagicMock(content="invalid"))
-    ]
+    invalid_response.choices = [MagicMock(message=MagicMock(content="invalid"))]
 
     with pytest.MonkeyPatch.context() as m:
         m.setattr(

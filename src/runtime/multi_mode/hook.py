@@ -98,9 +98,7 @@ class MessageHookHandler(LifecycleHookHandler):
                 logging.info(f"Lifecycle hook message: {formatted_message}")
 
                 try:
-                    ElevenLabsTTSProvider().add_pending_message(
-                        formatted_message
-                    )
+                    ElevenLabsTTSProvider().add_pending_message(formatted_message)
                 except Exception as e:
                     logging.error(f"Error adding TTS message: {e}")
                     return False
@@ -136,9 +134,7 @@ class CommandHookHandler(LifecycleHookHandler):
 
             if process.returncode == 0:
                 if stdout:
-                    logging.info(
-                        f"Hook command output: {stdout.decode().strip()}"
-                    )
+                    logging.info(f"Hook command output: {stdout.decode().strip()}")
                 return True
             else:
                 logging.error(

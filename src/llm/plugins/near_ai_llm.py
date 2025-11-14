@@ -46,8 +46,7 @@ class NearAILLM(LLM[R]):
             self._config.model = "qwen3-30b-a3b-instruct-2507"
 
         self._client = openai.AsyncClient(
-            base_url=config.base_url
-            or "https://api.openmind.org/api/core/nearai",
+            base_url=config.base_url or "https://api.openmind.org/api/core/nearai",
             api_key=config.api_key,
         )
 
@@ -103,9 +102,7 @@ class NearAILLM(LLM[R]):
             self.io_provider.llm_end_time = time.time()
 
             if message.tool_calls:
-                logging.info(
-                    f"Received {len(message.tool_calls)} function calls"
-                )
+                logging.info(f"Received {len(message.tool_calls)} function calls")
                 logging.info(f"Function calls: {message.tool_calls}")
 
                 function_call_data = [

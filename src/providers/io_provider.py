@@ -77,9 +77,7 @@ class IOProvider:
                     result[name] = Input(input=value)
             return result
 
-    def add_input(
-        self, key: str, value: str, timestamp: Optional[float]
-    ) -> None:
+    def add_input(self, key: str, value: str, timestamp: Optional[float]) -> None:
         """
         Add an input with optional timestamp.
 

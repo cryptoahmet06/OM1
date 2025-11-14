@@ -40,9 +40,7 @@ class Fuser:
         self.config = config
         self.io_provider = IOProvider()
 
-    def fuse(
-        self, inputs: list[Sensor], finished_promises: list[T.Any]
-    ) -> str:
+    def fuse(self, inputs: list[Sensor], finished_promises: list[T.Any]) -> str:
         """
         Combine all inputs into a single formatted prompt string.
 
@@ -68,9 +66,7 @@ class Fuser:
         logging.debug(f"InputMessageArray: {input_strings}")
 
         # Combine all inputs, memories, and configurations into a single prompt
-        system_prompt = (
-            "\nBASIC CONTEXT:\n" + self.config.system_prompt_base + "\n"
-        )
+        system_prompt = "\nBASIC CONTEXT:\n" + self.config.system_prompt_base + "\n"
 
         inputs_fused = " ".join([s for s in input_strings if s is not None])
 
@@ -81,9 +77,7 @@ class Fuser:
             system_prompt += "\nLAWS:\n" + self.config.system_governance
 
         if self.config.system_prompt_examples:
-            system_prompt += (
-                "\n\nEXAMPLES:\n" + self.config.system_prompt_examples
-            )
+            system_prompt += "\n\nEXAMPLES:\n" + self.config.system_prompt_examples
 
         # descriptions of possible actions
         actions_fused = ""

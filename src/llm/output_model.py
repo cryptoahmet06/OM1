@@ -30,6 +30,4 @@ class CortexOutputModel(BaseModel):
         List of actions to be executed
     """
 
-    actions: list[Action] = Field(
-        ..., description="List of actions to execute"
-    )
+    actions: list[Action] = Field(..., description="List of actions to execute")

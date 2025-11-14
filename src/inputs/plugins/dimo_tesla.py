@@ -78,9 +78,7 @@ class DIMOTesla(FuserInput[str]):
 
         self.token_id = getattr(config, "token_id", None)
         if self.token_id is None:
-            logging.info(
-                "DIMOTesla: You did not provide a token_id - aborting"
-            )
+            logging.info("DIMOTesla: You did not provide a token_id - aborting")
             return
 
         try:
@@ -98,13 +96,9 @@ class DIMOTesla(FuserInput[str]):
 
             # bypass token_id and vehicle_jwt to io_provider
             self.io_provider.add_dynamic_variable("token_id", self.token_id)
-            self.io_provider.add_dynamic_variable(
-                "vehicle_jwt", self.vehicle_jwt
-            )
+            self.io_provider.add_dynamic_variable("vehicle_jwt", self.vehicle_jwt)
         except Exception as e:
-            logging.error(
-                f"DIMOTesla: INIT - Error getting DIMO vehicle jwt: {e}"
-            )
+            logging.error(f"DIMOTesla: INIT - Error getting DIMO vehicle jwt: {e}")
             self.vehicle_jwt = None
 
     async def _poll(self) -> Optional[str]:
@@ -119,9 +113,7 @@ class DIMOTesla(FuserInput[str]):
         await asyncio.sleep(0.5)
 
         if self.vehicle_jwt is None:
-            logging.error(
-                "DIMOTesla: No vehicle jwt - did you provide credentials?"
-            )
+            logging.error("DIMOTesla: No vehicle jwt - did you provide credentials?")
             return None
 
         if self.vehicle_jwt_expires is None:
@@ -136,9 +128,7 @@ class DIMOTesla(FuserInput[str]):
                 self.vehicle_jwt = get_vehicle_jwt["token"]
                 self.vehicle_jwt_expires = time.time() + 8 * 60
             except Exception as e:
-                logging.error(
-                    f"DIMOTesla: Error getting DIMO vehicle jwt: {e}"
-                )
+                logging.error(f"DIMOTesla: Error getting DIMO vehicle jwt: {e}")
                 self.vehicle_jwt = None
                 return None
 
@@ -183,17 +173,11 @@ class DIMOTesla(FuserInput[str]):
             powertrainTransmissionTravelledDistance = tesla_data[
                 "powertrainTransmissionTravelledDistance"
             ]["value"]
-            exteriorAirTemperature = tesla_data["exteriorAirTemperature"][
-                "value"
-            ]
+            exteriorAirTemperature = tesla_data["exteriorAirTemperature"]["value"]
             speed = tesla_data["speed"]["value"]
             powertrainRange = tesla_data["powertrainRange"]["value"]
-            currentLocationLatitude = tesla_data["currentLocationLatitude"][
-                "value"
-            ]
-            currentLocationLongitude = tesla_data["currentLocationLongitude"][
-                "value"
-            ]
+            currentLocationLatitude = tesla_data["currentLocationLatitude"]["value"]
+            currentLocationLongitude = tesla_data["currentLocationLongitude"]["value"]
         except Exception as e:
             print("Error parsing Tesla data")
             logging.error(f"Error parsing Tesla data: {e}")

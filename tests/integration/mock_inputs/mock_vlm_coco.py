@@ -32,9 +32,7 @@ class MockVLM_COCO(VLM_COCO_Local):
             Configuration for the sensor
         """
         # Initialize base FuserInput class
-        super(FuserInput, self).__init__(
-            config
-        )  # Skip VLM_COCO_Local.__init__
+        super(FuserInput, self).__init__(config)  # Skip VLM_COCO_Local.__init__
 
         # Set up the model and class labels like the parent class
         self.device = "cpu"
@@ -49,9 +47,11 @@ class MockVLM_COCO(VLM_COCO_Local):
             progress=True,
             weights_backbone="MobileNet_V3_Large_Weights.IMAGENET1K_V1",
         ).to(self.device)
-        self.class_labels = detection_model.FasterRCNN_MobileNet_V3_Large_320_FPN_Weights.DEFAULT.meta[
-            "categories"
-        ]
+        self.class_labels = (
+            detection_model.FasterRCNN_MobileNet_V3_Large_320_FPN_Weights.DEFAULT.meta[
+                "categories"
+            ]
+        )
         self.model.eval()
 
         # Set mock camera properties without opening real camera
@@ -78,7 +78,5 @@ class MockVLM_COCO(VLM_COCO_Local):
         # Get the next image from the central provider
         image = get_next_opencv_image()
         if image is not None:
-            logging.info(
-                f"MockVLM_COCO: Retrieved test image with shape {image.shape}"
-            )
+            logging.info(f"MockVLM_COCO: Retrieved test image with shape {image.shape}")
         return image

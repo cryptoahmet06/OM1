@@ -36,9 +36,7 @@ class UbtechASRInput(FuserInput[str]):
 
         # Get config for the provider
         self.robot_ip = getattr(self.config, "robot_ip", "")
-        self.language = (
-            getattr(self.config, "language", "english").strip().lower()
-        )
+        self.language = getattr(self.config, "language", "english").strip().lower()
         self.language_code = LANGUAGE_CODE_MAP.get(self.language, "en")
 
         # Initialize and start the provider
@@ -55,9 +53,7 @@ class UbtechASRInput(FuserInput[str]):
             logging.info("Detected ASR message: %s", message)
             self.message_buffer.put(message)
         else:
-            logging.debug(
-                "Ignored empty or malformed ASR message: %s", message
-            )
+            logging.debug("Ignored empty or malformed ASR message: %s", message)
 
     async def _poll(self) -> Optional[str]:
         """Poll for new messages. Resume ASR only if its cooldown period has passed since last resume trigger."""
@@ -85,7 +81,9 @@ class UbtechASRInput(FuserInput[str]):
                         f"UbtechASRInput: Cooldown ({self.asr_resume_cooldown}s) passed since last ASR resume trigger. Resuming ASR."
                     )
                     self.asr.resume()
-                    self.last_asr_resume_trigger_time = current_time  # MODIFIED: Update time when resume is triggered
+                    self.last_asr_resume_trigger_time = (
+                        current_time  # MODIFIED: Update time when resume is triggered
+                    )
                 else:
                     elapsed_since_last_resume_trigger = (
                         current_time - self.last_asr_resume_trigger_time

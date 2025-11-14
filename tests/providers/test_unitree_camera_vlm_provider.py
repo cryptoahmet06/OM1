@@ -119,9 +119,7 @@ def test_video_stream_resize(mock_video_client):
     test_img = np.zeros((1200, 1600, 3), dtype=np.uint8)
     _, img_encoded = cv2.imencode(".jpg", test_img)
 
-    stream.video_client.GetImageSample = Mock(
-        return_value=(0, img_encoded.tobytes())
-    )
+    stream.video_client.GetImageSample = Mock(return_value=(0, img_encoded.tobytes()))
 
     stream.start()
     time.sleep(0.1)

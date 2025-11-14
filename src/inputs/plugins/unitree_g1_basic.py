@@ -107,15 +107,11 @@ class UnitreeG1Basic(FuserInput[str]):
         # Joint angles e.g.
         if unitree_ethernet and unitree_ethernet != "":
             # only set up if we are connected to a robot
-            self.lowstate_subscriber = ChannelSubscriber(
-                "rt/lowstate", LowState_
-            )
+            self.lowstate_subscriber = ChannelSubscriber("rt/lowstate", LowState_)
             self.lowstate_subscriber.Init(self.LowStateHandler, 10)
 
             # Battery specific data
-            self.bmsstate_subscriber = ChannelSubscriber(
-                "rt/lf/bmsstate", BmsState_
-            )
+            self.bmsstate_subscriber = ChannelSubscriber("rt/lf/bmsstate", BmsState_)
             self.bmsstate_subscriber.Init(self.BMSStateHandler, 10)
 
         # battery state

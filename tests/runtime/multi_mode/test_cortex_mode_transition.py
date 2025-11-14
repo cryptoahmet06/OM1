@@ -152,9 +152,7 @@ def mock_mode_manager():
     manager.add_transition_callback = Mock()
     manager.remove_transition_callback = Mock()
     manager.set_event_loop = Mock()
-    manager._get_runtime_config_path = Mock(
-        return_value="/fake/path/test_config.json5"
-    )
+    manager._get_runtime_config_path = Mock(return_value="/fake/path/test_config.json5")
 
     async def mock_process_tick(input_text=None):
         if not input_text:
@@ -182,9 +180,7 @@ def cortex_runtime_with_mode_transition(
     """ModeCortexRuntime instance configured for mode transition testing."""
     with (
         patch("runtime.multi_mode.cortex.ModeManager") as mock_manager_class,
-        patch(
-            "runtime.multi_mode.cortex.IOProvider"
-        ) as mock_io_provider_class,
+        patch("runtime.multi_mode.cortex.IOProvider") as mock_io_provider_class,
         patch(
             "runtime.multi_mode.cortex.SleepTickerProvider"
         ) as mock_sleep_provider_class,
@@ -197,25 +193,19 @@ def cortex_runtime_with_mode_transition(
         mock_sleep_provider.sleep = AsyncMock()
         mock_sleep_provider_class.return_value = mock_sleep_provider
 
-        runtime = ModeCortexRuntime(
-            mock_system_config, "test_config", hot_reload=False
-        )
+        runtime = ModeCortexRuntime(mock_system_config, "test_config", hot_reload=False)
 
         mock_runtime_config = Mock()
         mock_runtime_config.hertz = 10.0
         mock_runtime_config.cortex_llm = Mock()
-        mock_runtime_config.cortex_llm.ask = AsyncMock(
-            return_value=Mock(actions=[])
-        )
+        mock_runtime_config.cortex_llm.ask = AsyncMock(return_value=Mock(actions=[]))
         mock_runtime_config.agent_inputs = []
 
         runtime.current_config = mock_runtime_config
         runtime.fuser = Mock()
         runtime.fuser.fuse = Mock(return_value="test prompt")
         runtime.action_orchestrator = Mock()
-        runtime.action_orchestrator.flush_promises = AsyncMock(
-            return_value=([], None)
-        )
+        runtime.action_orchestrator.flush_promises = AsyncMock(return_value=([], None))
         runtime.action_orchestrator.promise = AsyncMock()
         runtime.simulator_orchestrator = Mock()
         runtime.simulator_orchestrator.promise = AsyncMock()
@@ -234,9 +224,7 @@ def cortex_runtime(mock_system_config, mock_io_provider, mock_mode_manager):
     with (
         patch("runtime.multi_mode.cortex.ModeManager") as mock_manager_class,
         patch("runtime.multi_mode.cortex.IOProvider") as mock_io_class,
-        patch(
-            "runtime.multi_mode.cortex.SleepTickerProvider"
-        ) as mock_sleep_class,
+        patch("runtime.multi_mode.cortex.SleepTickerProvider") as mock_sleep_class,
     ):
         mock_manager_class.return_value = mock_mode_manager
         mock_io_class.return_value = mock_io_provider
@@ -246,25 +234,19 @@ def cortex_runtime(mock_system_config, mock_io_provider, mock_mode_manager):
         mock_sleep_provider.sleep = AsyncMock()
         mock_sleep_class.return_value = mock_sleep_provider
 
-        runtime = ModeCortexRuntime(
-            mock_system_config, "test_config", hot_reload=False
-        )
+        runtime = ModeCortexRuntime(mock_system_config, "test_config", hot_reload=False)
 
         mock_runtime_config = Mock()
         mock_runtime_config.hertz = 10.0
         mock_runtime_config.cortex_llm = Mock()
-        mock_runtime_config.cortex_llm.ask = AsyncMock(
-            return_value=Mock(actions=[])
-        )
+        mock_runtime_config.cortex_llm.ask = AsyncMock(return_value=Mock(actions=[]))
         mock_runtime_config.agent_inputs = []
 
         runtime.current_config = mock_runtime_config
         runtime.fuser = Mock()
         runtime.fuser.fuse = Mock(return_value="test prompt")
         runtime.action_orchestrator = Mock()
-        runtime.action_orchestrator.flush_promises = AsyncMock(
-            return_value=([], None)
-        )
+        runtime.action_orchestrator.flush_promises = AsyncMock(return_value=([], None))
         runtime.action_orchestrator.promise = AsyncMock()
         runtime.simulator_orchestrator = None
 
@@ -294,9 +276,7 @@ async def test_tick_with_mode_transition_input_triggers_transition(
 
     await runtime._tick()
 
-    mocks["mode_manager"].process_tick.assert_called_once_with(
-        "I need advanced mode"
-    )
+    mocks["mode_manager"].process_tick.assert_called_once_with("I need advanced mode")
 
     assert runtime._pending_mode_transition == "advanced"
     runtime._mode_transition_event.set.assert_called_once()
@@ -317,9 +297,7 @@ async def test_tick_with_emergency_input_triggers_emergency_mode(
 
     await runtime._tick()
 
-    mocks["mode_manager"].process_tick.assert_called_once_with(
-        "Emergency help needed!"
-    )
+    mocks["mode_manager"].process_tick.assert_called_once_with("Emergency help needed!")
     assert runtime._pending_mode_transition == "emergency"
     runtime._mode_transition_event.set.assert_called_once()
 
@@ -362,9 +340,7 @@ async def test_tick_with_unrecognized_input_continues_normally(
 
     await runtime._tick()
 
-    mocks["mode_manager"].process_tick.assert_called_once_with(
-        "just some random text"
-    )
+    mocks["mode_manager"].process_tick.assert_called_once_with("just some random text")
 
     assert runtime._pending_mode_transition is None
     runtime._mode_transition_event.set.assert_not_called()
@@ -380,10 +356,7 @@ async def test_mode_transition_input_is_cleared_after_use(
     runtime, mocks = cortex_runtime_with_mode_transition
 
     mocks["io_provider"].add_mode_transition_input("advanced mode please")
-    assert (
-        mocks["io_provider"].get_mode_transition_input()
-        == "advanced mode please"
-    )
+    assert mocks["io_provider"].get_mode_transition_input() == "advanced mode please"
 
     runtime._pending_mode_transition = None
     runtime._mode_transition_event = Mock()
@@ -405,10 +378,7 @@ async def test_multiple_mode_transition_inputs_are_combined(
     mocks["io_provider"].add_mode_transition_input("advanced")
     mocks["io_provider"].add_mode_transition_input("mode")
 
-    assert (
-        mocks["io_provider"].get_mode_transition_input()
-        == "I need advanced mode"
-    )
+    assert mocks["io_provider"].get_mode_transition_input() == "I need advanced mode"
 
     runtime._pending_mode_transition = None
     runtime._mode_transition_event = Mock()
@@ -416,9 +386,7 @@ async def test_multiple_mode_transition_inputs_are_combined(
 
     await runtime._tick()
 
-    mocks["mode_manager"].process_tick.assert_called_once_with(
-        "I need advanced mode"
-    )
+    mocks["mode_manager"].process_tick.assert_called_once_with("I need advanced mode")
     assert runtime._pending_mode_transition == "advanced"
 
 
@@ -560,9 +528,7 @@ async def test_on_mode_transition_callback_integration(
     """Test the integration of mode transition callback with cortex runtime."""
     runtime, mocks = cortex_runtime_with_mode_transition
 
-    transition_callback = mocks[
-        "mode_manager"
-    ].add_transition_callback.call_args[0][0]
+    transition_callback = mocks["mode_manager"].add_transition_callback.call_args[0][0]
 
     runtime._stop_current_orchestrators = AsyncMock()
     runtime._initialize_mode = AsyncMock()
@@ -640,9 +606,7 @@ async def test_emergency_mode_has_highest_priority(
     """Test that emergency mode transitions have highest priority."""
     runtime, mocks = cortex_runtime_with_mode_transition
 
-    mocks["io_provider"].add_mode_transition_input(
-        "I need advanced emergency help"
-    )
+    mocks["io_provider"].add_mode_transition_input("I need advanced emergency help")
 
     runtime._pending_mode_transition = None
     runtime._mode_transition_event = Mock()
@@ -712,9 +676,7 @@ async def test_mode_transition_input_triggers_advanced_mode(cortex_runtime):
     """Test that setting mode transition input triggers transition to advanced mode."""
     runtime, components = cortex_runtime
 
-    components["io_provider"].add_mode_transition_input(
-        "switch to advanced mode"
-    )
+    components["io_provider"].add_mode_transition_input("switch to advanced mode")
 
     await runtime._tick()
 
@@ -731,9 +693,7 @@ async def test_mode_transition_input_triggers_emergency_mode(cortex_runtime):
     """Test that emergency keywords trigger emergency mode transition."""
     runtime, components = cortex_runtime
 
-    components["io_provider"].add_mode_transition_input(
-        "emergency help needed!"
-    )
+    components["io_provider"].add_mode_transition_input("emergency help needed!")
 
     await runtime._tick()
 
@@ -761,9 +721,7 @@ async def test_no_mode_transition_input_continues_normal_processing(
     assert runtime._pending_mode_transition is None
     runtime._mode_transition_event.set.assert_not_called()
 
-    runtime.current_config.cortex_llm.ask.assert_called_once_with(
-        "test prompt"
-    )
+    runtime.current_config.cortex_llm.ask.assert_called_once_with("test prompt")
     runtime.action_orchestrator.promise.assert_called_once()
 
 
@@ -775,9 +733,7 @@ async def test_mode_transition_input_is_cleared_after_use_basic(
     runtime, components = cortex_runtime
 
     components["io_provider"].add_mode_transition_input("default mode")
-    assert (
-        components["io_provider"].get_mode_transition_input() == "default mode"
-    )
+    assert components["io_provider"].get_mode_transition_input() == "default mode"
 
     await runtime._tick()
 
@@ -793,9 +749,7 @@ async def test_unrecognized_input_does_not_trigger_transition(cortex_runtime):
 
     await runtime._tick()
 
-    components["mode_manager"].process_tick.assert_called_once_with(
-        "some random text"
-    )
+    components["mode_manager"].process_tick.assert_called_once_with("some random text")
     assert runtime._pending_mode_transition is None
     runtime._mode_transition_event.set.assert_not_called()
 
@@ -823,9 +777,7 @@ async def test_mode_transition_callback_registration(cortex_runtime):
 
     components["mode_manager"].add_transition_callback.assert_called_once()
 
-    callback = components["mode_manager"].add_transition_callback.call_args[0][
-        0
-    ]
+    callback = components["mode_manager"].add_transition_callback.call_args[0][0]
 
     runtime._stop_current_orchestrators = AsyncMock()
     runtime._initialize_mode = AsyncMock()
@@ -856,9 +808,7 @@ async def test_manual_mode_change_delegation_to_manager(cortex_runtime):
     """Test that request_mode_change delegates to the mode manager."""
     runtime, components = cortex_runtime
 
-    components["mode_manager"].request_transition = AsyncMock(
-        return_value=True
-    )
+    components["mode_manager"].request_transition = AsyncMock(return_value=True)
 
     result = await runtime.request_mode_change("emergency")
 

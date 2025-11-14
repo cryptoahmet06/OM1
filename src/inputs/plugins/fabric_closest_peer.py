@@ -68,9 +68,7 @@ class FabricClosestPeer(FuserInput[str]):
                 lat = self.io.get_dynamic_variable("latitude")
                 lon = self.io.get_dynamic_variable("longitude")
                 if lat is None or lon is None:
-                    logging.error(
-                        "FabricClosestPeer: latitude or longitude not set."
-                    )
+                    logging.error("FabricClosestPeer: latitude or longitude not set.")
                     return None
                 logging.info(
                     f"FabricClosestPeer: fetching closest peer for {lat:.6f}, {lon:.6f}"

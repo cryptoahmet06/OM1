@@ -15,14 +15,10 @@ print(devices)
 # You can also set it using a string, e.g., sd.default.device = 'Internal Speakers'
 try:
     output_device_index = next(
-        i
-        for i, device in enumerate(devices)
-        if device["name"] == "External Headphones"
+        i for i, device in enumerate(devices) if device["name"] == "External Headphones"
     )
     sd.default.device = output_device_index
-    print(
-        f"Default output device set to: {devices[output_device_index]['name']}"
-    )
+    print(f"Default output device set to: {devices[output_device_index]['name']}")
 except StopIteration:
     print("No output device found.")
 

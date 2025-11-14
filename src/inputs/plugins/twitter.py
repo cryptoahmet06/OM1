@@ -35,9 +35,7 @@ class TwitterInput(FuserInput[str]):
         self.context: Optional[str] = None
 
         # Use getattr instead of .get() since config is an object, not a dict
-        self.query = getattr(
-            config, "query", "What's new in AI and technology?"
-        )
+        self.query = getattr(config, "query", "What's new in AI and technology?")
 
     async def __aenter__(self):
         """Async context manager entry"""
@@ -142,9 +140,7 @@ class TwitterInput(FuserInput[str]):
     def formatted_latest_buffer(self) -> Optional[str]:
         """Format and return the context."""
         content = (
-            self.context
-            if self.context
-            else (self.buffer[-1] if self.buffer else None)
+            self.context if self.context else (self.buffer[-1] if self.buffer else None)
         )
 
         if not content:

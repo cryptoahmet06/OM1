@@ -97,8 +97,8 @@ class ModeManager:
             self.session.declare_subscriber(
                 self.mode_status_request, self._zenoh_mode_status_request
             )
-            self._zenoh_mode_status_response_pub = (
-                self.session.declare_publisher(self.mode_status_response)
+            self._zenoh_mode_status_response_pub = self.session.declare_publisher(
+                self.mode_status_response
             )
         except Exception as e:
             logging.error(f"Error opening Zenoh client: {e}")
@@ -145,9 +145,7 @@ class ModeManager:
                 json5.dump(runtime_config, f, indent=2)
 
             os.rename(temp_file, runtime_config_path)
-            logging.debug(
-                f"Runtime config file created/updated: {runtime_config_path}"
-            )
+            logging.debug(f"Runtime config file created/updated: {runtime_config_path}")
 
         except Exception as e:
             logging.error(f"Error creating runtime config file: {e}")
@@ -264,8 +262,7 @@ class ModeManager:
 
             for rule in self.config.transition_rules:
                 if (
-                    rule.from_mode == self.state.current_mode
-                    or rule.from_mode == "*"
+                    rule.from_mode == self.state.current_mode or rule.from_mode == "*"
                 ) and rule.transition_type == TransitionType.TIME_BASED:
                     if self._can_transition(rule):
                         logging.info(
@@ -275,9 +272,7 @@ class ModeManager:
 
         return None
 
-    def check_input_triggered_transitions(
-        self, input_text: str
-    ) -> Optional[str]:
+    def check_input_triggered_transitions(self, input_text: str) -> Optional[str]:
         """
         Check if any input-triggered transitions should be activated.
 
@@ -300,8 +295,7 @@ class ModeManager:
         matching_rules = []
         for rule in self.config.transition_rules:
             if (
-                rule.from_mode == self.state.current_mode
-                or rule.from_mode == "*"
+                rule.from_mode == self.state.current_mode or rule.from_mode == "*"
             ) and rule.transition_type == TransitionType.INPUT_TRIGGERED:
                 # Check if any trigger keywords are present
                 for keyword in rule.trigger_keywords:
@@ -317,9 +311,7 @@ class ModeManager:
             logging.info(
                 f"Input-triggered transition: {self.state.current_mode} -> {best_rule.to_mode}"
             )
-            logging.info(
-                f"Triggered by keywords: {best_rule.trigger_keywords}"
-            )
+            logging.info(f"Triggered by keywords: {best_rule.trigger_keywords}")
             return best_rule.to_mode
 
         return None
@@ -350,9 +342,7 @@ class ModeManager:
                 return False
 
         if rule.to_mode not in self.config.modes:
-            logging.warning(
-                f"Target mode '{rule.to_mode}' not found in configuration"
-            )
+            logging.warning(f"Target mode '{rule.to_mode}' not found in configuration")
             return False
 
         # TODO: Add context-aware transition logic
@@ -446,15 +436,11 @@ class ModeManager:
                     LifecycleHookType.ON_EXIT, transition_context.copy()
                 )
                 if not exit_success:
-                    logging.warning(
-                        f"Some exit hooks failed for mode: {from_mode}"
-                    )
+                    logging.warning(f"Some exit hooks failed for mode: {from_mode}")
 
             # Execute global exit hooks
-            global_exit_success = (
-                await self.config.execute_global_lifecycle_hooks(
-                    LifecycleHookType.ON_EXIT, transition_context.copy()
-                )
+            global_exit_success = await self.config.execute_global_lifecycle_hooks(
+                LifecycleHookType.ON_EXIT, transition_context.copy()
             )
             if not global_exit_success:
                 logging.warning("Some global exit hooks failed")
@@ -464,14 +450,10 @@ class ModeManager:
             self.state.current_mode = target_mode
             self.state.mode_start_time = time.time()
             self.state.last_transition_time = time.time()
-            self.state.transition_history.append(
-                f"{from_mode}->{target_mode}:{reason}"
-            )
+            self.state.transition_history.append(f"{from_mode}->{target_mode}:{reason}")
 
             if len(self.state.transition_history) > 50:
-                self.state.transition_history = self.state.transition_history[
-                    -25:
-                ]
+                self.state.transition_history = self.state.transition_history[-25:]
 
             logging.info(
                 f"Mode transition: {from_mode} -> {target_mode} (reason: {reason})"
@@ -483,15 +465,11 @@ class ModeManager:
                 LifecycleHookType.ON_ENTRY, transition_context.copy()
             )
             if not entry_success:
-                logging.warning(
-                    f"Some entry hooks failed for mode: {target_mode}"
-                )
+                logging.warning(f"Some entry hooks failed for mode: {target_mode}")
 
             # Execute global entry hooks
-            global_entry_success = (
-                await self.config.execute_global_lifecycle_hooks(
-                    LifecycleHookType.ON_ENTRY, transition_context.copy()
-                )
+            global_entry_success = await self.config.execute_global_lifecycle_hooks(
+                LifecycleHookType.ON_ENTRY, transition_context.copy()
             )
             if not global_entry_success:
                 logging.warning("Some global entry hooks failed")
@@ -522,10 +500,7 @@ class ModeManager:
         available = set()
 
         for rule in self.config.transition_rules:
-            if (
-                rule.from_mode == self.state.current_mode
-                or rule.from_mode == "*"
-            ):
+            if rule.from_mode == self.state.current_mode or rule.from_mode == "*":
                 if self._can_transition(rule):
                     available.add(rule.to_mode)
 
@@ -626,10 +601,7 @@ class ModeManager:
         # Switch to specified mode
         if code == 0 and target_mode:
             try:
-                if (
-                    self._main_event_loop
-                    and self._main_event_loop.is_running()
-                ):
+                if self._main_event_loop and self._main_event_loop.is_running():
                     self._main_event_loop.call_soon_threadsafe(
                         lambda: asyncio.create_task(
                             self._handle_mode_switch_request(
@@ -692,9 +664,7 @@ class ModeManager:
                 message=String(f"Failed to switch to mode {target_mode}"),
             )
 
-        self._zenoh_mode_status_response_pub.put(
-            mode_status_response.serialize()
-        )
+        self._zenoh_mode_status_response_pub.put(mode_status_response.serialize())
 
     def _get_state_file_path(self) -> str:
         """
@@ -748,22 +718,18 @@ class ModeManager:
                 if saved_history:
                     self.state.transition_history.extend(saved_history)
                     if len(self.state.transition_history) > 50:
-                        self.state.transition_history = (
-                            self.state.transition_history[-25:]
-                        )
+                        self.state.transition_history = self.state.transition_history[
+                            -25:
+                        ]
 
                 logging.info(f"Mode state restored from {state_file}")
             else:
                 logging.info(f"Using default mode: {self.config.default_mode}")
 
         except FileNotFoundError:
-            logging.debug(
-                f"No state file found at {state_file}, using default mode"
-            )
+            logging.debug(f"No state file found at {state_file}, using default mode")
         except (json.JSONDecodeError, KeyError) as e:
-            logging.warning(
-                f"Invalid state file format: {e}, using default mode"
-            )
+            logging.warning(f"Invalid state file format: {e}, using default mode")
         except Exception as e:
             logging.error(f"Error loading mode state: {e}, using default mode")
 

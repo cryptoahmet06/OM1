@@ -48,18 +48,11 @@ class Intel435ObstacleDector(Node):
         except Exception as e:
             self.get_logger().error(f"Error processing depth info: {e}")
 
-    def image_to_world(
-        self, u, v, depth_value, camera_height=0.45, tilt_angle=55
-    ):
+    def image_to_world(self, u, v, depth_value, camera_height=0.45, tilt_angle=55):
         """
         Convert image coordinates to world coordinates
         """
-        if (
-            self.fx is None
-            or self.fy is None
-            or self.cx is None
-            or self.cy is None
-        ):
+        if self.fx is None or self.fy is None or self.cx is None or self.cy is None:
             self.get_logger().warn("Camera intrinsics not available yet")
             return None, None, None
 
@@ -111,9 +104,7 @@ class Intel435ObstacleDector(Node):
 
     def depth_callback(self, msg):
         try:
-            depth_image = self.bridge.imgmsg_to_cv2(
-                msg, desired_encoding="passthrough"
-            )
+            depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
 
             obstacle = []
 
@@ -129,14 +120,9 @@ class Intel435ObstacleDector(Node):
                             tilt_angle=55,
                         )
 
-                        if (
-                            world_x is not None
-                            and world_z > self.obstacle_threshold
-                        ):
-                            angle_degrees, distance = (
-                                self.calculate_angle_and_distance(
-                                    world_x, world_y
-                                )
+                        if world_x is not None and world_z > self.obstacle_threshold:
+                            angle_degrees, distance = self.calculate_angle_and_distance(
+                                world_x, world_y
                             )
                             # Change to the robot coordinate system
                             obstacle.append(

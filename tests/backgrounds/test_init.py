@@ -24,9 +24,7 @@ def test_load_background_success():
         result = load_background("MockBackground")
 
         mock_find_module.assert_called_once_with("MockBackground")
-        mock_import.assert_called_once_with(
-            "backgrounds.plugins.mock_background"
-        )
+        mock_import.assert_called_once_with("backgrounds.plugins.mock_background")
         assert result == MockBackground
 
 
@@ -86,9 +84,7 @@ def test_find_module_with_class_success():
         patch("os.listdir") as mock_listdir,
         patch(
             "builtins.open",
-            mock_open(
-                read_data="class TestBackground(Background):\n    pass\n"
-            ),
+            mock_open(read_data="class TestBackground(Background):\n    pass\n"),
         ),
     ):
         mock_join.side_effect = lambda *args: "/".join(args)

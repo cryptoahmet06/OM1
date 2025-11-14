@@ -54,9 +54,7 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
 
         if self.unitree_go2_state.state_code == 1002:
             if self.sport_client:
-                logging.info(
-                    "Robot is in jointLock state - issuing BalanceStand()"
-                )
+                logging.info("Robot is in jointLock state - issuing BalanceStand()")
                 self.sport_client.BalanceStand()
 
         if self.unitree_go2_state.action_progress != 0:
@@ -90,18 +88,14 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
             "turn right": self._process_turn_right,
             "move forwards": self._process_move_forward,
             "move back": self._process_move_back,
-            "stand still": lambda: logging.info(
-                "AI movement command: stand still"
-            ),
+            "stand still": lambda: logging.info("AI movement command: stand still"),
         }
 
         handler = movement_map.get(output_interface.action)
         if handler:
             handler()
         else:
-            logging.info(
-                f"AI movement command unknown: {output_interface.action}"
-            )
+            logging.info(f"AI movement command unknown: {output_interface.action}")
 
         # This is a subset of Go2 movements that are
         # generally safe. Note that the "stretch" action involves
@@ -149,9 +143,7 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
             self.sport_client.BalanceStand()
 
         try:
-            logging.info(
-                f"self.sport_client.Move: vx={vx}, vy={vy}, vturn={vturn}"
-            )
+            logging.info(f"self.sport_client.Move: vx={vx}, vy={vy}, vturn={vturn}")
             self.sport_client.Move(vx, vy, vturn)
         except Exception as e:
             logging.error(f"Error moving robot: {e}")
@@ -222,17 +214,13 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
                     logging.info(f"Phase 1 - Turn GAP delta: {progress}DEG")
 
                 if abs(gap) > 10.0:
-                    logging.debug(
-                        "Phase 1 - Gap is big, using large displacements"
-                    )
+                    logging.debug("Phase 1 - Gap is big, using large displacements")
                     self.movement_attempts += 1
                     if not self._execute_turn(gap):
                         self.clean_abort()
                         return
                 elif abs(gap) > self.angle_tolerance and abs(gap) <= 10.0:
-                    logging.debug(
-                        "Phase 1 - Gap is decreasing, using smaller steps"
-                    )
+                    logging.debug("Phase 1 - Gap is decreasing, using smaller steps")
                     self.movement_attempts += 1
                     # rotate only because we are so close
                     # no need to check barriers because we are just performing small rotations
@@ -248,9 +236,7 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
             else:
                 # Phase 2: Move towards the target position, if needed
                 if goal_dx == 0:
-                    logging.info(
-                        "No movement required, processing next AI command"
-                    )
+                    logging.info("No movement required, processing next AI command")
                     self.clean_abort()
                     return
 
@@ -267,9 +253,7 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
                 self.gap_previous = gap
 
                 if self.movement_attempts > 0:
-                    logging.info(
-                        f"Phase 2 - Forward/retreat GAP delta: {progress}m"
-                    )
+                    logging.info(f"Phase 2 - Forward/retreat GAP delta: {progress}m")
 
                 if goal_dx > 0:
                     if 4 not in self.lidar.advance:
@@ -288,9 +272,7 @@ class MoveUnitreeSDKConnector(ActionConnector[MoveInput]):
                 if gap > self.distance_tolerance:
                     self.movement_attempts += 1
                     if distance_traveled < abs(goal_dx):
-                        logging.info(
-                            f"Phase 2 - Keep moving. Remaining: {gap}m "
-                        )
+                        logging.info(f"Phase 2 - Keep moving. Remaining: {gap}m ")
                         self._move_robot(fb * speed, 0.0, 0.0)
                     elif distance_traveled > abs(goal_dx):
                         logging.debug(

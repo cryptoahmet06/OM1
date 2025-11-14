@@ -195,12 +195,8 @@ class TeleopsStatus:
         """
         return cls(
             update_time=data.get("update_time", time.time()),
-            battery_status=BatteryStatus.from_dict(
-                data.get("battery_status", {})
-            ),
-            action_status=ActionStatus.from_dict(
-                data.get("action_status", {})
-            ),
+            battery_status=BatteryStatus.from_dict(data.get("battery_status", {})),
+            action_status=ActionStatus.from_dict(data.get("action_status", {})),
             machine_name=data.get("machine_name", "unknown"),
             video_connected=data.get("video_connected", False),
         )
@@ -240,9 +236,7 @@ class TeleopsStatusProvider:
             logging.error("API key is missing. Cannot get status.")
             return {}
 
-        api_key_id = (
-            self.api_key[9:25] if len(self.api_key) > 25 else self.api_key
-        )
+        api_key_id = self.api_key[9:25] if len(self.api_key) > 25 else self.api_key
         request = requests.get(
             f"{self.base_url}/{api_key_id}",
             headers={"Authorization": f"Bearer {self.api_key}"},

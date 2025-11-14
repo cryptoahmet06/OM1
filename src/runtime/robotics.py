@@ -36,8 +36,6 @@ def load_unitree(unitree_ethernet: str):
         try:
             ChannelFactoryInitialize(0, unitree_ethernet)
         except Exception as e:
-            logging.error(
-                f"Failed to initialize Unitree Ethernet channel: {e}"
-            )
+            logging.error(f"Failed to initialize Unitree Ethernet channel: {e}")
             # raise e
         logging.info("Booting Unitree and CycloneDDS")

@@ -49,9 +49,7 @@ class UnitreeGo2CameraVLMCloud(FuserInput[str]):
         # Initialize VLM provider
         api_key = getattr(self.config, "api_key", None)
 
-        base_url = getattr(
-            self.config, "base_url", "wss://api-vila.openmind.org"
-        )
+        base_url = getattr(self.config, "base_url", "wss://api-vila.openmind.org")
         stream_base_url = getattr(
             self.config,
             "stream_base_url",

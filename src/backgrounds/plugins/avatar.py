@@ -12,9 +12,7 @@ class Avatar(Background):
     def __init__(self, config: BackgroundConfig = BackgroundConfig()):
         super().__init__(config)
 
-        self.avatar_server_host = getattr(
-            self.config, "avatar_server", "localhost"
-        )
+        self.avatar_server_host = getattr(self.config, "avatar_server", "localhost")
         logging.info(f"Avatar using server host: {self.avatar_server_host}")
 
         self.avatar_server_port = getattr(self.config, "avatar_port", 8123)

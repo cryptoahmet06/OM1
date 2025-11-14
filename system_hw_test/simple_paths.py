@@ -20,14 +20,11 @@ class SimplePaths:
         try:
             paths_msg = sensor_msgs.Paths.deserialize(msg.payload.to_bytes())
             msg_time = (
-                paths_msg.header.stamp.sec
-                + paths_msg.header.stamp.nanosec * 1e-9
+                paths_msg.header.stamp.sec + paths_msg.header.stamp.nanosec * 1e-9
             )
             current_time = time.time()
             lattency = current_time - msg_time
-            logging.debug(
-                f"Received paths with latency: {lattency:.6f} seconds"
-            )
+            logging.debug(f"Received paths with latency: {lattency:.6f} seconds")
             logging.debug(f"Received paths: {paths_msg.paths}")
         except Exception as e:
             logging.error(f"Error processing paths: {e}")

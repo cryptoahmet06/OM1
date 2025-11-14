@@ -85,9 +85,7 @@ class TurtleBot4Battery(FuserInput[str]):
         sample : zenoh.Sample
             Zenoh sample containing battery state data
         """
-        battery = sensor_msgs.BatteryState.deserialize(
-            sample.payload.to_bytes()
-        )
+        battery = sensor_msgs.BatteryState.deserialize(sample.payload.to_bytes())
 
         logging.debug(f"TB4 battery callback: {battery}")
 

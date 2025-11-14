@@ -47,9 +47,7 @@ class ZenohListenerProvider:
         if self.session is not None:
             self.session.declare_subscriber(self.sub_topic, message_callback)
         else:
-            logging.error(
-                "Cannot register callback; Zenoh session is not available."
-            )
+            logging.error("Cannot register callback; Zenoh session is not available.")
 
     def start(self, message_callback: Optional[Callable] = None):
         """

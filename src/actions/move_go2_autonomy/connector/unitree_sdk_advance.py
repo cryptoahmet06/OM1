@@ -57,9 +57,7 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
 
         unitree_ethernet = getattr(config, "unitree_ethernet", None)
         if unitree_ethernet is None:
-            raise ValueError(
-                "unitree_ethernet must be specified in the config"
-            )
+            raise ValueError("unitree_ethernet must be specified in the config")
         self.odom = OdomProvider(channel=unitree_ethernet)
 
         # Zenoh topic for AI control status
@@ -73,8 +71,8 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
             self.session.declare_subscriber(
                 self.ai_status_request, self._zenoh_ai_status_request
             )
-            self._zenoh_ai_status_response_pub = (
-                self.session.declare_publisher(self.ai_status_response)
+            self._zenoh_ai_status_response_pub = self.session.declare_publisher(
+                self.ai_status_response
             )
         except Exception as e:
             logging.error(f"Error opening Zenoh client: {e}")
@@ -92,10 +90,7 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
     async def connect(self, output_interface: MoveInput) -> None:
         logging.info(f"AI command.connect: {output_interface.action}")
 
-        if (
-            self.mode == "guard"
-            and self.face_presence_provider.unknown_faces > 0
-        ):
+        if self.mode == "guard" and self.face_presence_provider.unknown_faces > 0:
             logging.info(
                 "Guard mode active and unknown face detected - disregarding AI command"
             )
@@ -107,9 +102,7 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
 
         if self.unitree_go2_state.state_code == 1002:
             if self.sport_client:
-                logging.info(
-                    "Robot is in jointLock state - issuing BalanceStand()"
-                )
+                logging.info("Robot is in jointLock state - issuing BalanceStand()")
                 self.sport_client.BalanceStand()
 
         if self.unitree_go2_state.action_progress != 0:
@@ -143,18 +136,14 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
             "turn right": self._process_turn_right,
             "move forwards": self._process_move_forward,
             "move back": self._process_move_back,
-            "stand still": lambda: logging.info(
-                "AI movement command: stand still"
-            ),
+            "stand still": lambda: logging.info("AI movement command: stand still"),
         }
 
         handler = movement_map.get(output_interface.action)
         if handler:
             handler()
         else:
-            logging.info(
-                f"AI movement command unknown: {output_interface.action}"
-            )
+            logging.info(f"AI movement command unknown: {output_interface.action}")
 
         # This is a subset of Go2 movements that are
         # generally safe. Note that the "stretch" action involves
@@ -202,9 +191,7 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
             self.sport_client.BalanceStand()
 
         try:
-            logging.info(
-                f"self.sport_client.Move: vx={vx}, vy={vy}, vturn={vturn}"
-            )
+            logging.info(f"self.sport_client.Move: vx={vx}, vy={vy}, vturn={vturn}")
             self.sport_client.Move(vx, vy, vturn)
         except Exception as e:
             logging.error(f"Error moving robot: {e}")
@@ -275,17 +262,13 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
                     logging.info(f"Phase 1 - Turn GAP delta: {progress}DEG")
 
                 if abs(gap) > 10.0:
-                    logging.debug(
-                        "Phase 1 - Gap is big, using large displacements"
-                    )
+                    logging.debug("Phase 1 - Gap is big, using large displacements")
                     self.movement_attempts += 1
                     if not self._execute_turn(gap):
                         self.clean_abort()
                         return
                 elif abs(gap) > self.angle_tolerance and abs(gap) <= 10.0:
-                    logging.debug(
-                        "Phase 1 - Gap is decreasing, using smaller steps"
-                    )
+                    logging.debug("Phase 1 - Gap is decreasing, using smaller steps")
                     self.movement_attempts += 1
                     # rotate only because we are so close
                     # no need to check barriers because we are just performing small rotations
@@ -301,9 +284,7 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
             else:
                 # Phase 2: Move towards the target position, if needed
                 if goal_dx == 0:
-                    logging.info(
-                        "No movement required, processing next AI command"
-                    )
+                    logging.info("No movement required, processing next AI command")
                     self.clean_abort()
                     return
 
@@ -320,9 +301,7 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
                 self.gap_previous = gap
 
                 if self.movement_attempts > 0:
-                    logging.info(
-                        f"Phase 2 - Forward/retreat GAP delta: {progress}m"
-                    )
+                    logging.info(f"Phase 2 - Forward/retreat GAP delta: {progress}m")
 
                 if goal_dx > 0:
                     if 4 not in self.path_provider.advance:
@@ -341,9 +320,7 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
                 if gap > self.distance_tolerance:
                     self.movement_attempts += 1
                     if distance_traveled < abs(goal_dx):
-                        logging.info(
-                            f"Phase 2 - Keep moving. Remaining: {gap}m "
-                        )
+                        logging.info(f"Phase 2 - Keep moving. Remaining: {gap}m ")
                         self._move_robot(fb * speed, 0.0, 0.0)
                     elif distance_traveled > abs(goal_dx):
                         logging.debug(
@@ -529,12 +506,8 @@ class MoveUnitreeSDKAdvanceConnector(ActionConnector[MoveInput]):
         data : zenoh.Sample
             The Zenoh sample received, which should have a 'payload' attribute.
         """
-        ai_control_status = AIStatusRequest.deserialize(
-            data.payload.to_bytes()
-        )
-        logging.info(
-            f"Received AI Control Status message: {ai_control_status}"
-        )
+        ai_control_status = AIStatusRequest.deserialize(data.payload.to_bytes())
+        logging.info(f"Received AI Control Status message: {ai_control_status}")
 
         code = ai_control_status.code
         request_id = ai_control_status.request_id

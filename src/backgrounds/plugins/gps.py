@@ -18,6 +18,4 @@ class Gps(Background):
             return
 
         self.gps_provider = GpsProvider(serial_port=port)
-        logging.info(
-            f"Initiated GPS Provider with serial port: {port} in background"
-        )
+        logging.info(f"Initiated GPS Provider with serial port: {port} in background")
