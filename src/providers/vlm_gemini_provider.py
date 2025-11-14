@@ -11,7 +11,6 @@ from .singleton import singleton
 import asyncio
 
 
-
 @singleton
 class VLMGeminiProvider:
     """
@@ -138,7 +137,9 @@ class VLMGeminiProvider:
         """
         try:
             loop = asyncio.get_running_loop()
-            loop.create_task(self._process_frame(frame))  # self._process_frame kullanıyoruz
+            loop.create_task(
+                self._process_frame(frame)
+            )  # self._process_frame kullanıyoruz
         except RuntimeError:
             asyncio.run(self._process_frame(frame))
 
