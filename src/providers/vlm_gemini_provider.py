@@ -10,12 +10,6 @@ from .singleton import singleton
 
 import asyncio
 
-def frame_callback_sync(frame: str):
-    try:
-        loop = asyncio.get_running_loop()
-        loop.create_task(async_frame_callback(frame))
-    except RuntimeError:
-        asyncio.run(async_frame_callback(frame))
 
 
 @singleton
@@ -58,7 +52,7 @@ class VLMGeminiProvider:
             ws.Client(url=stream_url) if stream_url else None
         )
         self.video_stream: VideoStream = VideoStream(
-            frame_callback=frame_callback_sync,  # <- senkron wrapper
+            frame_callback=self.frame_callback_sync,
             fps=fps,
             device_index=camera_index,  # type: ignore
         )
@@ -138,6 +132,13 @@ class VLMGeminiProvider:
             )
 
         logging.info("Gemini VLM provider started")
+
+    def frame_callback_sync(frame: str):
+        try:
+            loop = asyncio.get_running_loop()
+            loop.create_task(async_frame_callback(frame))
+        except RuntimeError:
+            asyncio.run(async_frame_callback(frame))
 
     def stop(self):
         """
