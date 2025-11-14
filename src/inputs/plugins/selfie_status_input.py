@@ -1,9 +1,9 @@
 # src/inputs/plugins/selfie_status_input.py
 
 import asyncio
-import time
 from collections import deque
 from dataclasses import dataclass
+import time
 from typing import Deque, Optional
 
 from inputs.base import SensorConfig

@@ -1,8 +1,8 @@
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 import logging
 import threading
 import typing as T
-from concurrent.futures import ThreadPoolExecutor
 
 from llm.output_model import Action
 from runtime.single_mode.config import RuntimeConfig

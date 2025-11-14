@@ -1,6 +1,6 @@
+from enum import Enum
 import importlib
 import typing as T
-from enum import Enum
 from typing import Optional
 
 from actions.base import ActionConfig, ActionConnector, AgentAction, Interface

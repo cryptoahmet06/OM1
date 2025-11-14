@@ -1,8 +1,8 @@
 import asyncio
 import json
 import logging
-import time
 from queue import Empty, Queue
+import time
 from typing import Dict, List, Optional
 
 from inputs.base import SensorConfig

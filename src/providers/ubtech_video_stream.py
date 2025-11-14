@@ -4,8 +4,8 @@ import time
 from typing import Callable, List, Optional, Tuple
 
 import cv2
-import numpy as np
 from mjpeg.client import MJPEGClient
+import numpy as np
 from om1_vlm import VideoStream
 from ubtech.ubtechapi import YanAPI
 

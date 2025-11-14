@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import logging
+from queue import Empty, Queue
 import threading
 import time
-from queue import Empty, Queue
 from typing import Optional
 
 import rclpy  # type: ignore

@@ -6,10 +6,10 @@ from typing import Callable, List, Optional, Tuple
 
 import cv2
 import numpy as np
-import zenoh
-from om1_utils import ws
 from om1_vlm import VideoStream
+import zenoh
 
+from om1_utils import ws
 from zenoh_msgs import open_zenoh_session
 
 from .singleton import singleton

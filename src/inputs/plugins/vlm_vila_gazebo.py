@@ -1,9 +1,9 @@
 import asyncio
+from dataclasses import dataclass
 import json
 import logging
-import time
-from dataclasses import dataclass
 from queue import Empty, Queue
+import time
 from typing import Dict, List, Optional
 
 from inputs.base import SensorConfig

@@ -1,9 +1,9 @@
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 import json
 import logging
 import os
 import time
-from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass
 from typing import List, Optional
 
 import requests

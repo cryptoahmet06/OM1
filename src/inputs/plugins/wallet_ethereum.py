@@ -1,9 +1,9 @@
 import asyncio
+from dataclasses import dataclass
 import logging
 import os
 import random
 import time
-from dataclasses import dataclass
 from typing import List, Optional
 
 from web3 import Web3

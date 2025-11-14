@@ -1,8 +1,8 @@
 import concurrent.futures
+from dataclasses import asdict, dataclass, field
 import logging
 import threading
 import time
-from dataclasses import asdict, dataclass, field
 from typing import Optional
 
 from ubtech.ubtechapi import YanAPI

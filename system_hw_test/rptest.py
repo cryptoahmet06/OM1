@@ -4,12 +4,12 @@ import sys
 import threading
 import time
 
-import numpy as np
-import zenoh
 from matplotlib import pyplot as plot
 from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Circle, Rectangle
+import numpy as np
 from rpdriver import RPDriver
+import zenoh
 
 from .intel435.intel435_obstacle_zenoh import Intel435ObstacleDector
 

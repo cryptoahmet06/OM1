@@ -8,16 +8,17 @@ a - Turn left
 d - Turn right
 """
 
+from dataclasses import dataclass
 import json
 import logging
 import os
 import sys
 import threading
 import time
-from dataclasses import dataclass
+
+from pynput import keyboard
 
 from om1_utils import ws
-from pynput import keyboard
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
