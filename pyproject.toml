@@ -96,8 +96,21 @@ exclude = ["src/unitree","gazebo", "src/ubtech"]
 extend-ignore = ["E402"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["actions", "providers", "om1_utils", "zenoh_msgs"]
+combine-as-imports = true
 force-sort-within-sections = true
+lines-between-types = 1
+known-first-party = [
+    "actions",
+    "providers",
+    "om1_utils",
+    "zenoh_msgs",
+    "inputs",
+    "runtime",
+    "llm",
+    "tests",
+    "system_hw_test"
+]
+
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
