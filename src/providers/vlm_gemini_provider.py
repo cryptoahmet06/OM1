@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import time
 from typing import Callable, Optional
@@ -8,17 +9,15 @@ from openai import AsyncOpenAI
 
 from .singleton import singleton
 
-import asyncio
-
 
 @singleton
 class VLMGeminiProvider:
     """
     VLM Provider that handles video streaming and Gemini API communication.
 
-    This class implementationements a singleton pattern to manage video input streaming and API
-    communication for vlm services. It runs in a separate thread to handle
-    continuous vlm processing.
+    This class implements a singleton pattern to manage video input streaming and API
+    communication for VLM services. It runs in a separate thread to handle
+    continuous VLM processing.
     """
 
     def __init__(
@@ -66,7 +65,7 @@ class VLMGeminiProvider:
         frame : str
             The base64 encoded video frame to process.
         """
-        processing_start = time.perf_counter()
+        start = time.perf_counter()
         try:
             response = await self.api_client.chat.completions.create(
                 model="gemini-2.0-flash-exp",
@@ -90,8 +89,8 @@ class VLMGeminiProvider:
                 ],
                 max_tokens=300,
             )
-            processing_latency = time.perf_counter() - processing_start
-            logging.debug(f"Processing latency: {processing_latency:.3f} seconds")
+            latency = time.perf_counter() - start
+            logging.debug(f"Processing latency: {latency:.3f} seconds")
             logging.debug(f"Gemini LLM VLM Response: {response}")
             if self.message_callback:
                 self.message_callback(response)
@@ -110,12 +109,7 @@ class VLMGeminiProvider:
         self.message_callback = message_callback
 
     def start(self):
-        """
-        Start the Gemini provider.
-
-        Initializes and starts the video stream and processing thread
-        if not already running.
-        """
+        """Start the Gemini provider and video stream."""
         if self.running:
             logging.warning("Gemini VLM provider is already running")
             return
@@ -132,18 +126,15 @@ class VLMGeminiProvider:
         logging.info("Gemini VLM provider started")
 
     def frame_callback_sync(self, frame: str) -> None:
+        """Sync wrapper for async frame processing to satisfy VideoStream callback type."""
         try:
             asyncio.ensure_future(self._process_frame(frame))
         except RuntimeError:
-            # Eğer event loop yoksa yeni loop oluşturup çalıştır
+            # No event loop running, create a new one
             asyncio.run(self._process_frame(frame))
 
     def stop(self):
-        """
-        Stop the Gemini provider.
-
-        Stops the video stream and processing thread.
-        """
+        """Stop the Gemini provider and video stream."""
         self.running = False
         self.video_stream.stop()
 
