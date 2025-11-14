@@ -52,11 +52,10 @@ class VLMGeminiProvider:
             ws.Client(url=stream_url) if stream_url else None
         )
         self.video_stream: VideoStream = VideoStream(
-            frame_callback=self.frame_callback_sync,
+            frame_callback=self.frame_callback_sync,  # self ile referans
             fps=fps,
-            device_index=camera_index,  # type: ignore
+            device_index=camera_index,
         )
-
         self.message_callback: Optional[Callable] = None
 
     async def _process_frame(self, frame: str):
@@ -133,12 +132,15 @@ class VLMGeminiProvider:
 
         logging.info("Gemini VLM provider started")
 
-    def frame_callback_sync(frame: str):
+    def frame_callback_sync(self, frame: str):
+        """
+        Senkron wrapper: mevcut loop varsa task olarak çalıştır, yoksa asyncio.run ile çalıştır.
+        """
         try:
             loop = asyncio.get_running_loop()
-            loop.create_task(async_frame_callback(frame))
+            loop.create_task(self._process_frame(frame))  # self._process_frame kullanıyoruz
         except RuntimeError:
-            asyncio.run(async_frame_callback(frame))
+            asyncio.run(self._process_frame(frame))
 
     def stop(self):
         """
