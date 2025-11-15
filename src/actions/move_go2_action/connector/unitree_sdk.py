@@ -36,14 +36,20 @@ class ActionUnitreeSDKConnector(ActionConnector[ActionInput]):
         # create sport client
         self.sport_client = None
         try:
-            self.sport_client = SportClient()
-            self.sport_client.SetTimeout(10.0)
-            self.sport_client.Init()
-            self.sport_client.StopMove()
-            self.sport_client.Move(0.05, 0, 0)
-            logging.info("Autonomy Unitree sport client initialized")
+            client = SportClient()
+            client.SetTimeout(10.0)
+            init_result = client.Init()
+            if init_result != 0:
+                raise RuntimeError(f"SportClient initialization failed with code {init_result}")
+        
+            client.StopMove()
+            client.Move(0.05, 0, 0)
+            self.sport_client = client
+            logging.info("Autonomy Unitree sport client initialized successfully")
+        
         except Exception as e:
-            logging.error(f"Error initializing Unitree sport client: {e}")
+            logging.error(f"Failed to initialize Unitree sport client: {e}")
+
 
         unitree_ethernet = getattr(config, "unitree_ethernet", None)
         self.odom = OdomProvider(channel=unitree_ethernet)
