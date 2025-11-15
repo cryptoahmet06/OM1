@@ -94,7 +94,8 @@ exclude = ["src/unitree","gazebo", "src/ubtech"]
 
 [tool.ruff.lint]
 select = ["I001"]
-ignore = []
 fixable = ["I001"]
+ignore = ["E501", "F401"]
+
 
 
