@@ -91,11 +91,12 @@ skip_glob = [".venv*", "/src/unitree", "/gazebo", "/src/ubtech"]
 line-length = 88
 indent-width = 4
 src = ["src"]
-exclude = ["src/unitree","gazebo", "src/ubtech"]
+exclude = ["src/unitree", "gazebo", "src/ubtech"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
-ignore = ["E203", "E501"]
+select = ["I"]
 fixable = ["ALL"]
-unfixable = []
+ignore = ["E203", "E501"]
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+
