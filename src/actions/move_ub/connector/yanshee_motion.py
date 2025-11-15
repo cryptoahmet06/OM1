@@ -5,10 +5,9 @@ import threading
 import time
 from typing import Optional
 
-from ubtech.ubtechapi import YanAPI
-
 from actions.base import ActionConfig, ActionConnector
 from actions.move_ub.interface import MoveInput
+from ubtech.ubtechapi import YanAPI
 
 
 @dataclass

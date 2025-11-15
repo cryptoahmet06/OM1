@@ -7,6 +7,7 @@ import cv2
 from mjpeg.client import MJPEGClient
 import numpy as np
 from om1_vlm import VideoStream
+
 from ubtech.ubtechapi import YanAPI
 
 
