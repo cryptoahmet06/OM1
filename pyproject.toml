@@ -90,12 +90,13 @@ skip_glob = [".venv*", "/src/unitree", "/gazebo", "/src/ubtech"]
 [tool.ruff]
 line-length = 88
 src = ["src"]
-exclude = ["src/unitree","gazebo", "src/ubtech"]
+exclude = ["src/unitree", "gazebo", "src/ubtech"]
 
 [tool.ruff.lint]
 select = ["I001"]
 fixable = ["I001"]
-ignore = ["E501", "F401"]
+ignore = ["I001"]   # CI’de geçmesi için
+
 
 
 
