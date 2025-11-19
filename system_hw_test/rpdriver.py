@@ -323,7 +323,7 @@ class RPDriver(object):
         self.logger.debug("Health status: %s [%d]", status, error_code)
         if status == _HEALTH_STATUSES[2]:
             self.logger.warning(
-                "Trying to reset sensor due to error. " "Error code: %d",
+                "Trying to reset sensor due to error. Error code: %d",
                 error_code,
             )
             self.reset()
@@ -434,7 +434,7 @@ class RPDriver(object):
 
                 self.express_trame += 1
                 self.logger.debug(
-                    "process scan of frame %d with angle : " "%f and angle new : %f",
+                    "process scan of frame %d with angle : %f and angle new : %f",
                     self.express_trame,
                     self.express_old_data.start_angle,
                     self.express_data.start_angle,

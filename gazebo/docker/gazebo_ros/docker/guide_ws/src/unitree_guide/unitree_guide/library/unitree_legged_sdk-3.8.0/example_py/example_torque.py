@@ -10,7 +10,6 @@ sys.path.append("../lib/python/amd64")
 import robot_interface as sdk
 
 if __name__ == "__main__":
-
     d = {
         "FR_0": 0,
         "FR_1": 1,

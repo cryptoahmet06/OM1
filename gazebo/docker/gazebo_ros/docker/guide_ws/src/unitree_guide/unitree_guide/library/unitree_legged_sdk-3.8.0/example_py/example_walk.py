@@ -7,7 +7,6 @@ sys.path.append("../lib/python/amd64")
 import robot_interface as sdk
 
 if __name__ == "__main__":
-
     HIGHLEVEL = 0xEE
     LOWLEVEL = 0xFF
 

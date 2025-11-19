@@ -11,14 +11,12 @@ import robot_interface as sdk
 
 
 def jointLinearInterpolation(initPos, targetPos, rate):
-
     rate = np.fmin(np.fmax(rate, 0.0), 1.0)
     p = initPos * (1 - rate) + targetPos * rate
     return p
 
 
 if __name__ == "__main__":
-
     d = {
         "FR_0": 0,
         "FR_1": 1,
@@ -66,7 +64,6 @@ if __name__ == "__main__":
         udp.GetRecv(state)
 
         if motiontime >= 0:
-
             # first, get record initial position
             if motiontime >= 0 and motiontime < 10:
                 qInit[0] = state.motorState[d["FR_0"]].q

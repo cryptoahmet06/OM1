@@ -239,7 +239,9 @@ def test_load_config_missing_required_fields():
         "name": "invalid_config",
     }
 
-    with (patch("builtins.open", mock_open(read_data=json5.dumps(invalid_config))),):
+    with (
+        patch("builtins.open", mock_open(read_data=json5.dumps(invalid_config))),
+    ):
         with pytest.raises(KeyError):
             load_config("invalid_config")
 
@@ -257,7 +259,9 @@ def test_load_config_invalid_hertz():
         "agent_actions": [],
     }
 
-    with (patch("builtins.open", mock_open(read_data=json5.dumps(invalid_config))),):
+    with (
+        patch("builtins.open", mock_open(read_data=json5.dumps(invalid_config))),
+    ):
         with pytest.raises(ValueError):
             load_config("invalid_config")
 
