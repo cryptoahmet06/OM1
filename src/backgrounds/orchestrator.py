@@ -1,8 +1,8 @@
 import asyncio
-from concurrent.futures import ThreadPoolExecutor
 import logging
 import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 from backgrounds.base import Background
 from runtime.multi_mode.config import RuntimeConfig

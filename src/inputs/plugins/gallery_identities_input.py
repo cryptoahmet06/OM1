@@ -1,8 +1,8 @@
 import asyncio
+import time
 from collections import deque
 from dataclasses import dataclass
 from queue import Empty, Queue
-import time
 from typing import Deque, Optional
 
 from inputs.base import SensorConfig

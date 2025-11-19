@@ -1,9 +1,9 @@
 import asyncio
-from dataclasses import dataclass
 import logging
-from queue import Empty, Queue
 import threading
 import time
+from dataclasses import dataclass
+from queue import Empty, Queue
 from typing import List, Optional
 
 import websockets

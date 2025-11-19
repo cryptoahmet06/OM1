@@ -1,7 +1,7 @@
 import asyncio
-from dataclasses import dataclass
 import random
 import time
+from dataclasses import dataclass
 from typing import Optional
 
 from PIL import Image

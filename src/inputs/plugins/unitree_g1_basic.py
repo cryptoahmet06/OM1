@@ -1,17 +1,12 @@
 import asyncio
-from dataclasses import dataclass
 import logging
 import time
+from dataclasses import dataclass
 from typing import List, Optional
 
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
-from providers import (
-    BatteryStatus,
-    IOProvider,
-    TeleopsStatus,
-    TeleopsStatusProvider,
-)
+from providers import BatteryStatus, IOProvider, TeleopsStatus, TeleopsStatusProvider
 
 try:
     from unitree.unitree_sdk2py.core.channel import ChannelSubscriber

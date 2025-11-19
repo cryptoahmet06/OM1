@@ -1,8 +1,8 @@
 import logging
 import multiprocessing as mp
-from queue import Empty, Full
 import threading
 import time
+from queue import Empty, Full
 from typing import Optional
 
 from runtime.logging import LoggingConfig, get_logging_config, setup_logging

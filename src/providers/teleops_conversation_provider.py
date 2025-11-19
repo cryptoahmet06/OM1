@@ -1,8 +1,8 @@
+import logging
+import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from enum import Enum
-import logging
-import time
 from typing import Optional
 
 import requests

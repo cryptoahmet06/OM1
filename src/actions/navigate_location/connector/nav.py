@@ -4,12 +4,8 @@ import logging
 from actions.base import ActionConfig, ActionConnector
 from actions.navigate_location.interface import NavigateLocationInput
 from providers.io_provider import IOProvider
-from providers.unitree_go2_locations_provider import (
-    UnitreeGo2LocationsProvider,
-)
-from providers.unitree_go2_navigation_provider import (
-    UnitreeGo2NavigationProvider,
-)
+from providers.unitree_go2_locations_provider import UnitreeGo2LocationsProvider
+from providers.unitree_go2_navigation_provider import UnitreeGo2NavigationProvider
 from zenoh_msgs import Header, Point, Pose, PoseStamped, Quaternion, Time
 
 

@@ -5,8 +5,8 @@ import threading
 import time
 from typing import Optional
 
-from pynmeagps import NMEAReader
 import serial
+from pynmeagps import NMEAReader
 
 from .singleton import singleton
 

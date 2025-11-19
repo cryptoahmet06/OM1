@@ -1,19 +1,14 @@
 import asyncio
-from dataclasses import dataclass
 import logging
 import time
+from dataclasses import dataclass
 from typing import List, Optional
 
 import zenoh
 
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
-from providers import (
-    BatteryStatus,
-    IOProvider,
-    TeleopsStatus,
-    TeleopsStatusProvider,
-)
+from providers import BatteryStatus, IOProvider, TeleopsStatus, TeleopsStatusProvider
 from zenoh_msgs import open_zenoh_session, sensor_msgs
 
 

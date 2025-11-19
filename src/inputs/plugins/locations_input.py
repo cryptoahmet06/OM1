@@ -1,15 +1,13 @@
 import asyncio
-from dataclasses import dataclass
 import logging
 import time
+from dataclasses import dataclass
 from typing import List, Optional
 
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
 from providers.io_provider import IOProvider
-from providers.unitree_go2_locations_provider import (
-    UnitreeGo2LocationsProvider,
-)
+from providers.unitree_go2_locations_provider import UnitreeGo2LocationsProvider
 
 
 @dataclass

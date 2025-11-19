@@ -1,17 +1,15 @@
 import asyncio
-from dataclasses import dataclass
 import json
 import logging
-from queue import Empty, Queue
 import time
+from dataclasses import dataclass
+from queue import Empty, Queue
 from typing import Dict, List, Optional
 
 from inputs.base import SensorConfig
 from inputs.base.loop import FuserInput
 from providers.io_provider import IOProvider
-from providers.turtlebot4_camera_vlm_provider import (
-    TurtleBot4CameraVLMProvider,
-)
+from providers.turtlebot4_camera_vlm_provider import TurtleBot4CameraVLMProvider
 
 
 @dataclass

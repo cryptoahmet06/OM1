@@ -1,8 +1,8 @@
 import logging
 import math
-from queue import Queue
 import random
 import time
+from queue import Queue
 from typing import List, Optional
 
 from unitree.unitree_sdk2py.go2.sport.sport_client import SportClient

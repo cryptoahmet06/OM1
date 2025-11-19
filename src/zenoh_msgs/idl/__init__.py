@@ -15,14 +15,7 @@ from .geometry_msgs import (
     TwistWithCovarianceStamped,
     Vector3,
 )
-from .nav_msgs import (
-    AMCLPose,
-    GoalID,
-    GoalInfo,
-    GoalStatus,
-    Nav2Status,
-    Odometry,
-)
+from .nav_msgs import AMCLPose, GoalID, GoalInfo, GoalStatus, Nav2Status, Odometry
 from .sensor_msgs import (
     IMU,
     BatteryState,
