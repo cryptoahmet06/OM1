@@ -230,9 +230,7 @@ class FacePresenceProvider:
             except Exception:
                 pass
 
-    def _fetch_snapshot(
-        self, recent_sec: Optional[float] = None
-    ) -> PresenceSnapshot:
+    def _fetch_snapshot(self, recent_sec: Optional[float] = None) -> PresenceSnapshot:
         """
         POST `/who` with a lookback window (default: self.recent_sec) and build a
         turn-friendly snapshot using **frames-based** suppression for unknowns.
@@ -254,17 +252,13 @@ class FacePresenceProvider:
         """
         sec = float(self.recent_sec if recent_sec is None else recent_sec)
         url = f"{self.base_url}/who"
-        r = self._session.post(
-            url, json={"recent_sec": sec}, timeout=self.timeout_s
-        )
+        r = self._session.post(url, json={"recent_sec": sec}, timeout=self.timeout_s)
         r.raise_for_status()
         data: Dict = r.json() or {}
 
         if self.prefer_recent:
 
-            name_frames: Dict[str, int] = (
-                data.get("recent_name_frames", {}) or {}
-            )
+            name_frames: Dict[str, int] = data.get("recent_name_frames", {}) or {}
             names = [k for k in name_frames.keys() if k and k != "unknown"]
 
             # Frames-based unknown suppression

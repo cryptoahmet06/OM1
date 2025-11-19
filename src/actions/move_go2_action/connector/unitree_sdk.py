@@ -3,12 +3,13 @@ from queue import Queue
 import random
 from typing import Optional
 
+from unitree.unitree_sdk2py.go2.sport.sport_client import SportClient
+
 from actions.base import ActionConfig, ActionConnector, MoveCommand
 from actions.move_go2_action.interface import ActionInput
 from providers.odom_provider import OdomProvider
 from providers.rplidar_provider import RPLidarProvider
 from providers.unitree_go2_state_provider import UnitreeGo2StateProvider
-from unitree.unitree_sdk2py.go2.sport.sport_client import SportClient
 
 
 class ActionUnitreeSDKConnector(ActionConnector[ActionInput]):
@@ -40,16 +41,17 @@ class ActionUnitreeSDKConnector(ActionConnector[ActionInput]):
             client.SetTimeout(10.0)
             init_result = client.Init()
             if init_result != 0:
-                raise RuntimeError(f"SportClient initialization failed with code {init_result}")
-        
+                raise RuntimeError(
+                    f"SportClient initialization failed with code {init_result}"
+                )
+
             client.StopMove()
             client.Move(0.05, 0, 0)
             self.sport_client = client
             logging.info("Autonomy Unitree sport client initialized successfully")
-        
+
         except Exception as e:
             logging.error(f"Failed to initialize Unitree sport client: {e}")
-
 
         unitree_ethernet = getattr(config, "unitree_ethernet", None)
         self.odom = OdomProvider(channel=unitree_ethernet)

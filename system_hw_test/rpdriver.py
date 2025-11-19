@@ -434,8 +434,7 @@ class RPDriver(object):
 
                 self.express_trame += 1
                 self.logger.debug(
-                    "process scan of frame %d with angle : "
-                    "%f and angle new : %f",
+                    "process scan of frame %d with angle : " "%f and angle new : %f",
                     self.express_trame,
                     self.express_old_data.start_angle,
                     self.express_data.start_angle,
@@ -494,9 +493,7 @@ class ExpressPacket(
         checksum = 0
         for b in packet[2:]:
             checksum ^= b
-        if checksum != (packet[0] & 0b00001111) + (
-            (packet[1] & 0b00001111) << 4
-        ):
+        if checksum != (packet[0] & 0b00001111) + ((packet[1] & 0b00001111) << 4):
             raise ValueError("Invalid checksum ({})".format(packet))
 
         new_scan = packet[3] >> 7
@@ -506,10 +503,7 @@ class ExpressPacket(
         for i in range(0, 80, 5):
             d += ((packet[i + 4] >> 2) + (packet[i + 5] << 6),)
             a += (
-                (
-                    (packet[i + 8] & 0b00001111)
-                    + ((packet[i + 4] & 0b00000001) << 4)
-                )
+                ((packet[i + 8] & 0b00001111) + ((packet[i + 4] & 0b00000001) << 4))
                 / 8
                 * cls.sign[(packet[i + 4] & 0b00000010) >> 1],
             )
