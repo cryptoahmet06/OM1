@@ -23,7 +23,6 @@ from zenoh_msgs import (
 # unstable / not released
 # from zenoh.ext import HistoryConfig, Miss, RecoveryConfig, declare_advanced_subscriber
 class EmergencyAlertElevenLabsTTSConnector(ActionConnector[EmergencyAlertInput]):
-
     def __init__(self, config: ActionConfig):
         super().__init__(config)
 
