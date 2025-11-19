@@ -97,7 +97,6 @@ extend-ignore = [
     "F401",  # unused import
     "F841",  # unused variable
 ]
-fix = true
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
