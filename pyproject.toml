@@ -95,6 +95,14 @@ src = ["src"]
 exclude = ["src/unitree", "gazebo", "src/ubtech"]
 extend-ignore = ["E402"]
 
+[tool.ruff.lint]
+extend-ignore = [
+    "E501",  # satır uzunluğu
+    "F401",  # unused import
+    "F841",  # unused variable
+]
+fix = true
+
 [tool.ruff.lint.isort]
 combine-as-imports = true
 force-sort-within-sections = true
@@ -111,10 +119,3 @@ known-first-party = [
     "system_hw_test"
 ]
 
-
-[tool.ruff.lint]
-select = ["E", "F", "I"]
-ignore = ["E203", "E501"]
-fixable = ["ALL"]
-unfixable = []
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
