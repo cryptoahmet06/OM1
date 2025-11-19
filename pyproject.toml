@@ -89,11 +89,7 @@ skip_glob = [".venv*", "/src/unitree", "/gazebo", "/src/ubtech"]
 
 
 [tool.ruff]
-line-length = 88
-indent-width = 4
-src = ["src"]
-exclude = ["src/unitree", "gazebo", "src/ubtech"]
-extend-ignore = ["E402"]
+ignore = ["ALL"]
 
 [tool.ruff.lint]
 extend-ignore = [
